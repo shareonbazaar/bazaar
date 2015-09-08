@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  ul.user-list
+    each user, i in users
+      - var image_uri = user.profile.picture || '/images/person_placeholder.gif'
+      li
+        img.profile-pic(src=image_uri)
+        div.profile-info
+          h3=user.profile.name
+          p=user.profile.gender
+          p="Rio de Janeiro"
