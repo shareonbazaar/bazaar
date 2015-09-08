@@ -376,3 +376,15 @@ exports.postForgot = (req, res, next) => {
     res.redirect('/forgot');
   });
 };
+
+/**
+ * GET /forgot
+ * Forgot Password page.
+ */
+exports.findUsers = (req, res) => {
+  User.find(function (err, results) {
+    res.render('users/showall', {
+      users: results
+    });
+  });
+};

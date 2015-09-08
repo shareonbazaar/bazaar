@@ -122,6 +122,12 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 
 /**
+ * User routes
+ */
+app.get('/users', userController.findUsers);
+
+
+/**
  * API examples routes.
  */
 app.get('/api', apiController.getApi);

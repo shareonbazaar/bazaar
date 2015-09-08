@@ -17,6 +17,8 @@
           a(href='/api') API Examples
         li(class=(title == 'Contact') ? 'active' : undefined)
           a(href='/contact') Contact
+        li(class=title=='Find Users'?'active':undefined)
+          a(href='/users') Find Users
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)
