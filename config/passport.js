@@ -96,6 +96,7 @@ passport.use(new FacebookStrategy(configuration, function(req, accessToken, refr
           user.profile.gender = profile._json.gender;
           user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
+          user.profile.hometown = (profile._json.hometown) ? profile._json.hometown.name : '';
           user.save(function(err) {
             done(err, user);
           });
