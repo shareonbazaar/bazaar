@@ -26,6 +26,7 @@ var assets = require('connect-assets');
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
+var messageController = require('./controllers/message');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
@@ -35,10 +36,15 @@ var contactController = require('./controllers/contact');
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 
+var Message = require('./models/Message');
+var Thread = require('./models/Thread');
+
 /**
  * Create Express server.
  */
 var app = express();
+
+var server = require('http').createServer(app);
 
 /**
  * Connect to MongoDB.
@@ -65,11 +71,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(methodOverride());
 app.use(cookieParser());
+var store = new MongoStore({ url: secrets.db, autoReconnect: true });
 app.use(session({
+  name: 'connect.sid',
   resave: true,
   saveUninitialized: true,
   secret: secrets.sessionSecret,
-  store: new MongoStore({ url: secrets.db, autoReconnect: true })
+  store: store
 }));
 app.use(passport.initialize());
 app.use(passport.session());
@@ -89,6 +97,101 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
+var io = require('socket.io').listen(server);
+var passportSocketIo = require("passport.socketio");
+var async = require('async');
+
+function onAuthorizeSuccess(data, accept){
+  console.log('successful connection to socket.io');
+  accept();
+}
+
+function onAuthorizeFail(data, message, error, accept){
+  console.log('failed connection to socket.io:', message);
+  if(error) {
+    accept(new Error(message));
+  }
+}
+
+//With Socket.io >= 1.0
+io.use(passportSocketIo.authorize({
+  cookieParser: cookieParser,
+  key:          'connect.sid',
+  secret:       secrets.sessionSecret,
+  store:        store,
+  success:      onAuthorizeSuccess,
+  fail:         onAuthorizeFail,
+}));
+
+var socket_map = {};
+
+function saveMessage (socket, data, thread_id, callback) {
+    var newMsg = new Message({
+        message: data.message,
+        timeSent: new Date(),
+        _thread: thread_id,
+        _sender: socket.request.user._id,
+    });
+    newMsg.save(function (err) {
+        if (err) {
+            throw err;
+        }
+        callback(null, socket, data, thread_id, newMsg)
+    });
+}
+
+function sendMessage (socket, data, thread_id, newMsg, callback) {
+    var recipients = [socket.request.user._id].concat(data.to);
+    recipients.forEach(function (user_id) {
+        io.to(socket_map[user_id]).emit('new message', {
+            message: newMsg.message,
+            timeSent: newMsg.timeSent,
+            thread_id: thread_id,
+            author: {
+                name: socket.request.user.profile.name,
+                pic: socket.request.user.profile.picture,
+                id: socket.request.user._id,
+                isMe: socket.request.user._id == user_id,
+            },
+        });
+    })
+    callback(null);
+}
+
+function saveThread (socket, data, unused_id, callback) {
+    var newThread = new Thread({
+        _participants: [socket.request.user._id].concat(data.to),
+        lastUpdated: new Date(),
+    });
+
+    newThread.save(function (err) {
+        callback(null, socket, data, newThread._id);
+    });
+}
+
+io.sockets.on('connection', function (socket) {
+    socket_map[socket.request.user._id] = socket.id;
+    socket.on('send message', function (data) {
+        var arr = [
+            saveMessage,
+            sendMessage,
+        ];
+
+        if (data.isNewThread) {
+            arr.unshift(saveThread);
+        }
+
+        arr.unshift(function (callback) {
+            callback(null, socket, data, data.thread_id);
+        })
+
+        async.waterfall(arr, function (err, results) {
+            if (err) {
+                console.log("Error: " + err);
+            }
+        });
+    });
+});
 
 /**
  * Primary app routes.
@@ -111,6 +214,8 @@ app.post('/account/profile', passportConf.isAuthenticated, userController.postUp
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
+app.get('/messages', passportConf.isAuthenticated, messageController.showMessages);
+app.get('/_threadMessages/:id', passportConf.isAuthenticated, messageController.getMessages);
 
 /**
  * User routes
@@ -152,7 +257,7 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), function() {
+server.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 module.exports = app;
