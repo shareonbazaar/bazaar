@@ -51,12 +51,17 @@
     "passport-twitter": "^1.0.4",
     "paypal-rest-sdk": "^1.6.8",
     "request": "^2.72.0",
+    "serve-favicon": "^2.3.0",
     "stripe": "^4.6.0",
     "tumblr.js": "^1.0.0",
     "twilio": "^3.3.0-edge",
     "twit": "^2.2.4",
+    "uglify-js": "^2.4.24",
     "validator": "^5.2.0",
-    "yui": "^3.18.1"
+    "yui": "^3.18.1",
+    "socket.io": "~1.3.6",
+    "http": "0.0.0",
+    "passport.socketio": "~3.6.1"
   },
   "devDependencies": {
     "chai": "^3.5.0",

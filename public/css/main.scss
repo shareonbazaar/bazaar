@@ -3,6 +3,7 @@
 @import "lib/bootstrap/bootstrap";
 @import "lib/bootstrap-social";
 @import "lib/font-awesome/font-awesome";
+@import "lib/jquery-ui";
 
 @import "themes/default/default";
 
@@ -72,7 +73,7 @@ textarea {
 
 // Users
 
-.profile-pic {
+.user-list .profile-pic {
   border-radius: 50%;
   width: 20%;
 }
@@ -88,4 +89,91 @@ textarea {
 .user-list .profile-info {
   display: inline-block;
   padding-left: 20px;
+}
+
+// Messaging
+
+.message-layout-grid .sidebar {
+  float: left;
+  width: 30%;
+}
+
+.message-snippet {
+  padding-bottom: 20px;
+}
+
+.message-snippet .profile-pic {
+  width: 60px;
+  margin-left:2%;
+  float:left;
+  margin-right: 8px;
+}
+
+.message-snippet .snippet-text .timestamp {
+  float: right;
+  font-size: 11px;
+}
+
+.message-snippet .snippet-text .sender {
+  font-weight: bold;
+}
+
+.thread-list {
+  list-style-type: none;
+  padding: 0 0 0 0;
+}
+
+.thread-list li {
+  border: 1px #e9eaed solid;
+}
+
+.thread-list li.is-active {
+  background-color: #ebebeb;
+}
+
+.thread-list li:hover {
+  background-color: #f5f7fa;
+}
+
+.sidebar .search-box input {
+  width: 100%;
+}
+
+.conversation-container {
+  width: 70%;
+  float: left;
+  padding-left: 20px;
+}
+
+.conversation-container .header {
+  padding-bottom: 2px;
+  border-bottom: 2px grey solid;
+}
+
+.conversation-container .header h3 {
+  margin: 0 0 0 0;
+}
+
+.conversation-container .header .new-message-button {
+  float: right;
+  font-size: initial;
+}
+
+.conversation-container .conversation {
+  overflow-y: auto;
+  height: 400px;
+}
+
+.conversation .message-details.myself {
+  float: right;
+  clear: both;
+}
+
+.conversation .message-details.other-person {
+  float: left;
+  clear: both;
+}
+
+.conversation-container .message-form textarea {
+  width: 100%;
 }
