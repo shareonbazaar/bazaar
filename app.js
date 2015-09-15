@@ -116,6 +116,7 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
  * User routes
  */
 app.get('/users', userController.findUsers);
+app.get('/users/list', userController.list);
 
 
 /**
