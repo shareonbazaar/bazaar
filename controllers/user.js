@@ -378,13 +378,29 @@ exports.postForgot = (req, res, next) => {
 };
 
 /**
- * GET /forgot
- * Forgot Password page.
+ * GET /users
+ * Show all users.
  */
 exports.findUsers = (req, res) => {
   User.find(function (err, results) {
     res.render('users/showall', {
       users: results
     });
+  });
+};
+
+/**
+ * GET /list
+ * List all users. Used for searching
+ */
+exports.list = function(req, res) {
+  User.find(function (err, results) {
+    data = results.map(function (user) {
+        return {
+          label: user.profile.name,
+          value: user._id,
+        };
+    });
+    res.json(data);
   });
 };
