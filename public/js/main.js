@@ -58,7 +58,7 @@ $(document).ready(function() {
         $('#conversation-list').empty();
         var new_thread = '<li data-thread-id=-1>' +
                               '<div class="message-snippet"> ' +
-                                  '<img src="/images/palestinian-man-smiling.jpg" class="profile-pic">' +
+                                  '<img src="/images/person_placeholder.gif" class="profile-pic">' +
                                   '<div class="snippet-text">' +
                                     '<div class="timestamp">13:07</div>' +
                                     '<div class="sender">New Message</div>' +
