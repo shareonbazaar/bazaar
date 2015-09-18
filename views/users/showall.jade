@@ -7,6 +7,7 @@ block content
       li
         img.profile-pic(src=image_uri)
         div.profile-info
-          h3=user.profile.name
+          a(href="/profile/" + user.id)
+            h3=user.profile.name
           p=user.profile.gender
           p=user.profile.hometown
