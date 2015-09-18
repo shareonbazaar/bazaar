@@ -389,3 +389,16 @@ exports.list = function(req, res) {
     res.json(data);
   });
 };
+
+/**
+ * GET /profile/:id
+ * Show profile for a given user, specified by :id
+ */
+exports.showProfile = function(req, res) {
+  var thread_id = req.params.id;
+  User.findById(req.params.id, function (err, user) {
+    res.render('users/profile', {
+        user: user,
+    });
+  });
+};
