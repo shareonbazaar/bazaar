@@ -9,5 +9,6 @@ block content
         div.profile-info
           a(href="/profile/" + user.id)
             h3=user.profile.name
-          p=user.profile.gender
-          p=user.profile.hometown
+          p=user.profile.location
+          p="Skills: " + user.skills
+          p="Interests: " + user.interests
