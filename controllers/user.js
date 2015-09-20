@@ -128,6 +128,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
+    user.profile.hometown = req.body.hometown || '';
     user.interests = req.body.interests || '';
     user.skills = req.body.skills || '';
     user.save(function(err) {
