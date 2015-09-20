@@ -11,7 +11,7 @@ $(document).ready(function() {
     }
 
     var socket = io();
-    $('form').submit(function () {
+    $('.message-form').submit(function () {
         if (typeof currentThread.attr('data-thread-id') === 'undefined') {
             return false;
         }
