@@ -160,7 +160,7 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
 
 function saveThread (socket, data, unused_id, callback) {
     var newThread = new Thread({
-        _participants: [socket.request.user._id].concat(data.to),
+        _participants: [socket.request.user._id].concat(data.to).sort(),
         lastUpdated: new Date(),
     });
 
