@@ -144,6 +144,8 @@ exports.postUpdateProfile = (req, res, next) => {
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
     user.profile.location = req.body.location || '';
+    user.interests = req.body.interests || '';
+    user.skills = req.body.skills || '';
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {

@@ -3,9 +3,12 @@ extends ../layout
 block content
   h3= user.profile.name
   .row
+    .col-sm-3
+      img.img-responsive.img-rounded(src=user.profile.picture)
+      p= "Hometown: " + user.profile.hometown
+      p= user.profile.gender
     .col-sm-6
-      img(src=user.profile.picture)
-      h4= "Hometown: " + user.profile.hometown
-    .col-sm-6
-      p= user.skills
-      p= user.interests
+      h3= "My skills"
+      p.lead= user.skills
+      h3= "My interests:"
+      p.lead= user.interests
