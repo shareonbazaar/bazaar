@@ -1,8 +1,16 @@
+const _ = require('lodash');
 const async = require('async');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const Thread = require('../models/Thread');
+const secrets = require('../config/secrets');
+
+function toObjectId(str) {
+    var ObjectId = (require('mongoose').Types.ObjectId);
+    return new ObjectId(str);
+};
 
 /**
  * GET /login
@@ -413,8 +421,12 @@ exports.list = function(req, res) {
  */
 exports.showProfile = function(req, res) {
   User.findById(req.params.id, function (err, user) {
-    res.render('users/profile', {
-        spotlight_user: user,
-    });
+    var participants = [req.params.id, req.user.id].sort().map(toObjectId);
+    Thread.find({'_participants': participants}, function (err, threads) {
+      res.render('users/profile', {
+          spotlight_user: user,
+          thread_id: threads.length > 0 ? threads[0].id : -1,
+      });
+    })
   });
 };
