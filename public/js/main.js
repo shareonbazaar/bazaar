@@ -25,6 +25,19 @@ $(document).ready(function() {
         $('#text-input').val('');
         return false;
     });
+
+    $('#submit-profile-message').click(function () {
+        var packet = {
+            message: $('#text-input').val(),
+            thread_id: $('#data-div').attr('data-thread-id'),
+            isNewThread: $('#data-div').attr('data-thread-id') < 0,
+            to: JSON.parse($('#data-div').attr('data-thread-participants')),
+        };
+        socket.emit('send message', packet);
+        $('#text-input').val('');
+        $('#messageModal').modal('hide')
+    });
+
     socket.on('new message', function (data) {
         console.log("got message " + JSON.stringify(data))
         if (currentThread.attr('data-thread-id') == -1) {
@@ -90,6 +103,14 @@ $(document).ready(function() {
         source: '/users/list',
         select: autocompleteSelected,
     });
+
+    $('#exampleModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var recipient = button.data('name') // Extract info from data-* attributes
+        var modal = $(this)
+        modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
 });
 
 
