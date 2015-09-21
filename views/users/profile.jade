@@ -7,10 +7,9 @@ block content
       img.img-responsive.img-rounded(src=spotlight_user.profile.picture)
       p= "Hometown: " + spotlight_user.profile.hometown
       p= "Location: " + spotlight_user.profile.location
-      p= spotlight_user.profile.gender
       include ../partials/newmessage
     .col-sm-6
-      h3= "My skills"
+      h3= "I can offer:"
       p.lead= spotlight_user.skills
-      h3= "My interests:"
+      h3= "I am interested in:"
       p.lead= spotlight_user.interests

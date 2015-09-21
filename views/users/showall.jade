@@ -1,14 +1,12 @@
 extends ../layout
 
 block content
-  ul.user-list
+  .row.user-list
     each user, i in users
       - var image_uri = user.profile.picture || '/images/person_placeholder.gif'
-      li
-        img.img-circle.profile-pic(src=image_uri)
+      .col-md-4
+
         div.profile-info
           a(href="/profile/" + user.id)
-            h3=user.profile.name
-          p=user.profile.location
-          p="Skills: " + user.skills
-          p="Interests: " + user.interests
+            h3.profile-name=user.profile.name
+          img.img-circle.profile-pic(src=image_uri, data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skills}" )
