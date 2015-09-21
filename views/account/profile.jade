@@ -24,6 +24,15 @@ block content
           input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
           span Female
     .form-group
+      label.col-sm-2.control-label(for='gender') Status
+      .col-sm-4
+        label.radio.col-sm-4
+          input(type='radio', checked=user.profile.status=='refugee', name='status', value='refugee', data-toggle='radio')
+          span Refugee
+        label.radio.col-sm-4
+          input(type='radio', checked=user.profile.status=='native', name='status', value='native', data-toggle='radio')
+          span Native
+    .form-group
       label.col-sm-2.control-label(for='location') Location
       .col-sm-4
         input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
