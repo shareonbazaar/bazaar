@@ -216,7 +216,7 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.get('/messages', passportConf.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConf.isAuthenticated, messageController.getMessages);
-app.get('/profile/:id', userController.showProfile);
+app.get('/profile/:id', passportConf.isAuthenticated, userController.showProfile);
 
 /**
  * User routes
