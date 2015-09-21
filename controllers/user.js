@@ -151,6 +151,7 @@ exports.postUpdateProfile = (req, res, next) => {
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
+    user.profile.status = req.body.status || '';
     user.profile.location = req.body.location || '';
     user.profile.hometown = req.body.hometown || '';
     user.interests = req.body.interests || '';

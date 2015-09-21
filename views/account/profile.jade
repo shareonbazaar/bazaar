@@ -27,8 +27,17 @@ block content
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
           span Other
     .form-group
+      label.col-sm-3.control-label(for='status') Status
+      .col-sm-4
+        label.radio.col-sm-4
+          input(type='radio', checked=user.profile.status=='refugee', name='status', value='refugee', data-toggle='radio')
+          span Refugee
+        label.radio.col-sm-4
+          input(type='radio', checked=user.profile.status=='native', name='status', value='native', data-toggle='radio')
+          span Native
+    .form-group
       label.col-sm-3.control-label(for='location') Location
-      .col-sm-7
+      .col-sm-4
         input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
     .form-group
       label.col-sm-3.control-label(for='hometown') Hometown

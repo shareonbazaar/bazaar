@@ -18,6 +18,7 @@ const userSchema = new mongoose.Schema({
   profile: {
     name: { type: String, default: '' },
     gender: { type: String, default: '' },
+    status: { type: String, default: '' },
     location: { type: String, default: '' },
     hometown: { type: String, default: '' },
     picture: { type: String, default: '' }
