@@ -1,4 +1,7 @@
 $(document).ready(function() {
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
     var currentThread = $('#thread-list li').first();
 
     function newChatBubble (message) {

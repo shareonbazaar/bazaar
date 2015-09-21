@@ -47,10 +47,12 @@ block content
       label.col-sm-3.control-label(for='skills') Skills
       .col-sm-4
         textarea.form-control(name='skills', id='skills', placeholder='Type skills here...')
+          =user.skills
     .form-group
       label.col-sm-3.control-label(for='interests') Interests
       .col-sm-4
         textarea.form-control(name='interests', id='interests', placeholder='Type interests here...')
+          =user.interests
     .form-group
       label.col-sm-3.control-label(for='gravatar') Gravatar
       .col-sm-4
