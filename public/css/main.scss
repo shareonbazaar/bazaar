@@ -71,6 +71,23 @@ textarea {
   margin-right: 6px;
 }
 
+// Home
+
+.welcome {
+  text-align: center;
+}
+
+.home-page-detail {
+  text-align: center;
+}
+
+.splash-image {
+  background-image: url("/images/smile.jpg");
+  background-size: cover;
+  width: 100%;
+  height: 400px;
+}
+
 // Users
 
 .user-list .profile-pic {
