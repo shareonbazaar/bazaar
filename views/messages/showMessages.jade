@@ -20,7 +20,7 @@ block content
                .message-content=thread.messages[0].message
     .conversation-container
       .header#conversation-header
-        h3 Rory MacQueen
+        h3= user.profile.name
           button.new-message-button#new-message-button New Message
         input#name-input(type="text" placeholder="Type a name..." style="width:80%;display:none;")
       .conversation#conversation-list
