@@ -390,10 +390,13 @@ exports.postForgot = (req, res, next) => {
 
 /**
  * GET /users
- * Show all users.
+ * If user is a refugee, show native users and vice versa.
  */
 exports.findUsers = (req, res) => {
-  User.find(function (err, results) {
+  var not_me = req.user.profile.status == 'refugee' ? 'native': 'refugee';
+  User.find({'profile.status': not_me}, (err, results) => {
+    results.forEach(function (user) {
+    })
     res.render('users/showall', {
       users: results
     });
