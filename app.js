@@ -221,7 +221,7 @@ app.get('/profile/:id', passportConf.isAuthenticated, userController.showProfile
 /**
  * User routes
  */
-app.get('/users', userController.findUsers);
+app.get('/users', passportConf.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
 
 
