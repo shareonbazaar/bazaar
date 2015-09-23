@@ -27,7 +27,7 @@ block content
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
           span Other
     .form-group
-      label.col-sm-3.control-label(for='status') Status
+      label.col-sm-3.control-label(for='status') Status (refugees will be matched with natives and vice versa)
       .col-sm-4
         label.radio.col-sm-4
           input(type='radio', checked=user.profile.status=='refugee', name='status', value='refugee', data-toggle='radio')
@@ -44,14 +44,14 @@ block content
       .col-sm-4
         input.form-control(type='text', name='hometown', id='hometown', value='#{user.profile.hometown}')
     .form-group
-      label.col-sm-3.control-label(for='skills') Skills
+      label.col-sm-3.control-label(for='skills') Skills (services you would like to offer to others)
       .col-sm-4
-        textarea.form-control(name='skills', id='skills', placeholder='Type skills here...')
+        textarea.form-control(rows=4 name='skills', id='skills', placeholder='Type skills here...')
           =user.skills
     .form-group
-      label.col-sm-3.control-label(for='interests') Interests
+      label.col-sm-3.control-label(for='interests') Interests (services you would like to receive from others)
       .col-sm-4
-        textarea.form-control(name='interests', id='interests', placeholder='Type interests here...')
+        textarea.form-control(rows=4 name='interests', id='interests', placeholder='Type interests here...')
           =user.interests
     .form-group
       label.col-sm-3.control-label(for='gravatar') Gravatar
