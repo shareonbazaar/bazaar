@@ -50,6 +50,11 @@ exports.showMessages = function(req, res) {
   })
 };
 
+
+/* *
+ * Gets messages for a given thread id. Used on the messages page
+ * for loading each thread when it is clicked.
+*/
 exports.getMessages = function(req, res) {
     var thread_id = req.params.id;
     Message.find({'_thread': toObjectId(thread_id)})
