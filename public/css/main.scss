@@ -149,8 +149,13 @@ textarea {
   height: 90px;
 }
 
-.thread-list li.is-active {
-  background-color: #ebebeb;
+.thread-list li.is-pending {
+  background-color: #e9eaed;
+}
+
+.thread-list li.is-active, .thread-list li.is-active:hover {
+  background-color: #6d84b4;
+  color: white;
 }
 
 .thread-list li:hover {
