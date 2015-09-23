@@ -406,10 +406,11 @@ exports.findUsers = (req, res) => {
 
 /**
  * GET /list
- * List all users. Used for searching
+ * List all users whose name matches the query term. Used for searching
  */
 exports.list = function(req, res) {
-  User.find(function (err, results) {
+  var regex = new RegExp(req.query.term, 'i')
+  User.find({'profile.name': {$regex: regex}}, function (err, results) {
     data = results.map(function (user) {
         return {
           label: user.profile.name,
