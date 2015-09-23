@@ -116,6 +116,12 @@ $(document).ready(function() {
         select: autocompleteSelected,
     });
 
+    $("#message-search").on('input', function () {
+        var query = $("#message-search").val();
+        $('#thread-list li').show();
+        $('#thread-list li:not(:has(.sender:contains("' + query + '")))').hide();
+    });
+
     $('#exampleModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var recipient = button.data('name') // Extract info from data-* attributes
