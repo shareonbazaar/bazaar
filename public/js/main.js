@@ -101,6 +101,8 @@ $(document).ready(function() {
         input.val('');
         input.show();
         input.focus();
+
+         $('#send-button').attr("disabled", true);
     });
     $('#thread-list li').click(onThreadClicked);
 
@@ -119,6 +121,7 @@ $(document).ready(function() {
             currentThread.find('.sender').html(ui.item.label);
             currentThread.attr('data-thread-participants', participant_string);
         }
+        $('#send-button').attr("disabled", false);
     }
 
     $("#name-input").autocomplete({
