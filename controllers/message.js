@@ -40,8 +40,11 @@ exports.showMessages = function(req, res) {
             getThreadMessages(thread, callback, req.user.id);
         }
         async.map(threads, func, function (err, threads_with_messages) {
+            var sorted_threads = threads_with_messages.sort(function (a, b) {
+                                    return b.messages.slice(-1)[0].timeSent - a.messages.slice(-1)[0].timeSent;
+                                 });
             res.render('messages/showMessages', {
-                threads: threads_with_messages
+                threads: sorted_threads,
             });
         });
   })
