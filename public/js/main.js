@@ -98,6 +98,7 @@ $(document).ready(function() {
         conversation_header.hide();
 
         var input = $('#conversation-header input');
+        input.val('');
         input.show();
         input.focus();
     });
