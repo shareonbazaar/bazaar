@@ -4,6 +4,7 @@ $(document).ready(function() {
     })
     var currentThread = $('#thread-list li').first();
     currentThread.addClass('is-active');
+    $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
 
     function newChatBubble (message) {
         var klass = message.author.isMe ? 'myself' : 'other-person';
