@@ -7,7 +7,7 @@ block content
   .message-layout-grid
     .sidebar
       .search-box
-        input(type="text" placeholder="Search by name")
+        input#message-search(type="text" placeholder="Search by name")
       ul.thread-list#thread-list
        each thread, i in threads
          - var participants = thread.participants.map(function(user){return user._id})
