@@ -43,7 +43,6 @@ $(document).ready(function() {
     });
 
     socket.on('new message', function (data) {
-        console.log("got message " + JSON.stringify(data))
         if (currentThread.attr('data-thread-id') == -1) {
             currentThread.attr('data-thread-id', data.thread_id);
         }
@@ -52,6 +51,12 @@ $(document).ready(function() {
             var new_element = newChatBubble(data);
             $('#conversation-list').append(new_element);
             $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
+        } else {
+            var pending_thread = $('#thread-list li[data-thread-id="' + data.thread_id + '"]');
+            pending_thread.addClass('is-pending');
+            pending_thread.find('.message-content').html(data.message);
+            var timestamp = new Date(data.timeSent);
+            pending_thread.find('.timestamp').html(timestamp.getHours() + ':' + ('0'+ timestamp.getMinutes()).slice(-2));
         }
     });
 
