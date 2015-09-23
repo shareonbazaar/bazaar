@@ -26,6 +26,15 @@ block content
       .col-sm-7
         input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password', required)
     .form-group
+      label.col-sm-3.control-label(for='status') Are you a refugee? (refugees will be matched with natives and vice versa)
+      .col-sm-7
+        label.radio.col-sm-4
+          input(type='radio', name='status', value='refugee', data-toggle='radio')
+          span Yes
+        label.radio.col-sm-4
+          input(type='radio', name='status', value='native', data-toggle='radio')
+          span No
+    .form-group
       .col-sm-offset-3.col-sm-7
         button.btn.btn-success(type='submit')
           i.fa.fa-user-plus
