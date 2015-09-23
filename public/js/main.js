@@ -97,9 +97,18 @@ $(document).ready(function() {
     function autocompleteSelected (event, ui) {
         $('#conversation-header input').hide();
         $('#conversation-header h3').show();
-        currentThread = $('#thread-list li').first();
-        currentThread.find('.sender').html(ui.item.label);
-        currentThread.attr('data-thread-participants', JSON.stringify([ui.item.value]));
+        var participant_string = JSON.stringify([ui.item.value]);
+        var match = $('#thread-list').find("[data-thread-participants='" + participant_string + "']");
+        // If we find a thread matching these participants, then just jump to that thread
+        if (match.length > 0) {
+            $('#thread-list li').first().remove(); // Remove the New Message thread
+            onThreadClicked.bind(match[0])();
+        } else {
+            // Otherwise, initialize the new thread
+            currentThread = $('#thread-list li').first();
+            currentThread.find('.sender').html(ui.item.label);
+            currentThread.attr('data-thread-participants', participant_string);
+        }
     }
 
     $("#name-input").autocomplete({
