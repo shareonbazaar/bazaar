@@ -15,9 +15,9 @@ block content
            .message-snippet
              img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
              .snippet-text
-               .timestamp=thread.messages[0].timeSent.getHours() + ':' + thread.messages[0].timeSent.getMinutes()
+               .timestamp=thread.messages.slice(-1)[0].timeSent.getHours() + ':' + ('0'+ thread.messages.slice(-1)[0].timeSent.getMinutes()).slice(-2)
                .sender=thread.participants[0].profile.name
-               .message-content=thread.messages[0].message
+               .message-content=thread.messages.slice(-1)[0].message
     .conversation-container
       .header#conversation-header
         h3= user.profile.name
