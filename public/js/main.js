@@ -3,6 +3,7 @@ $(document).ready(function() {
         $('[data-toggle="popover"]').popover()
     })
     var currentThread = $('#thread-list li').first();
+    currentThread.addClass('is-active');
 
     function newChatBubble (message) {
         var klass = message.author.isMe ? 'myself' : 'other-person';
@@ -59,6 +60,7 @@ $(document).ready(function() {
         currentThread.removeClass('is-active');
         currentThread = $(this);
         currentThread.addClass('is-active');
+        currentThread.removeClass('is-pending');
         $.ajax({
             url: '/_threadMessages/' + currentThread.attr('data-thread-id'),
         }).done(function (data) {
