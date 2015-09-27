@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) { 
-    $(function () {
-        $('[data-toggle="popover"]').popover()
-    })
+
     var current_message = {
         thread_id: -1,
         message: '',
