@@ -2,8 +2,15 @@ $(document).ready(function() {
     $(function () {
         $('[data-toggle="popover"]').popover()
     })
-    var currentThread = $('#thread-list li').first();
-    currentThread.addClass('is-active');
+    var current_message = {
+        thread_id: -1,
+        message: '',
+        recipient: {},
+    };
+    var user = local_user_data;
+    if ($('#thread-list li').length > 0) {
+        onThreadClicked.bind($('#thread-list li').first())();
+    }
     $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
 
     function newChatBubble (message) {
@@ -15,20 +22,40 @@ $(document).ready(function() {
         return chat;
     }
 
+    function serializeDate (date) {
+        return date.getHours() + ':' + ('0'+ date.getMinutes()).slice(-2)
+    }
+
+    function newThreadItem (data) {
+        var image_uri = data.member.profile.picture || '/images/person_placeholder.gif';
+        return '<li data-thread-id=' + data.thread_id + ' data-thread-participants='+ data.participant_ids + '>' +
+                              '<div class="message-snippet"> ' +
+                                  '<img src=' + image_uri + ' class="profile-pic">' +
+                                  '<div class="snippet-text">' +
+                                    '<div class="timestamp">' + serializeDate(new Date(data.timeSent)) + '</div>' +
+                                    '<div class="sender">' + data.member.profile.name + '</div>' +
+                                    '<div class="message-content">' + data.message + '</div>' +
+                                  '</div>' +
+                              '</div>' +
+                          '</li>';
+    }
+
     var socket = io();
     $('.message-form').submit(function () {
-        if (typeof currentThread.attr('data-thread-id') === 'undefined'
-            || !$('#text-input').val()) {
+        var message_text = $('#text-input').val();
+        if (!message_text) {
             return false;
         }
         var packet = {
-            message: $('#text-input').val(),
-            thread_id: currentThread.attr('data-thread-id'),
-            isNewThread: currentThread.attr('data-thread-id') < 0,
-            to: JSON.parse(currentThread.attr('data-thread-participants')),
+            message: message_text,
+            thread_id: current_message.thread_id,
+            isNewThread: current_message.thread_id < 0,
+            to: [current_message.recipient.id],
         };
+
         socket.emit('send message', packet);
         $('#text-input').val('');
+
         return false;
     });
 
@@ -45,31 +72,67 @@ $(document).ready(function() {
     });
 
     socket.on('new message', function (data) {
-        if (currentThread.attr('data-thread-id') == -1) {
-            currentThread.attr('data-thread-id', data.thread_id);
-        }
-
-        if (data.thread_id == currentThread.attr('data-thread-id')) {
-            var new_element = newChatBubble(data);
-            $('#conversation-list').append(new_element);
-            $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
-        } else {
-            var pending_thread = $('#thread-list li[data-thread-id="' + data.thread_id + '"]');
-            pending_thread.addClass('is-pending');
-            pending_thread.find('.message-content').html(data.message);
+        console.log(JSON.stringify(data, null, 2))
+        var match = $('#thread-list').find('[data-thread-id="' + data.thread._id + '"]');
+        // If its a message for an existing thread, add it and set that thread to 'pending'
+        if (match.length > 0) {
+            var message_thread = match[0];
+            $(message_thread).find('.message-content').html(data.message);
             var timestamp = new Date(data.timeSent);
-            pending_thread.find('.timestamp').html(timestamp.getHours() + ':' + ('0'+ timestamp.getMinutes()).slice(-2));
+            $(message_thread).find('.timestamp').html(serializeDate(timestamp));
+
+            // If its a message for the current thread, make a new chat bubble and append it
+            // otherwise just set that thread to be 'pending'
+            if (data.thread._id == current_message.thread_id) {
+                var new_element = newChatBubble(data);
+                $('#conversation-list').append(new_element);
+                $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
+            } else {
+                $(message_thread).addClass('is-pending');
+            }
+        } else {
+            var member = data.thread._participants.filter(function (person) {
+                return person._id != user.id;
+            })[0];
+            var participant_ids = data.thread._participants.map(function (person) {
+                return person._id;
+            }).sort();
+            var new_thread = newThreadItem({
+                member: member,
+                timeSent: data.timeSent,
+                message: data.message,
+                thread_id: data.thread._id,
+                participant_ids: JSON.stringify(participant_ids),
+            });
+            $('#thread-list').prepend(new_thread);
+            $('#thread-list li').first().click(onThreadClicked);
+            if (current_message.thread_id < 0) {
+                onThreadClicked.bind($('#thread-list li').first())();
+            } else {
+                $('#thread-list li').first().addClass('is-pending');
+            }
         }
     });
 
+    function setNodeText (node, new_text) {
+        var text_node = node.contents()
+            .filter( function () { return this.nodeType == 3; })
+            .replaceWith(new_text);
+    }
 
     function onThreadClicked (event) {
-        currentThread.removeClass('is-active');
-        currentThread = $(this);
-        currentThread.addClass('is-active');
-        currentThread.removeClass('is-pending');
+        $('#thread-list li').removeClass('is-active');
+        $(this).removeClass('is-pending');
+        $(this).addClass('is-active');
+        current_message.thread_id = $(this).attr('data-thread-id');
+        var name = $(this).find('.sender').html();
+
+        $('#conversation-header input').hide();
+        $('#conversation-header h3').show();
+        setNodeText($("#conversation-header h3"), name);
+
         $.ajax({
-            url: '/_threadMessages/' + currentThread.attr('data-thread-id'),
+            url: '/_threadMessages/' + $(this).attr('data-thread-id'),
         }).done(function (data) {
             $('#conversation-list').empty();
             var conversation = data.map(function (message) {
@@ -78,48 +141,42 @@ $(document).ready(function() {
             });
         })
     }
+    $('#thread-list li').click(onThreadClicked);
 
     $('#new-message-button').click(function () {
         $('#conversation-list').empty();
-        var new_thread = '<li data-thread-id=-1>' +
-                              '<div class="message-snippet"> ' +
-                                  '<img src="/images/person_placeholder.gif" class="profile-pic">' +
-                                  '<div class="snippet-text">' +
-                                    '<div class="timestamp">13:07</div>' +
-                                    '<div class="sender">New Message</div>' +
-                                    '<div class="message-content"></div>' +
-                                  '</div>' +
-                              '</div>' +
-                          '</li>';
-        $('#thread-list').prepend(new_thread);
-        $('#thread-list li').first().click(onThreadClicked);
 
         var conversation_header = $('#conversation-header h3');
         conversation_header.hide();
-
+         $('#thread-list li').removeClass('is-active');
         var input = $('#conversation-header input');
         input.val('');
         input.show();
         input.focus();
 
-         $('#send-button').attr("disabled", true);
+        $('#send-button').attr("disabled", true);
     });
-    $('#thread-list li').click(onThreadClicked);
 
     function autocompleteSelected (event, ui) {
         $('#conversation-header input').hide();
         $('#conversation-header h3').show();
-        var participant_string = JSON.stringify([ui.item.value]);
-        var match = $('#thread-list').find("[data-thread-participants='" + participant_string + "']");
+        var participant_id = ui.item.value.id;
+        var participant_pic = ui.item.value.pic;
+        var participant_name = ui.item.label;
+        var thread_matcher = JSON.stringify([participant_id, user.id].sort())
+        var match = $('#thread-list').find("[data-thread-participants='" + thread_matcher + "']");
         // If we find a thread matching these participants, then just jump to that thread
         if (match.length > 0) {
-            $('#thread-list li').first().remove(); // Remove the New Message thread
             onThreadClicked.bind(match[0])();
         } else {
             // Otherwise, initialize the new thread
-            currentThread = $('#thread-list li').first();
-            currentThread.find('.sender').html(ui.item.label);
-            currentThread.attr('data-thread-participants', participant_string);
+            setNodeText($('#conversation-header h3'), participant_name);
+            current_message.thread_id = -1;
+            current_message.recipient = {
+                id: participant_id,
+                name: participant_name,
+                pic: participant_pic,
+            };
         }
         $('#send-button').attr("disabled", false);
     }
@@ -135,7 +192,7 @@ $(document).ready(function() {
         $('#thread-list li:not(:has(.sender:contains("' + query + '")))').hide();
     });
 
-    $('#exampleModal').on('show.bs.modal', function (event) {
+    $('#messageModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var recipient = button.data('name') // Extract info from data-* attributes
         var modal = $(this)

@@ -414,7 +414,7 @@ exports.list = function(req, res) {
     data = results.map(function (user) {
         return {
           label: user.profile.name,
-          value: user._id,
+          value: {id: user._id, pic: user.profile.picture},
         };
     });
     res.json(data);

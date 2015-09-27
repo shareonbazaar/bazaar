@@ -16,11 +16,17 @@ function getThreadMessages (thread, callback, current_user_id) {
         if (err) {
             callback(err, null);
         } else {
-            var other_participants = thread._participants.filter(function (user) {
-                return user._id != current_user_id;
+            var sorted_participants = thread._participants.sort(function (a, b) {
+                if (a._id == current_user_id) {
+                    return 1;
+                }
+                if (b._id == current_user_id) {
+                    return -1;
+                }
+                return 0;
             });
             callback(null, {
-                participants: other_participants,
+                participants: sorted_participants,
                 messages: messages,
                 _id: thread._id,
             });
@@ -45,6 +51,7 @@ exports.showMessages = function(req, res) {
                                  });
             res.render('messages/showMessages', {
                 threads: sorted_threads,
+                user_data: {name: req.user.profile.name, id: req.user._id},
             });
         });
   })
