@@ -141,21 +141,24 @@ function saveMessage (socket, data, thread_id, callback) {
 }
 
 function sendMessage (socket, data, thread_id, newMsg, callback) {
-    var recipients = [socket.request.user._id].concat(data.to);
-    recipients.forEach(function (user_id) {
-        io.to(socket_map[user_id]).emit('new message', {
-            message: newMsg.message,
-            timeSent: newMsg.timeSent,
-            thread_id: thread_id,
-            author: {
-                name: socket.request.user.profile.name,
-                pic: socket.request.user.profile.picture,
-                id: socket.request.user._id,
-                isMe: socket.request.user._id == user_id,
-            },
+    Thread.findOne({_id: thread_id})
+    .populate('_participants')
+    .exec(function (err, thread) {
+        thread._participants.forEach(function (user) {
+            io.to(socket_map[user._id]).emit('new message', {
+                message: newMsg.message,
+                timeSent: newMsg.timeSent,
+                thread: thread,
+                author: {
+                    name: socket.request.user.profile.name,
+                    pic: socket.request.user.profile.picture,
+                    id: socket.request.user._id,
+                    isMe: socket.request.user._id.toString() == user._id.toString(),
+                },
+            });
         });
-    })
-    callback(null);
+        callback(null);
+    });
 }
 
 function saveThread (socket, data, unused_id, callback) {

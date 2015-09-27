@@ -10,7 +10,7 @@ block content
         input#message-search(type="text" placeholder="Search by name")
       ul.thread-list#thread-list
        each thread, i in threads
-         - var participants = thread.participants.map(function(user){return user._id})
+         - var participants = thread.participants.map(function(user){return user._id}).sort()
          li(data-thread-id="#{thread._id}" data-thread-participants=participants)
            .message-snippet
              img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
@@ -20,7 +20,7 @@ block content
                .message-content=thread.messages.slice(-1)[0].message
     .conversation-container
       .header#conversation-header
-        h3= user.profile.name
+        h3= (threads.length > 0 ? threads[0].participants[0].profile.name : "No messages")
           button.new-message-button#new-message-button New Message
         input#name-input(type="text" placeholder="Type a name..." style="width:80%;display:none;")
       .conversation#conversation-list
@@ -39,4 +39,6 @@ block content
           textarea#text-input(placeholder="Write message" rows=4)
         .form-group
           button#send-button(type="submit") Send message
+  script(type='text/javascript').
+    var local_user_data =!{JSON.stringify(user_data)}
 
