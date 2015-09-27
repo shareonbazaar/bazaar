@@ -39,6 +39,7 @@ block content
           textarea#text-input(placeholder="Write message" rows=4)
         .form-group
           button#send-button(type="submit") Send message
+  script(src='/js/message.js')
   script(type='text/javascript').
     var local_user_data =!{JSON.stringify(user_data)}
 
