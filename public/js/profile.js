@@ -26,6 +26,24 @@ document.addEventListener("DOMContentLoaded", function(event) {
         modal.find('.modal-title').text('New message to ' + recipient)
         modal.find('.modal-body input').val(recipient)
     })
+
+    $('.submit-activities').click(function () {
+        var id = $(this).attr('id');
+        var section_name = '#' + id.slice('submit-'.length) + '-section';
+        var selected = $(section_name +' .modal input.activity-checkbox:checked');
+        var names = $.map(selected, function (obj) {
+            return $(obj).attr('name');
+        });
+
+        $(section_name + ' .activities-data').val(JSON.stringify(names));
+        $(section_name + ' .modal').modal('hide');
+
+        $(section_name + ' .user-activities').empty()
+        $.map(selected, function (obj) {
+            var label = $(obj).attr('data-label');
+            $(section_name + ' .user-activities').append('<li>' + label + '</li>');
+        });
+    });
 });
 
 
