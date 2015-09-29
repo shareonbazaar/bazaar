@@ -122,13 +122,65 @@ exports.postSignup = (req, res, next) => {
   });
 };
 
+var activities = {
+    'Household work': [
+      {
+        'name': 'gardening',
+        'label': 'Gardening',
+      },
+      {
+        'name': 'babysitting',
+        'label': 'Babysitting',
+      },
+      {
+        'name': 'cooking',
+        'label': 'Cooking',
+      },
+    ],
+    'Languages': [
+      {
+        'name': 'german',
+        'label': 'German',
+      },
+      {
+        'name': 'english',
+        'label': 'English',
+      }
+    ],
+    'Technical': [
+      {
+        'name': 'programming',
+        'label': 'Programming',
+      },
+      {
+        'name': 'itsupport',
+        'label': 'IT Support',
+      }
+    ]
+}
+
+function getActionLabels (my_actions) {
+    return Object.keys(activities).reduce(function (all_actions, category) {
+        return all_actions.concat(activities[category].filter(function (action) {
+            return my_actions.indexOf(action.name) >= 0;
+        }).map(function (action) {
+            return action.label;
+        }))
+    }, []);
+}
+
 /**
  * GET /account
  * Profile page.
  */
 exports.getAccount = (req, res) => {
+  var my_skills = getActionLabels(req.user.skills);
+  var my_interests = getActionLabels(req.user.interests);
   res.render('account/profile', {
-    title: 'Account Management'
+    title: 'Account Management',
+    activities: activities,
+    my_skills: my_skills,
+    my_interests: my_interests,
   });
 };
 
@@ -155,8 +207,8 @@ exports.postUpdateProfile = (req, res, next) => {
     user.profile.status = req.body.status || '';
     user.profile.location = req.body.location || '';
     user.profile.hometown = req.body.hometown || '';
-    user.interests = req.body.interests || '';
-    user.skills = req.body.skills || '';
+    user.interests = JSON.parse(req.body.interests) || [];
+    user.skills = JSON.parse(req.body.skills) || [];
     user.save((err) => {
       if (err) {
         if (err.code === 11000) {

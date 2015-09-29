@@ -7,8 +7,8 @@ const userSchema = new mongoose.Schema({
   password: String,
   passwordResetToken: String,
   passwordResetExpires: Date,
-  skills: { type: String, default: '' },
-  interests: { type: String, default: '' },
+  skills: Array,
+  interests: Array,
 
   facebook: String,
   twitter: String,

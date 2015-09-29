@@ -1,4 +1,5 @@
 extends ../layout
+include ../partials/activities
 
 block content
   .page-header
@@ -43,16 +44,22 @@ block content
       label.col-sm-3.control-label(for='hometown') Hometown
       .col-sm-4
         input.form-control(type='text', name='hometown', id='hometown', value='#{user.profile.hometown}')
-    .form-group
+    .form-group#skills-section
+      input.activities-data(type='hidden', name='skills', value=JSON.stringify(user.skills))
       label.col-sm-3.control-label(for='skills') Skills (services you would like to offer to others)
       .col-sm-4
-        textarea.form-control(rows=4 name='skills', id='skills', placeholder='Type skills here...')
-          =user.skills
-    .form-group
+         ul.user-activities
+          each activity, i in my_skills
+            li= activity
+         mixin activities("skills", user.skills)
+    .form-group#interests-section
+      input.activities-data(type='hidden', name='interests', value=JSON.stringify(user.interests))
       label.col-sm-3.control-label(for='interests') Interests (services you would like to receive from others)
       .col-sm-4
-        textarea.form-control(rows=4 name='interests', id='interests', placeholder='Type interests here...')
-          =user.interests
+         ul.user-activities
+           each activity, i in my_interests
+            li= activity
+         mixin activities("interests", user.interests)
     .form-group
       label.col-sm-3.control-label(for='gravatar') Gravatar
       .col-sm-4
@@ -113,3 +120,4 @@ block content
           p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
         else
           p: a(href='/auth/twitter') Link your Twitter account
+  script(src='/js/profile.js')
