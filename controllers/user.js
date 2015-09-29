@@ -428,12 +428,20 @@ exports.postForgot = function(req, res, next) {
  * If user is a refugee, show native users and vice versa.
  */
 exports.findUsers = function(req, res) {
-  var not_me = req.user.profile.status == 'refugee' ? 'native': 'refugee';
-  User.find({'profile.status': not_me}, function (err, results) {
-    results.forEach(function (user) {
-    })
+  var my_interests = req.user.interests;
+  var my_status = req.user.profile.status || 'native';
+  var query = { $and: [
+                        { 'profile.status': {$ne: my_status }},
+                        {  skills: { $elemMatch: {
+                                        $in: my_interests
+                                      }
+                                   }
+                        }
+                    ]};
+
+  User.find(query, function (err, results) {
     res.render('users/showall', {
-      users: results
+      users: results,
     });
   });
 };
