@@ -9,4 +9,4 @@ block content
         div.profile-info
           a(href="/profile/" + user.id)
             h3.profile-name=user.profile.name
-          .profile-pic(style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skills}" )
+          .profile-pic(class="#{user.match}" style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skills}" )

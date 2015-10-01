@@ -423,25 +423,42 @@ exports.postForgot = function(req, res, next) {
   });
 };
 
+/* Takes in two arrays. Returns the number of elements
+   they have in common
+*/
+function numElementsInCommon (arr1, arr2) {
+    return arr1.filter(function (elem) {
+        return arr2.indexOf(elem) >= 0;
+    }).length;
+}
+
 /**
  * GET /users
  * If user is a refugee, show native users and vice versa.
  */
 exports.findUsers = function(req, res) {
   var my_interests = req.user.interests;
+  var my_skills = req.user.skills;
   var my_status = req.user.profile.status || 'native';
-  var query = { $and: [
-                        { 'profile.status': {$ne: my_status }},
-                        {  skills: { $elemMatch: {
-                                        $in: my_interests
-                                      }
-                                   }
-                        }
-                    ]};
 
-  User.find(query, function (err, results) {
+  User.find({ 'profile.status': {$ne: my_status }}, function (err, results) {
+    results.sort(function (a, b) {
+        var a_score = numElementsInCommon(a.interests, my_skills) + numElementsInCommon(a.skills, my_interests);
+        var b_score = numElementsInCommon(b.interests, my_skills) + numElementsInCommon(b.skills, my_interests);
+        return b_score - a_score;
+    }).forEach(function (user) {
+        var interests_match = numElementsInCommon(user.skills, my_interests);
+        var skills_match = numElementsInCommon(user.interests, my_skills);
+        if (interests_match > 0 && skills_match > 0) {
+            user.match = 'both';
+        } else if (interests_match > 0 || skills_match > 0) {
+            user.match = 'one'
+        } else {
+            user.match = 'none';
+        }
+    })
     res.render('users/showall', {
-      users: results,
+        users: results,
     });
   });
 };
