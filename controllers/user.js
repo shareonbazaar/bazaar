@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var async = require('async');
 var crypto = require('crypto');
+var fs = require('fs');
 var nodemailer = require('nodemailer');
 var passport = require('passport');
 var User = require('../models/User');
@@ -114,42 +115,7 @@ exports.postSignup = function(req, res, next) {
   });
 };
 
-var activities = {
-    'Household work': [
-      {
-        'name': 'gardening',
-        'label': 'Gardening',
-      },
-      {
-        'name': 'babysitting',
-        'label': 'Babysitting',
-      },
-      {
-        'name': 'cooking',
-        'label': 'Cooking',
-      },
-    ],
-    'Languages': [
-      {
-        'name': 'german',
-        'label': 'German',
-      },
-      {
-        'name': 'english',
-        'label': 'English',
-      }
-    ],
-    'Technical': [
-      {
-        'name': 'programming',
-        'label': 'Programming',
-      },
-      {
-        'name': 'itsupport',
-        'label': 'IT Support',
-      }
-    ]
-}
+var activities = JSON.parse(fs.readFileSync('config/activities.json', 'utf8'));
 
 function getActionLabels (my_actions) {
     return Object.keys(activities).reduce(function (all_actions, category) {

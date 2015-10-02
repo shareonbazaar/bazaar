@@ -1,0 +1,134 @@
+{
+    "Household work": [
+        {
+          "name": "gardening",
+          "label": "Gardening"
+        },
+        {
+          "name": "babysitting",
+          "label": "Babysitting"
+        },
+        {
+          "name": "cooking",
+          "label": "Cooking"
+        },
+        {
+          "name": "housekeeping",
+          "label": "House Keeping"
+        },
+        {
+          "name": "elderlycare",
+          "label": "Elderly Care"
+        }
+    ],
+    "Languages": [
+        {
+          "name": "arabic",
+          "label": "Arabic"
+        },
+        {
+          "name": "french",
+          "label": "French"
+        },
+        {
+          "name": "spanish",
+          "label": "Spanish"
+        },
+        {
+          "name": "turkish",
+          "label": "Turkish"
+        },
+        {
+          "name": "german",
+          "label": "German"
+        },
+        {
+          "name": "english",
+          "label": "English"
+        }
+    ],
+    "Computer Skills": [
+        {
+          "name": "programming",
+          "label": "Programming"
+        },
+        {
+          "name": "itsupport",
+          "label": "IT Support"
+        }
+    ],
+    "Art": [
+        {
+          "name": "singinglessons",
+          "label": "Singing Lessons"
+        },
+        {
+          "name": "musicalinstruments",
+          "label": "Musical Instruments"
+        }
+    ],
+    "Sports": [
+        {
+          "name": "dancing",
+          "label": "Dancing"
+        },
+        {
+          "name": "boxing",
+          "label": "Boxing"
+        },
+        {
+          "name": "football",
+          "label": "Football"
+        },
+        {
+          "name": "tennis",
+          "label": "Tennis"
+        },
+        {
+          "name": "boardgames",
+          "label": "Board Games"
+        },
+        {
+          "name": "volleyball",
+          "label": "Volleyball"
+        }
+    ],
+    "Manual Labour": [
+        {
+          "name": "fixingbikes",
+          "label": "Fixing Bikes"
+        },
+        {
+          "name": "fixingcars",
+          "label": "Fixing Cars"
+        },
+        {
+          "name": "textilework",
+          "label": "Textile Work"
+        },
+        {
+          "name": "crafting",
+          "label": "Crafting"
+        },
+        {
+          "name": "woodwork",
+          "label": "Woodwork"
+        },
+        {
+          "name": "jewelrydesign",
+          "label": "Jewelry Design"
+        },
+        {
+          "name": "painting",
+          "label": "Painting"
+        },
+        {
+          "name": "carpentry",
+          "label": "Carpentry"
+        },
+        {
+          "name": "fixingfurniture",
+          "label": "Fixing Furniture"
+        }
+    ]
+}
