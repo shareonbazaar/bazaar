@@ -126,6 +126,49 @@ input.activity-checkbox {
   padding-left: 15px;
 }
 
+// Profile page
+
+.review .rating {
+  display: inline;
+}
+
+.review .rating span {
+  color: gold;
+}
+
+.review quote {
+  padding-right: 10px;
+}
+
+
+// Transaction page
+
+.transaction-table {
+  width: 100%;
+}
+
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  text-align: left;
+}
+
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.2em;
+  font-size: 24px;
+}
+
+.rating > span:hover:before,
+.rating > span:hover ~ span:before,
+.rating span.selected:before,
+.rating span.selected ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: gold;
+}
+
 
 // Messaging
 
