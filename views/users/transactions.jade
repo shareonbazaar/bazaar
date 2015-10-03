@@ -1,0 +1,25 @@
+extends ../layout
+
+block content
+    h1 Transactions
+
+    .row
+      .col-md-4
+        p="My Account"
+        include ../partials/newtransaction
+      .col-md-8
+        table.transaction-table
+          thead
+            tr
+              th Date
+              th Service
+              th Partner
+              th Value
+          tbody
+            each transaction, i in transactions
+              tr
+                td= transaction.date
+                td= transaction.service
+                td= transaction.partner.profile.name
+                td= transaction.amount
+    script(src='/js/transaction.js')

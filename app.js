@@ -26,6 +26,7 @@ var assets = require('connect-assets');
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
+var transactionController = require('./controllers/transaction');
 var messageController = require('./controllers/message');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
@@ -220,6 +221,9 @@ app.get('/account/unlink/:provider', passportConf.isAuthenticated, userControlle
 app.get('/messages', passportConf.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConf.isAuthenticated, messageController.getMessages);
 app.get('/profile/:id', passportConf.isAuthenticated, userController.showProfile);
+
+app.get('/transactions', passportConf.isAuthenticated, transactionController.showTransactions);
+app.post('/transactions', passportConf.isAuthenticated, transactionController.postTransaction);
 
 /**
  * User routes

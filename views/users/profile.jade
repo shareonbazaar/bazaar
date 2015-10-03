@@ -8,10 +8,29 @@ block content
       p= "Hometown: " + spotlight_user.profile.hometown
       p= "Location: " + spotlight_user.profile.location
       include ../partials/newmessage
-    .col-sm-6
-      h3= "I can offer:"
-      p.lead= spotlight_user.skills
-      h3= "I am interested in:"
-      p.lead= spotlight_user.interests
+    .col-sm-8
+      .container
+        .row
+          .col-sm-4
+            h3= "I can offer:"
+            ul
+              each label, i in spotlight_user.skill_labels
+                li= label
+          .col-sm-4
+            h3= "I am interested in:"
+            ul
+              each label, i in spotlight_user.interest_labels
+                li= label
+        .row
+          .col-sm-8
+            h3= "Reviews"
+            each transaction, i in transactions
+              .review
+                quote= transaction.review.text
+                .rating
+                  - var i = 0
+                  while i < transaction.review.rating
+                    span ★
+                    - i++
 
   script(src='/js/profile.js')
