@@ -1,0 +1,38 @@
+button.btn.btn-primary(type="button", data-toggle="modal", data-target="#transactionModal") Make Transaction
+
+#transactionModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="transactionModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#transactionModalLabel.modal-title New transaction
+      .modal-body
+        form#transaction-form
+          input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            label.control-label(for="recipient-name") Recipient:
+            input#recipient-id.form-control(type="hidden" value="")
+            input#recipient-name.form-control(type="text" value="")
+          .form-group
+            label.control-label(for="amount") Amount:
+            input#amount.form-control(type="number")
+          .form-group
+            label.control-label(for="service") Service
+            select#service
+              each activity, i in activity_list
+                option(value="#{activity.name}") #{activity.label}
+          .form-group
+            label.control-label(for="description-text") Rating:
+            .rating
+               span ☆
+               span ☆
+               span ☆
+               span ☆
+               span ☆
+          .form-group
+            label.control-label(for="review") Review:
+            textarea#review.form-control
+      .modal-footer
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+        button.btn.btn-primary#submit-transaction(type="button") Send coins

@@ -30,6 +30,7 @@ dotenv.load({ path: '.env.example' });
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
 const apiController = require('./controllers/api');
+const transactionController = require('./controllers/transaction');
 const contactController = require('./controllers/contact');
 const messageController = require('./controllers/message');
 
@@ -230,6 +231,9 @@ app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userControl
 app.get('/messages', passportConfig.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConfig.isAuthenticated, messageController.getMessages);
 app.get('/profile/:id', passportConfig.isAuthenticated, userController.showProfile);
+
+app.get('/transactions', passportConf.isAuthenticated, transactionController.showTransactions);
+app.post('/transactions', passportConf.isAuthenticated, transactionController.postTransaction);
 
 /**
  * User routes

@@ -27,6 +27,8 @@
             a(href='/signup') Create Account
         else
           li
+            a(href="/transactions") #{user.coins} coins
+          li
             a(href="/messages") Messages
           li.dropdown(class=(title == 'Account Management') ? 'active' : undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')

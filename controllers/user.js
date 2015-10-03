@@ -6,7 +6,9 @@ const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
 const Thread = require('../models/Thread');
+const Transaction = require('../models/Transaction');
 const secrets = require('../config/secrets');
+const activities = require('../config/activities');
 
 function toObjectId(str) {
     var ObjectId = (require('mongoose').Types.ObjectId);
@@ -112,39 +114,25 @@ exports.postSignup = (req, res, next) => {
       return res.redirect('/signup');
     }
     user.save((err) => {
-      if (err) { return next(err); }
+      if (err) return next(err);
       req.logIn(user, (err) => {
-        if (err) {
-          return next(err);
-        }
-        res.redirect('/');
+        if (err) return next(err);
+        res.redirect('/account');
       });
     });
   });
 };
-
-var activities = JSON.parse(fs.readFileSync('config/activities.json', 'utf8'));
-
-function getActionLabels (my_actions) {
-    return Object.keys(activities).reduce(function (all_actions, category) {
-        return all_actions.concat(activities[category].filter(function (action) {
-            return my_actions.indexOf(action.name) >= 0;
-        }).map(function (action) {
-            return action.label;
-        }))
-    }, []);
-}
 
 /**
  * GET /account
  * Profile page.
  */
 exports.getAccount = (req, res) => {
-  var my_skills = getActionLabels(req.user.skills);
-  var my_interests = getActionLabels(req.user.interests);
+  var my_skills = req.user.skills.map(activities.getActivityLabelForName);
+  var my_interests = req.user.interests.map(activities.getActivityLabelForName);
   res.render('account/profile', {
     title: 'Account Management',
-    activities: activities,
+    activities: activities.activityMap,
     my_skills: my_skills,
     my_interests: my_interests,
   });
@@ -436,10 +424,11 @@ exports.findUsers = (req, res) => {
         if (interests_match > 0 && skills_match > 0) {
             user.match = 'both';
         } else if (interests_match > 0 || skills_match > 0) {
-            user.match = 'one'
+            user.match = 'one';
         } else {
             user.match = 'none';
         }
+        user.skill_labels = user.skills.map(activities.getActivityLabelForName);
     })
     res.render('users/showall', {
         users: results,
@@ -471,11 +460,16 @@ exports.list = function(req, res) {
 exports.showProfile = function(req, res) {
   User.findById(req.params.id, function (err, user) {
     var participants = [req.params.id, req.user.id].sort().map(toObjectId);
+    user.skill_labels = user.skills.map(activities.getActivityLabelForName);
+    user.interest_labels = user.interests.map(activities.getActivityLabelForName);
     Thread.find({'_participants': participants}, function (err, threads) {
-      res.render('users/profile', {
-          spotlight_user: user,
-          thread_id: threads.length > 0 ? threads[0].id : -1,
-      });
+      Transaction.find({'_recipient': user._id}, function (err, transactions) {
+        res.render('users/profile', {
+            spotlight_user: user,
+            thread_id: threads.length > 0 ? threads[0].id : -1,
+            transactions: transactions,
+        });
+      })
     })
   });
 };

@@ -9,6 +9,7 @@ const userSchema = new mongoose.Schema({
   passwordResetExpires: Date,
   skills: Array,
   interests: Array,
+  coins: { type: Number, default: 0 },
 
   facebook: String,
   twitter: String,
