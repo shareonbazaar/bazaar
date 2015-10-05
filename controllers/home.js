@@ -11,3 +11,7 @@ exports.index = (req, res) => {
 exports.privacy = (req, res) => {
   res.render('privacy');
 };
+
+exports.about = (req, res) => {
+  res.render('about');
+};
