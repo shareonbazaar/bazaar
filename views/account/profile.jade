@@ -44,6 +44,10 @@ block content
       label.col-sm-3.control-label(for='hometown') Hometown
       .col-sm-4
         input.form-control(type='text', name='hometown', id='hometown', value='#{user.profile.hometown}')
+    .form-group
+      label.col-sm-2.control-label(for='aboutme') About me
+      .col-sm-4
+        textarea.form-control(type='text', name='aboutme', id='aboutme', placeholder='Tell us about yourself...') #{user.aboutMe}
     .form-group#skills-section
       input.activities-data(type='hidden', name='skills', value=JSON.stringify(user.skills))
       label.col-sm-3.control-label(for='skills') Skills (services you would like to offer to others)
