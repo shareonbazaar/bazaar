@@ -57,10 +57,7 @@ block content
            each activity, i in my_interests
             li= activity
          mixin activities("interests", user.interests)
-    .form-group
-      label.col-sm-2.control-label(for='gravatar') Gravatar
-      .col-sm-4
-        img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+    hr
     .form-group
       .col-sm-offset-2.col-sm-4
         button.btn.btn.btn-primary(type='submit')

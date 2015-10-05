@@ -3,39 +3,52 @@ extends ../layout
 block content
   .page-header
     h3 Sign up
-  form.form-horizontal(id='signup-form', method='POST')
-    input(type='hidden', name='_csrf', value=_csrf)
-    .form-group
-      label.col-sm-3.control-label(for='first_name') First Name
-      .col-sm-7
-        input.form-control(type='text', name='first_name', id='first_name', placeholder='Thorben', autofocus)
-    .form-group
-      label.col-sm-3.control-label(for='last_name') Last Name
-      .col-sm-7
-        input.form-control(type='text', name='last_name', id='last_name', placeholder='Stieler', autofocus)
-    .form-group
-      label.col-sm-3.control-label(for='email') Email
-      .col-sm-7
-        input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
-    .form-group
-      label.col-sm-3.control-label(for='password') Password
-      .col-sm-7
-        input.form-control(type='password', name='password', id='password', placeholder='Password')
-    .form-group
-      label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-      .col-sm-7
-        input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password')
-    .form-group
-      label.col-sm-3.control-label(for='status') Are you a refugee? (refugees will be matched with natives and vice versa)
-      .col-sm-7
-        label.radio.col-sm-4
-          input(type='radio', name='status', value='refugee', data-toggle='radio')
-          span Yes
-        label.radio.col-sm-4
-          input(type='radio', name='status', value='native', data-toggle='radio')
-          span No
-    .form-group
-      .col-sm-offset-3.col-sm-7
-        button.btn.btn-success(type='submit')
-          i.fa.fa-user-plus
-          | Signup
+  .container
+    .row
+      .col-md-8
+        form.form-horizontal(id='signup-form', method='POST')
+          input(type='hidden', name='_csrf', value=_csrf)
+          .form-group
+            label.col-sm-3.control-label(for='first_name') First Name
+            .col-sm-7
+              input.form-control(type='text', name='first_name', id='first_name', placeholder='Thorben', autofocus)
+          .form-group
+            label.col-sm-3.control-label(for='last_name') Last Name
+            .col-sm-7
+              input.form-control(type='text', name='last_name', id='last_name', placeholder='Stieler', autofocus)
+          .form-group
+            label.col-sm-3.control-label(for='email') Email
+            .col-sm-7
+              input.form-control(type='email', name='email', id='email', placeholder='Email', autofocus)
+          .form-group
+            label.col-sm-3.control-label(for='password') Password
+            .col-sm-7
+              input.form-control(type='password', name='password', id='password', placeholder='Password')
+          .form-group
+            label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+            .col-sm-7
+              input.form-control(type='password', name='confirmPassword', id='confirmPassword', placeholder='Confirm Password')
+          .form-group
+            label.col-sm-3.control-label(for='status') Are you a refugee? (refugees will be matched with natives and vice versa)
+            .col-sm-7
+              label.radio.col-sm-4
+                input(type='radio', name='status', value='refugee', data-toggle='radio')
+                span Yes
+              label.radio.col-sm-4
+                input(type='radio', name='status', value='native', data-toggle='radio')
+                span No
+          .form-group
+            .col-sm-offset-3.col-sm-7
+              button.btn.btn-success(type='submit')
+                i.fa.fa-user-plus
+                | Signup
+      .col-md-4
+        a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
+          i.fa.fa-facebook
+          | Sign in with Facebook
+        a.btn.btn-block.btn-twitter.btn-social(href='/auth/twitter')
+          i.fa.fa-twitter
+          | Sign in with Twitter
+        a.btn.btn-block.btn-google-plus.btn-social(href='/auth/google')
+          i.fa.fa-google-plus
+          | Sign in with Google

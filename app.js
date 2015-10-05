@@ -200,7 +200,13 @@ io.sockets.on('connection', function (socket) {
 /**
  * Primary app routes.
  */
-app.get('/', homeController.index);
+app.get('/', function (req, res) {
+    if (req.isAuthenticated()) {
+        userController.findUsers(req, res);
+    } else {
+        homeController.index(req, res);
+    }
+});
 app.get('/privacy', homeController.privacy);
 app.get('/about', homeController.about);
 app.get('/login', userController.getLogin);
@@ -246,15 +252,15 @@ app.post('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized
  */
 app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'public_profile', 'user_location', 'user_hometown'] }));
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect(req.session.returnTo || '/account');
 });
 app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
 app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect(req.session.returnTo || '/account');
 });
 app.get('/auth/twitter', passport.authenticate('twitter'));
 app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect(req.session.returnTo || '/account');
 });
 
 
