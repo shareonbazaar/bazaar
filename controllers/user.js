@@ -144,6 +144,7 @@ exports.postUpdateProfile = function(req, res, next) {
     user.profile.status = req.body.status || '';
     user.profile.location = req.body.location || '';
     user.profile.hometown = req.body.hometown || '';
+    user.aboutMe = req.body.aboutme || '';
     user.interests = JSON.parse(req.body.interests) || [];
     user.skills = JSON.parse(req.body.skills) || [];
     user.save(function(err) {
