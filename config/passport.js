@@ -82,12 +82,16 @@ passport.use(new FacebookStrategy(configuration, function(req, accessToken, refr
     });
   } else {
     User.findOne({ facebook: profile.id }, function(err, existingUser) {
-      if (existingUser) return done(null, existingUser);
+      if (existingUser) {
+        req.session.returnTo = '/';
+        return done(null, existingUser);
+      }
       User.findOne({ email: profile._json.email }, function(err, existingEmailUser) {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
           done(err);
         } else {
+          req.session.returnTo = '/account';
           var user = new User();
           user.email = profile._json.email;
           user.facebook = profile.id;

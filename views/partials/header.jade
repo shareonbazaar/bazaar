@@ -11,10 +11,6 @@
         | Bazaar
     .collapse.navbar-collapse
       ul.nav.navbar-nav
-        li(class=title=='Home'?'active':undefined)
-          a(href='/') Home
-        li(class=title=='Find Users'?'active':undefined)
-          a(href='/users') Find Users
         li(class=title=='About'?'active':undefined)
           a(href='/about') About
         li(class=title=='Contact'?'active':undefined)
@@ -35,7 +31,7 @@
               if user.profile.picture
                 img(src='#{user.profile.picture}')
               else
-                img(src='#{user.gravatar(60)}')
+                img(src='/images/person_placeholder.gif')
               | #{user.profile.name || user.email || user.id}&nbsp;
               i.caret
             ul.dropdown-menu
