@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema({
   aboutMe: { type: String, default: '' },
   skills: Array,
   interests: Array,
-  coins: { type: Number, default: 0 },
+  coins: { type: Number, default: 5 },
 
   facebook: String,
   twitter: String,
