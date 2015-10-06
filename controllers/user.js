@@ -422,7 +422,7 @@ exports.findUsers = (req, res) => {
     }).forEach((user) => {
         var interests_match = numElementsInCommon(user.skills, my_interests);
         var skills_match = numElementsInCommon(user.interests, my_skills);
-        if (interests_match > 0 && skills_match > 0) {
+        if ((interests_match + skills_match) > 5) {
             user.match = 'both';
         } else if (interests_match > 0 || skills_match > 0) {
             user.match = 'one';
