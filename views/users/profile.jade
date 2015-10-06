@@ -29,9 +29,9 @@ block content
               .review
                 quote= transaction.review.text
                 .rating
-                  - var i = 0
-                  while i < transaction.review.rating
+                  - var num = 0
+                  while num < transaction.review.rating
                     span ★
-                    - i++
+                    - num++
 
   script(src='/js/profile.js')
