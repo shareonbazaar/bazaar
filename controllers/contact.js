@@ -1,9 +1,10 @@
-const nodemailer = require('nodemailer');
+const secrets = require('../config/secrets');
+const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
-  service: 'SendGrid',
+  service: 'Mailgun',
   auth: {
-    user: process.env.SENDGRID_USER,
-    pass: process.env.SENDGRID_PASSWORD
+    user: secrets.mailgun.user,
+    pass: secrets.mailgun.password
   }
 });
 
@@ -33,11 +34,17 @@ exports.postContact = (req, res) => {
     return res.redirect('/contact');
   }
 
+  var from = req.body.email;
+  var name = req.body.name;
+  var body = req.body.message;
+  var to = 'rorymacqueen@gmail.com';
+  var subject = 'Contact Form | Hackathon Starter';
+
   const mailOptions = {
-    to: 'your@email.com',
-    from: `${req.body.name} <${req.body.email}>`,
-    subject: 'Contact Form | Hackathon Starter',
-    text: req.body.message
+    to: to,
+    from: from,
+    subject: subject,
+    text: body
   };
 
   transporter.sendMail(mailOptions, (err) => {
