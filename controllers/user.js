@@ -117,7 +117,9 @@ exports.postSignup = (req, res, next) => {
       if (err) return next(err);
       req.logIn(user, (err) => {
         if (err) return next(err);
-        res.redirect('/account');
+        res.render('account/newaccount', {
+          activities: activities.activityMap,
+        });
       });
     });
   });
@@ -474,3 +476,19 @@ exports.showProfile = function(req, res) {
     })
   });
 };
+
+/**
+ * POST /newaccount
+ * Post data for a new user account
+ */
+exports.newAccount = function (req, res) {
+    User.findById(req.user.id, function (err, user) {
+        console.log(JSON.stringify(req.body))
+        user.interests = JSON.parse(req.body.interests) || [];
+        user.skills = JSON.parse(req.body.skills) || [];
+        user.profile.status = req.body.status;
+        user.save(function (err) {
+            res.redirect('/account');
+        });
+    });
+}
