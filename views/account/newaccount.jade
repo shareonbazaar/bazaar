@@ -1,0 +1,49 @@
+extends ../layout
+include ../partials/activities
+
+block content
+  form#hidden-form(action='/newaccount', method='POST')
+    input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+    input#status(type='hidden', name='status', value='')
+    input#skills(type='hidden', name='skills', value='')
+    input#interests(type='hidden', name='interests', value='')
+  #wrapper
+    #mask
+      .item#item1
+        .content
+          .question-content
+            .question= "Are you a refugee?"
+            .options
+              a.nav-link.status(name="refugee" href="#item2") REFUGEE
+              a.nav-link.status(name="native" href="#item2") LOCAL
+      .item#item2
+        .content
+          .question-content
+            .navigation
+              a.nav-link.progress-link(href="#item1") Back
+            .question= "Select some skills you have that you'd like to share!"
+            .activity-group
+              each actions, title in activities
+                .activity-title= title
+                .activities
+                  each action, i in actions
+                    .activity(name="#{action.name}")= action.label 
+            .navigation
+              a.nav-link.progress-link(href="#item3") Next
+      .item#item3
+        .content
+          .question-content
+            .navigation
+              a.nav-link.progress-link(href="#item2") Back
+            .question= "Select some services you'd be interested in receiving"
+            .activity-group
+              each actions, title in activities
+                .activity-title= title
+                .activities
+                  each action, i in actions
+                    .activity(name="#{action.name}")= action.label 
+            .navigation
+              a#finished.progress-link(href="#item1") Finished
+
+  link(rel='stylesheet', href='/css/newaccount.css')
+  script(src='/js/newaccount.js')

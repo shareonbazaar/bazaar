@@ -36,6 +36,7 @@ var contactController = require('./controllers/contact');
  */
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
+var activities = require('./config/activities');
 
 var Message = require('./models/Message');
 var Thread = require('./models/Thread');
@@ -208,6 +209,14 @@ app.get('/', function (req, res) {
     }
 });
 app.get('/privacy', homeController.privacy);
+app.get('/newaccount', passportConf.isAuthenticated, function (req, res) {
+  res.render('account/newaccount', {
+    my_skills: [],
+    my_interests: [],
+    activities: activities.activityMap,
+  })
+});
+app.post('/newaccount', userController.newAccount);
 app.get('/about', homeController.about);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
