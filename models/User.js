@@ -11,6 +11,10 @@ const userSchema = new mongoose.Schema({
   skills: {type: Array, default: []},
   interests: {type: Array, default: []},
   coins: { type: Number, default: 5 },
+  loc : {
+    type: {type: String},
+    coordinates: { type: [], index: '2dsphere' }
+  },
 
   facebook: String,
   twitter: String,
@@ -26,6 +30,8 @@ const userSchema = new mongoose.Schema({
     picture: { type: String, default: '' }
   }
 }, { timestamps: true });
+
+userSchema.index({loc: '2dsphere'});
 
 /**
  * Password hash middleware.

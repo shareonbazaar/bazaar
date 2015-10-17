@@ -432,6 +432,10 @@ exports.findUsers = (req, res) => {
             user.match = 'none';
         }
         user.skill_labels = user.skills.map(activities.getActivityLabelForName);
+
+        if (typeof user.loc.coordinates === 'undefined') {
+          user.loc.coordinates = [null, null];
+        }
     })
     res.render('users/showall', {
         users: results,
@@ -483,12 +487,33 @@ exports.showProfile = function(req, res) {
  */
 exports.newAccount = function (req, res) {
     User.findById(req.user.id, function (err, user) {
-        console.log(JSON.stringify(req.body))
         user.interests = JSON.parse(req.body.interests) || [];
         user.skills = JSON.parse(req.body.skills) || [];
         user.profile.status = req.body.status;
         user.save(function (err) {
             res.redirect('/account');
+        });
+    });
+}
+
+/**
+ * POST /location
+ * Post loaction data for a user
+ */
+exports.postLocation = (req, res) => {
+    User.findById(req.user.id, function (err, user) {
+        user.loc = {
+            type: 'Point',
+            coordinates: [req.body.longitude, req.body.latitude],
+        };
+        user.save(function (err) {
+            var error = null;
+            if (err) {
+                error = err;
+            }
+            res.json({
+                error: error,
+            });
         });
     });
 }

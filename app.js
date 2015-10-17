@@ -252,6 +252,8 @@ app.get('/profile/:id', passportConfig.isAuthenticated, userController.showProfi
 app.get('/transactions', passportConf.isAuthenticated, transactionController.showTransactions);
 app.post('/transactions', passportConf.isAuthenticated, transactionController.postTransaction);
 
+app.post('/location', passportConf.isAuthenticated, userController.postLocation);
+
 /**
  * User routes
  */
