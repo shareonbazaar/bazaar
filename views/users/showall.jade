@@ -1,12 +1,15 @@
 extends ../layout
 
 block content
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .row.user-list
     each user, i in users
       - var image_uri = user.profile.picture || '/images/person_placeholder.gif'
       .col-md-4
 
-        div.profile-info
+        .profile-info
           a(href="/profile/" + user.id)
             h3.profile-name=user.profile.name
-          .profile-pic(class="#{user.match}" style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skill_labels.join(', ')}" )
+          .profile-pic(class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skill_labels.join(', ')}" )
+
+  script(src='/js/showall.js')
