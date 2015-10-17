@@ -9,6 +9,10 @@ var userSchema = new mongoose.Schema({
   skills: {type: Array, default: []},
   interests: {type: Array, default: []},
   coins: { type: Number, default: 5 },
+  loc : {
+    type: {type: String},
+    coordinates: { type: [], index: '2dsphere' }
+  },
 
   facebook: String,
   twitter: String,
@@ -27,6 +31,8 @@ var userSchema = new mongoose.Schema({
   resetPasswordToken: String,
   resetPasswordExpires: Date
 });
+
+userSchema.index({loc: '2dsphere'});
 
 /**
  * Password hash middleware.
