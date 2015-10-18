@@ -201,6 +201,12 @@ input.activity-checkbox {
   font-weight: bold;
 }
 
+.message-snippet .snippet-text .message-content {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
 .thread-list {
   list-style-type: none;
   padding: 0 0 0 0;
@@ -208,7 +214,7 @@ input.activity-checkbox {
 
 .thread-list li {
   border: 1px #e9eaed solid;
-  height: 90px;
+  height: 75px;
 }
 
 .thread-list li.is-pending {
@@ -254,25 +260,40 @@ input.activity-checkbox {
 }
 
 .conversation .message-details {
-    background-color: #F2F2F2;
-    border-radius: 5px;
-    box-shadow: 0 0 6px #B2B2B2;
-    display: inline-block;
-    padding: 10px 18px;
-    position: relative;
-    vertical-align: top;
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  max-width: 50%;
 }
 
-.conversation .message-details.myself {
+.conversation .message-details .comment {
+  padding: 8px;
+  border-radius: 5px;
+  box-shadow: 0 0 6px #B2B2B2;
+  margin-bottom: 3px;
+}
+
+.conversation .myself {
   float: right;
   clear: both;
+  margin-right: 5px;
 }
 
-.conversation .message-details.other-person {
+.conversation .message-details.myself .comment {
+  background-color: #D1EEFC;
+}
+
+.conversation .other-person {
   float: left;
   clear: both;
+  margin-left: 5px;
+}
+
+.conversation .message-details.other-person .comment {
+  background-color: #F2F2F2;
+}
+
+.conversation .author {
+  font-size: 8px;
 }
 
 .conversation-container .message-form textarea {
