@@ -13,8 +13,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function newChatBubble (message) {
         var klass = message.author.isMe ? 'myself' : 'other-person';
         var chat = '<div class="message-details {who}">'.replace('{who}', klass) +
-                        '<div class="author">{author}</div>'.replace('{author}', message.author.name) +
                         '<div class="comment">{comment}</div>'.replace('{comment}', message.message) +
+                        '<div class="author">{author}</div>'.replace('{author}', message.author.name) +
                     '</div>';
         return chat;
     }
