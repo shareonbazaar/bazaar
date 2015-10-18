@@ -24,16 +24,7 @@ block content
           button.new-message-button#new-message-button New Message
         input#name-input(type="text" placeholder="Type a name..." style="width:80%;display:none;")
       .conversation#conversation-list
-        if threads.length > 0
-          each message, i in threads[0].messages
-            if message._sender.profile.name == user.profile.name
-              .message-details.myself
-                .author=message._sender.profile.name
-                .comment=message.message
-            else
-              .message-details.other-person
-                .author=message._sender.profile.name
-                .comment=message.message
+
       form.message-form
         .form-group
           textarea#text-input(placeholder="Write message" rows=4)
