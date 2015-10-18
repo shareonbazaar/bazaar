@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $("#name-input").autocomplete({
         source: '/users/list',
         select: autocompleteSelected,
+        focus: function (event, ui) {event.preventDefault();}
     });
 
     $("#message-search").on('input', function () {
