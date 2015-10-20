@@ -288,7 +288,28 @@ app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedi
 /**
  * Error Handler.
  */
-app.use(errorHandler());
+if (app.settings.env === 'production') {
+  app.use(function(req, res, next){
+    // the status option, or res.statusCode = 404
+    // are equivalent, however with the option we
+    // get the "status" local available as well
+    res.status(404).render('error/404', {
+      status: 404,
+      url: req.url,
+    });
+  });
+  app.use(function(err, req, res, next){
+    // we may use properties of the error object
+    // here and next(err) appropriately, or if
+    // we possibly recovered from the error, simply next().
+    res.status(500).render('error/500', {
+        status: err.status || 500,
+        error: err,
+    });
+  });
+} else {
+  app.use(errorHandler());
+}
 
 /**
  * Start Express server.
