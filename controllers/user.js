@@ -491,7 +491,7 @@ exports.newAccount = function (req, res) {
         user.skills = JSON.parse(req.body.skills) || [];
         user.profile.status = req.body.status;
         user.save(function (err) {
-            res.redirect('/account');
+            res.redirect('/');
         });
     });
 }
