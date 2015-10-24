@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var async = require('async');
 var passport = require('passport');
 var InstagramStrategy = require('passport-instagram').Strategy;
 var LocalStrategy = require('passport-local').Strategy;
@@ -9,6 +10,8 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 var OAuthStrategy = require('passport-oauth').OAuthStrategy;
 var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+
+var userController = require('../controllers/user');
 
 var secrets = require('./secrets');
 var User = require('../models/User');
@@ -101,8 +104,18 @@ passport.use(new FacebookStrategy(configuration, function(req, accessToken, refr
           user.profile.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
           user.profile.hometown = (profile._json.hometown) ? profile._json.hometown.name : '';
-          user.save(function(err) {
-            done(err, user);
+
+          async.waterfall([
+            function (callback) {
+              user.save(function (err) {
+                callback(err, user);
+              });
+            },
+            function (user, callback) {
+              userController.sendWelcomeEmail(user, callback);
+            }
+          ], function (err) {
+              done(err, user)
           });
         }
       });

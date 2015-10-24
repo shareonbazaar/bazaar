@@ -106,14 +106,26 @@ exports.postSignup = function(req, res, next) {
       req.flash('errors', { msg: 'Account with that email address already exists.' });
       return res.redirect('/signup');
     }
-    user.save(function(err) {
+
+    async.waterfall([
+      function (callback) {
+        user.save(function (err) {
+          callback(err, user);
+        });
+      },
+      function (user, callback) {
+        sendWelcomeEmail(user, callback);
+      },
+      function (callback) {
+        req.logIn(user, function (err) {
+          callback(err)
+        })
+      }
+    ], function (err) {
       if (err) return next(err);
-      req.logIn(user, function(err) {
-        if (err) return next(err);
         res.render('account/newaccount', {
           activities: activities.activityMap,
         });
-      });
     });
   });
 };
@@ -500,3 +512,29 @@ exports.postLocation = function (req, res) {
         });
     });
 }
+
+function sendWelcomeEmail (user, callback) {
+    var transporter = nodemailer.createTransport({
+      service: 'Mailgun',
+      auth: {
+        user: secrets.mailgun.user,
+        pass: secrets.mailgun.password,
+      },
+    });
+
+    var mailOptions = {
+      to: user.email,
+      from: 'team@intrst.de',
+      subject: 'Welcome to the Bazaar!',
+      text: 'Hi ' + user.profile.name + ',\n\n' +
+        'Thanks for signing up to Bazaar!.\n'
+    };
+    transporter.sendMail(mailOptions, function (err) {
+      callback(err);
+    });
+}
+
+/**
+ * Send welcome email to a user after registration
+ */
+exports.sendWelcomeEmail = sendWelcomeEmail;
