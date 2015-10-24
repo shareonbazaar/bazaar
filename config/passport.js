@@ -1,6 +1,6 @@
 const _ = require('lodash');
+const async = require('async');
 const passport = require('passport');
-const request = require('request');
 const InstagramStrategy = require('passport-instagram').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
@@ -8,10 +8,12 @@ const TwitterStrategy = require('passport-twitter').Strategy;
 const GitHubStrategy = require('passport-github').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 const LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
-const OpenIDStrategy = require('passport-openid').Strategy;
 const OAuthStrategy = require('passport-oauth').OAuthStrategy;
 const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
+const userController = require('../controllers/user');
+
+const secrets = require('./secrets');
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
@@ -106,8 +108,18 @@ passport.use(new FacebookStrategy({
           user.profile.picture = `https://graph.facebook.com/${profile.id}/picture?type=large`;
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
           user.profile.hometown = (profile._json.hometown) ? profile._json.hometown.name : '';
-          user.save((err) => {
-            done(err, user);
+
+          async.waterfall([
+            function (callback) {
+              user.save(function (err) {
+                callback(err, user);
+              });
+            },
+            function (user, callback) {
+              userController.sendWelcomeEmail(user, callback);
+            }
+          ], function (err) {
+              done(err, user)
           });
         }
       });
