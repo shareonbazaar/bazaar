@@ -96,7 +96,7 @@ passport.use(new FacebookStrategy({
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Facebook manually from Account Settings.' });
           done(err);
         } else {
-          req.session.returnTo = '/account';
+          req.session.returnTo = '/newaccount';
           const user = new User();
           user.email = profile._json.email;
           user.facebook = profile.id;
