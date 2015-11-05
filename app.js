@@ -164,6 +164,13 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
                 });
             }
 
+            // always send an e-mail to recipient other than me, even if they are not online
+            if (!is_me) {
+                messageController.sendMessageEmail(sender, user, newMsg.message, function (err) {
+                  if (err)
+                    console.log(err);
+                });
+            }
         });
         callback(null);
     });
