@@ -143,21 +143,27 @@ function saveMessage (socket, data, thread_id, callback) {
 }
 
 function sendMessage (socket, data, thread_id, newMsg, callback) {
+    var sender = socket.request.user;
     Thread.findOne({_id: thread_id})
     .populate('_participants')
     .exec(function (err, thread) {
         thread._participants.forEach(function (user) {
-            io.to(socket_map[user._id]).emit('new message', {
-                message: newMsg.message,
-                timeSent: newMsg.timeSent,
-                thread: thread,
-                author: {
-                    name: socket.request.user.profile.name,
-                    pic: socket.request.user.profile.picture,
-                    id: socket.request.user._id,
-                    isMe: socket.request.user._id.toString() == user._id.toString(),
-                },
-            });
+            var is_me = sender._id.toString() == user._id.toString();
+            // if recipient is online, ping him the message via socket
+            if (socket_map[user._id]) {
+                io.to(socket_map[user._id]).emit('new message', {
+                    message: newMsg.message,
+                    timeSent: newMsg.timeSent,
+                    thread: thread,
+                    author: {
+                        name: sender.profile.name,
+                        pic: sender.profile.picture,
+                        id: sender._id,
+                        isMe: is_me,
+                    },
+                });
+            }
+
         });
         callback(null);
     });
