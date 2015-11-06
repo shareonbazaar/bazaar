@@ -16,6 +16,8 @@ const userSchema = new mongoose.Schema({
     coordinates: { type: [], index: '2dsphere' }
   },
 
+  unreadThreads: [String],
+
   facebook: String,
   twitter: String,
   google: String,

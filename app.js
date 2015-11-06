@@ -158,7 +158,7 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
     Thread.findOne({_id: thread_id})
     .populate('_participants')
     .exec(function (err, thread) {
-        thread._participants.forEach(function (user) {
+        async.each(thread._participants, function (user, user_callback) {
             var is_me = sender._id.toString() == user._id.toString();
             // if recipient is online, ping him the message via socket
             if (socket_map[user._id]) {
@@ -179,11 +179,24 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
             if (!is_me) {
                 messageController.sendMessageEmail(sender, user, newMsg.message, function (err) {
                   if (err)
-                    console.log(err);
+                      console.log(err);
+                });
+
+                // Increment unread message count
+                if (user.unreadThreads.indexOf(thread.id) < 0) {
+                    user.unreadThreads.push(thread.id);
+                }
+                user.save(function (err) {
+                    if (err) {
+                        user_callback(err);
+                    } else {
+                        user_callback();
+                    }
                 });
             }
+        }, function (err) {
+            callback(err);
         });
-        callback(null);
     });
 }
 
@@ -233,7 +246,7 @@ app.get('/', function (req, res) {
     }
 });
 app.get('/privacy', homeController.privacy);
-app.get('/newaccount', passportConf.isAuthenticated, function (req, res) {
+app.get('/newaccount', passportConfig.isAuthenticated, function (req, res) {
   res.render('account/newaccount', {
     my_skills: [],
     my_interests: [],
@@ -260,17 +273,38 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/messages', passportConfig.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConfig.isAuthenticated, messageController.getMessages);
+app.get('/_numUnreadThreads', passportConfig.isAuthenticated, function (req, res) {
+    res.json({
+        count: req.user.unreadThreads.length,
+    });
+});
+
+app.get('/_ackThread/:id', passportConfig.isAuthenticated, function (req, res) {
+    var index = req.user.unreadThreads.indexOf(req.params.id);
+    if (index >= 0) {
+        req.user.unreadThreads.splice(index, 1);
+    }
+    req.user.save(function (err) {
+        if (err) {
+            console.log(err);
+        }
+        res.json({
+            count: req.user.unreadThreads.length,
+        });
+    });
+});
+
 app.get('/profile/:id', passportConfig.isAuthenticated, userController.showProfile);
 
-app.get('/transactions', passportConf.isAuthenticated, transactionController.showTransactions);
-app.post('/transactions', passportConf.isAuthenticated, transactionController.postTransaction);
+app.get('/transactions', passportConfig.isAuthenticated, transactionController.showTransactions);
+app.post('/transactions', passportConfig.isAuthenticated, transactionController.postTransaction);
 
-app.post('/location', passportConf.isAuthenticated, userController.postLocation);
+app.post('/location', passportConfig.isAuthenticated, userController.postLocation);
 
 /**
  * User routes
  */
-app.get('/users', passportConf.isAuthenticated, userController.findUsers);
+app.get('/users', passportConfig.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
 
 
