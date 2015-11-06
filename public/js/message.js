@@ -72,6 +72,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 var new_element = newChatBubble(data);
                 $('#conversation-list').append(new_element);
                 $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
+                $.ajax({
+                    url: '/_ackThread/' + data.thread._id,
+                }).done();
+                // return here because we don't want to update the unreadThreads
+                // count if we are on the current thread.
+                return;
             } else {
                 $(message_thread).addClass('is-pending');
             }
@@ -97,6 +103,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 $('#thread-list li').first().addClass('is-pending');
             }
         }
+        $.ajax({
+            url: '/_numUnreadThreads',
+        }).done(function (data) {
+            $('#thread-count').html(data.count);
+        });
     });
 
     function setNodeText (node, new_text) {
@@ -109,7 +120,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('#thread-list li').removeClass('is-active');
         $(this).removeClass('is-pending');
         $(this).addClass('is-active');
-        current_message.thread_id = $(this).attr('data-thread-id');
+        var clicked_thread_id = $(this).attr('data-thread-id');
+        current_message.thread_id = clicked_thread_id;
         var name = $(this).find('.sender').html();
 
         $('#conversation-header input').hide();
@@ -117,14 +129,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
         setNodeText($("#conversation-header h3"), name);
 
         $.ajax({
-            url: '/_threadMessages/' + $(this).attr('data-thread-id'),
+            url: '/_threadMessages/' + clicked_thread_id,
         }).done(function (data) {
             $('#conversation-list').empty();
             var conversation = data.map(function (message) {
                 var chat = newChatBubble(message);
                 $('#conversation-list').append(chat);
             });
-        })
+            $.ajax({
+                url: '/_ackThread/' + clicked_thread_id,
+            }).done(function (data) {
+                $('#thread-count').html(data.count);
+            });
+        });
+
     }
     $('#thread-list li').click(onThreadClicked);
 
