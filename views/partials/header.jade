@@ -25,7 +25,7 @@
           li
             a(href="/transactions") #{user.coins} coins
           li
-            a(href="/messages") Messages
+            a(href="/messages") Messages (#[span#thread-count #{user.unreadThreads.length}])
           li.dropdown(class=title=='Account Management'?'active':undefined)
             a.dropdown-toggle(href='#', data-toggle='dropdown')
               if user.profile.picture

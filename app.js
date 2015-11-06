@@ -147,7 +147,7 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
     Thread.findOne({_id: thread_id})
     .populate('_participants')
     .exec(function (err, thread) {
-        thread._participants.forEach(function (user) {
+        async.each(thread._participants, function (user, user_callback) {
             var is_me = sender._id.toString() == user._id.toString();
             // if recipient is online, ping him the message via socket
             if (socket_map[user._id]) {
@@ -168,11 +168,24 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
             if (!is_me) {
                 messageController.sendMessageEmail(sender, user, newMsg.message, function (err) {
                   if (err)
-                    console.log(err);
+                      console.log(err);
+                });
+
+                // Increment unread message count
+                if (user.unreadThreads.indexOf(thread.id) < 0) {
+                    user.unreadThreads.push(thread.id);
+                }
+                user.save(function (err) {
+                    if (err) {
+                        user_callback(err);
+                    } else {
+                        user_callback();
+                    }
                 });
             }
+        }, function (err) {
+            callback(err);
         });
-        callback(null);
     });
 }
 
@@ -249,6 +262,27 @@ app.post('/account/delete', passportConf.isAuthenticated, userController.postDel
 app.get('/account/unlink/:provider', passportConf.isAuthenticated, userController.getOauthUnlink);
 app.get('/messages', passportConf.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConf.isAuthenticated, messageController.getMessages);
+app.get('/_numUnreadThreads', passportConf.isAuthenticated, function (req, res) {
+    res.json({
+        count: req.user.unreadThreads.length,
+    });
+});
+
+app.get('/_ackThread/:id', passportConf.isAuthenticated, function (req, res) {
+    var index = req.user.unreadThreads.indexOf(req.params.id);
+    if (index >= 0) {
+        req.user.unreadThreads.splice(index, 1);
+    }
+    req.user.save(function (err) {
+        if (err) {
+            console.log(err);
+        }
+        res.json({
+            count: req.user.unreadThreads.length,
+        });
+    });
+});
+
 app.get('/profile/:id', passportConf.isAuthenticated, userController.showProfile);
 
 app.get('/transactions', passportConf.isAuthenticated, transactionController.showTransactions);
