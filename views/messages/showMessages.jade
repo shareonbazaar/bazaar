@@ -11,7 +11,8 @@ block content
       ul.thread-list#thread-list
        each thread, i in threads
          - var participants = thread.participants.map(function(user){return user._id}).sort()
-         li(data-thread-id="#{thread._id}" data-thread-participants=participants)
+         - var thread_klass = user.unreadThreads.indexOf(thread._id) >= 0 ? 'is-pending' : ''
+         li(data-thread-id="#{thread._id}" data-thread-participants=participants class="#{thread_klass}")
            .message-snippet
              img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
              .snippet-text
