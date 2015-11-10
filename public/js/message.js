@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     if ($('#thread-list li').length > 0) {
         onThreadClicked.bind($('#thread-list li').first())();
     }
-    $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
 
     function newChatBubble (message) {
         var klass = message.author.isMe ? 'myself' : 'other-person';
@@ -136,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
                 var chat = newChatBubble(message);
                 $('#conversation-list').append(chat);
             });
+            $("#conversation-list").scrollTop($("#conversation-list")[0].scrollHeight);
             $.ajax({
                 url: '/_ackThread/' + clicked_thread_id,
             }).done(function (data) {
