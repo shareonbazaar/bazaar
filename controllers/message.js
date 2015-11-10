@@ -104,7 +104,7 @@ exports.sendMessageEmail = function (sender, recipient, message, callback) {
 
     var mailOptions = {
       to: recipient.email,
-      from: 'team@intrst.de',
+      from: 'Bazaar Team <mailgun@mg.intrst.de>',
       subject: 'New message from ' + sender.profile.name,
       html: html_content,
     };
