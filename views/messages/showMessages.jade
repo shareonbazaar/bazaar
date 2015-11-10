@@ -4,33 +4,35 @@ block content
   .page-header
     h3 Messages
 
-  .message-layout-grid
-    .sidebar
-      .search-box
-        input#message-search(type="text" placeholder="Search by name")
-      ul.thread-list#thread-list
-       each thread, i in threads
-         - var participants = thread.participants.map(function(user){return user._id}).sort()
-         - var thread_klass = user.unreadThreads.indexOf(thread._id) >= 0 ? 'is-pending' : ''
-         li(data-thread-id="#{thread._id}" data-thread-participants=participants class="#{thread_klass}")
-           .message-snippet
-             img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
-             .snippet-text
-               .timestamp=thread.messages.slice(-1)[0].timeSent.getHours() + ':' + ('0'+ thread.messages.slice(-1)[0].timeSent.getMinutes()).slice(-2)
-               .sender=thread.participants[0].profile.name
-               .message-content=thread.messages.slice(-1)[0].message
-    .conversation-container
-      .header#conversation-header
-        h3= (threads.length > 0 ? threads[0].participants[0].profile.name : "No messages")
-          button.new-message-button#new-message-button New Message
-        input#name-input(type="text" placeholder="Type a name..." style="width:80%;display:none;")
-      .conversation#conversation-list
+  .row
+    .col-md-3
+      .sidebar
+        .search-box
+          input#message-search(type="text" placeholder="Search by name")
+        ul.thread-list#thread-list
+         each thread, i in threads
+           - var participants = thread.participants.map(function(user){return user._id}).sort()
+           - var thread_klass = user.unreadThreads.indexOf(thread._id) >= 0 ? 'is-pending' : ''
+           li(data-thread-id="#{thread._id}" data-thread-participants=participants class="#{thread_klass}")
+             .message-snippet
+               img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
+               .snippet-text
+                 .timestamp=thread.messages.slice(-1)[0].timeSent.getHours() + ':' + ('0'+ thread.messages.slice(-1)[0].timeSent.getMinutes()).slice(-2)
+                 .sender=thread.participants[0].profile.name
+                 .message-content=thread.messages.slice(-1)[0].message
+    .col-md-9
+      .conversation-container
+        .header#conversation-header
+          h3= (threads.length > 0 ? threads[0].participants[0].profile.name : "No messages")
+            button.new-message-button#new-message-button New Message
+          input#name-input(type="text" placeholder="Type a name..." style="width:80%;display:none;")
+        .conversation#conversation-list
 
-      form.message-form
-        .form-group
-          textarea#text-input(placeholder="Write message" rows=4)
-        .form-group
-          button#send-button(type="submit") Send message
+        form.message-form
+          .form-group
+            textarea#text-input(placeholder="Write message" rows=4)
+          .form-group
+            button#send-button(type="submit") Send message
   script(src='/js/message.js')
   script(type='text/javascript').
     var local_user_data =!{JSON.stringify(user_data)}
