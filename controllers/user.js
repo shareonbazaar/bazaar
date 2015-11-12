@@ -499,11 +499,12 @@ exports.postLocation = function (req, res) {
     User.findById(req.user.id, function (err, user) {
         user.loc = {
             type: 'Point',
-            coordinates: [req.body.longitude, req.body.latitude],
+            coordinates: [Number(req.body.longitude), Number(req.body.latitude)],
         };
         user.save(function (err) {
             var error = null;
             if (err) {
+                console.log(err);
                 error = err;
             }
             res.json({
