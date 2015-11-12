@@ -54,5 +54,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
+    $("#user-search").on('input', function () {
+        var query = $("#user-search").val();
+        $('.user-list .col-md-4').each(function () {
+            var content = $(this).find('.profile-pic').attr('data-content').substr("Skills:".length);
+            if (content.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+                $(this).show();
+            } else {
+                $(this).fadeOut();
+            }
+        });
+    });
+
     getLocation();
 });
