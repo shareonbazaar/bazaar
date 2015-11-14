@@ -17,4 +17,6 @@
 //= require lib/bootstrap.min
 //= require lib/jquery-ui.min
 //= require lib/jquery-scroll-to
+//= require lib/jquery.dropotron.min.js
+//= require lib/jquery.scrollgress.min.js
 //= require main

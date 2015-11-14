@@ -15,3 +15,7 @@ exports.privacy = function(req, res) {
 exports.about = function(req, res) {
   res.render('about');
 };
+
+exports.splash = function(req, res) {
+  res.render('splash');
+};
