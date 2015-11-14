@@ -15,3 +15,7 @@ exports.privacy = (req, res) => {
 exports.about = (req, res) => {
   res.render('about');
 };
+
+exports.splash = (req, res) => {
+  res.render('splash');
+};
