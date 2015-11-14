@@ -1,0 +1,28 @@
+body {
+    background-image: url("/images/atlas.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.welcome {
+    margin-top: 100px;
+    text-align: center;
+    border-radius: 8px;
+    color: white;
+    background: rgba(0,0,0,.65);
+    padding: 60px;
+}
+
+.subtitle {
+    font-size: 26px;
+    padding-bottom: 60px
+}
+
+.home-page-detail {
+    text-align: center;
+    border: 1px solid white;
+}
+
+footer {
+    background-color: rgba(255, 255, 255, 0.4);
+}
