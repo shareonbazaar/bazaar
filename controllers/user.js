@@ -8,6 +8,7 @@ var Thread = require('../models/Thread');
 var Transaction = require('../models/Transaction');
 var secrets = require('../config/secrets');
 var activities = require('../config/activities');
+var fs = require('fs');
 
 function toObjectId(str) {
     var ObjectId = (require('mongoose').Types.ObjectId);
@@ -514,6 +515,8 @@ exports.postLocation = function (req, res) {
     });
 }
 
+var email_template = fs.readFileSync('config/welcome_email.html', 'utf8');
+
 function sendWelcomeEmail (user, callback) {
     var transporter = nodemailer.createTransport({
       service: 'Mailgun',
@@ -523,12 +526,15 @@ function sendWelcomeEmail (user, callback) {
       },
     });
 
+    var html_content = email_template.replace('{recipient}', user.profile.name);
+
     var mailOptions = {
       to: user.email,
-      from: 'team@intrst.de',
-      subject: 'Welcome to the Bazaar!',
+      from: 'Bazaar Team <team@intrst.de>',
+      subject: 'Welcome to the Bazaar, ' + user.profile.name,
       text: 'Hi ' + user.profile.name + ',\n\n' +
-        'Thanks for signing up to Bazaar!.\n'
+        'Thanks for signing up to Bazaar!.\n',
+      html: html_content,
     };
     transporter.sendMail(mailOptions, function (err) {
       callback(err);
