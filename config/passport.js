@@ -43,6 +43,21 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
   });
 }));
 
+function saveNewUser (user, done) {
+    async.waterfall([
+      function (callback) {
+        user.save(function (err) {
+          callback(err, user);
+        });
+      },
+      function (user, callback) {
+        userController.sendWelcomeEmail(user, callback);
+      }
+    ], function (err) {
+        done(err, user)
+    });
+}
+
 /**
  * OAuth Strategy Overview
  *
@@ -109,18 +124,7 @@ passport.use(new FacebookStrategy({
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
           user.profile.hometown = (profile._json.hometown) ? profile._json.hometown.name : '';
 
-          async.waterfall([
-            function (callback) {
-              user.save(function (err) {
-                callback(err, user);
-              });
-            },
-            function (user, callback) {
-              userController.sendWelcomeEmail(user, callback);
-            }
-          ], function (err) {
-              done(err, user)
-          });
+          saveNewUser(user, done);
         }
       });
     });
@@ -157,21 +161,23 @@ passport.use(new TwitterStrategy({
   } else {
     User.findOne({ twitter: profile.id }, (err, existingUser) => {
       if (existingUser) {
+        req.session.returnTo = '/';
         return done(null, existingUser);
       }
       const user = new User();
       // Twitter will not provide an email address.  Period.
       // But a person’s twitter username is guaranteed to be unique
       // so we can "fake" a twitter email address as follows:
-      user.email = `${profile.username}@twitter.com`;
+      req.session.returnTo = '/newaccount';
+      user.email = profile.username + "@twitter.com";
+
       user.twitter = profile.id;
       user.tokens.push({ kind: 'twitter', accessToken, tokenSecret });
       user.profile.name = profile.displayName;
       user.profile.location = profile._json.location;
       user.profile.picture = profile._json.profile_image_url_https;
-      user.save((err) => {
-        done(err, user);
-      });
+
+      saveNewUser(user, done);
     });
   }
 }));
@@ -208,12 +214,14 @@ passport.use(new GoogleStrategy({
     User.findOne({ google: profile.id }, (err, existingUser) => {
       if (existingUser) {
         return done(null, existingUser);
+        req.session.returnTo = '/';
       }
       User.findOne({ email: profile.emails[0].value }, (err, existingEmailUser) => {
         if (existingEmailUser) {
           req.flash('errors', { msg: 'There is already an account using this email address. Sign in to that account and link it with Google manually from Account Settings.' });
           done(err);
         } else {
+          req.session.returnTo = '/newaccount';
           const user = new User();
           user.email = profile.emails[0].value;
           user.google = profile.id;
@@ -221,9 +229,8 @@ passport.use(new GoogleStrategy({
           user.profile.name = profile.displayName;
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.image.url;
-          user.save((err) => {
-            done(err, user);
-          });
+
+          saveNewUser(user, done);
         }
       });
     });
