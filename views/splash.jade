@@ -24,16 +24,16 @@ html
             li
               a(href='/login') Login
             li
-              a.button(href='#') Sign Up
+              a.button(href='/signup') Sign Up
       // Banner
       section#banner
         h2 Welcome to the Bazaar
         p A site to bring together refugees and locals over shared skills and interests
         ul.actions
           li
-            a.button.special(href='#') Sign Up
+            a.button.special(href='/signup') Sign Up
           li
-            a.button(href='#') Learn More
+            a.button(href='/about') Learn More
       // Main
       section#main.container
         section.box.special
@@ -43,42 +43,42 @@ html
               br
               |                             and learn from each other
             p
-              | Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc ornare
+              | Make a profile where you list your skills and interests.
               br
-              |                             adipiscing nunc adipiscing. Condimentum turpis massa.
+              |                             Browse through profiles or use the filter box to search for specific skills you might need. Meet up in real life and share!
           span.image.featured
             img(src='/images/pic01.jpg', alt='')
         section.box.special.features
           .features-row
             section
-              span.icon.major.fa-bolt.accent2
-              h3 Magna etiam
+              span.icon.major.fa-bank.accent2
+              h3 Time Banking
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                | For one hour of work you receive one Time-Coin from the person you worked for. You can exchange that coin for an hour of service from another person whose skills you need.
             section
-              span.icon.major.fa-area-chart.accent3
-              h3 Ipsum dolor
+              span.icon.major.fa-paint-brush.accent3
+              h3 Share Your Talent
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                | A skill can be anything from knowing German to knowing how to fix road bikes. Everyone has something to share and everyone can benefit from other people's talents.
           .features-row
             section
-              span.icon.major.fa-cloud.accent4
-              h3 Sed feugiat
+              span.icon.major.fa-bolt.accent4
+              h3 Empowerment
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                | Integration through active participation in society. The best way for people to come together is by working together.
             section
-              span.icon.major.fa-lock.accent5
-              h3 Enim phasellus
+              span.icon.major.fa-users.accent5
+              h3 Meetup
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                |  By sharing their skills native germans and refugees might become friends, pick up the other person’s language, or learn about each other's culture. See it as a social service; see it as your way to contribute to a better society.
         .row
           .6u(class='12u(narrower)')
             section.box.special
               span.image.featured
-                img(src='/images/pic02.jpg', alt='')
-              h3 Sed lorem adipiscing
+                img(height=335 src='/images/pic02.jpg', alt='')
+              h3 Neighbours
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                | Find people in your vicinity and help each other.
               ul.actions
                 li
                   a.button.alt(href='#') Learn More
@@ -86,16 +86,16 @@ html
             section.box.special
               span.image.featured
                 img(src='/images/pic03.jpg', alt='')
-              h3 Accumsan integer
+              h3 Small World
               p
-                | Integer volutpat ante et accumsan commophasellus sed aliquam feugiat lorem aliquet ut enim rutrum phasellus iaculis accumsan dolore magna aliquam veroeros.
+                | Create a lasting social network.
               ul.actions
                 li
                   a.button.alt(href='#') Learn More
       // CTA
       section#cta
         h2 Sign up for beta access
-        p Blandit varius ut praesent nascetur eu penatibus nisi risus faucibus nunc.
+        p At the moment our service is in beta. Please give us as much feedback as possible. We are always looking to improve.
         form
           .row.uniform(class='50%')
             .8u(class='12u(mobilep)')
@@ -117,9 +117,6 @@ html
           li
             a.icon.fa-github(href='#')
               span.label Github
-          li
-            a.icon.fa-dribbble(href='#')
-              span.label Dribbble
           li
             a.icon.fa-google-plus(href='#')
               span.label Google+
