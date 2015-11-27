@@ -2,8 +2,9 @@
  * GET /
  * Home page.
  */
+
 exports.index = (req, res) => {
-  res.render('home', {
+  res.render('splash', {
     title: 'Home'
   });
 };
