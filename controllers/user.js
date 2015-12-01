@@ -9,6 +9,7 @@ var Transaction = require('../models/Transaction');
 var secrets = require('../config/secrets');
 var activities = require('../config/activities');
 var fs = require('fs');
+var aws = require('aws-sdk');
 
 function toObjectId(str) {
     var ObjectId = (require('mongoose').Types.ObjectId);
@@ -146,6 +147,27 @@ exports.getAccount = function(req, res) {
   });
 };
 
+function uploadPicture (filename, fileBuffer, mimetype, callback) {
+    //aws credentials
+    aws.config = new aws.Config();
+    aws.config.accessKeyId = secrets.aws.accessKeyId;
+    aws.config.secretAccessKey = secrets.aws.secretAccessKey;
+    aws.config.region = secrets.aws.region;
+    var BUCKET_NAME = secrets.aws.bucketName;
+
+    var s3 = new aws.S3();
+    s3.putObject({
+      ACL: 'public-read',
+      Bucket: BUCKET_NAME,
+      Key: filename,
+      Body: fileBuffer,
+      ContentType: mimetype
+    }, function (error, response) {
+      console.log('uploaded file ' + filename);
+      callback(error);
+    });
+}
+
 /**
  * POST /account/profile
  * Update profile information.
@@ -153,6 +175,7 @@ exports.getAccount = function(req, res) {
 exports.postUpdateProfile = function(req, res, next) {
   User.findById(req.user.id, function(err, user) {
     if (err) return next(err);
+
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
@@ -162,10 +185,21 @@ exports.postUpdateProfile = function(req, res, next) {
     user.aboutMe = req.body.aboutme || '';
     user.interests = JSON.parse(req.body.interests) || [];
     user.skills = JSON.parse(req.body.skills) || [];
-    user.save(function(err) {
-      if (err) return next(err);
-      req.flash('success', { msg: 'Profile information updated.' });
-      res.redirect('/account');
+
+    var mimetype = req.file.mimetype;
+    var filename = req.user._id + '.' + mimetype.split('/').pop();
+    async.waterfall([
+      function (callback) {
+        uploadPicture(filename, req.file.buffer, mimetype, callback);
+      },
+      function (callback) {
+        user.profile.picture = 'https://s3.' + secrets.aws.region + '.' + 'amazonaws.com/' + secrets.aws.bucketName + '/' + filename;
+        user.save(callback);
+      },
+    ], function (err) {
+        if (err) return next(err);
+        req.flash('success', { msg: 'Profile information updated.' });
+        res.redirect('/account');
     });
   });
 };

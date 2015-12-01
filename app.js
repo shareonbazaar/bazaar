@@ -84,6 +84,12 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
+
+var multer  = require('multer')
+var storage = multer.memoryStorage()
+var upload = multer({ storage: storage })
+app.use(upload.single('profilepic'));
+
 app.use(lusca({
   csrf: true,
   xframe: 'SAMEORIGIN',
