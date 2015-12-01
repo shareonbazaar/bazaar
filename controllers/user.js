@@ -9,6 +9,7 @@ const Transaction = require('../models/Transaction');
 const secrets = require('../config/secrets');
 const activities = require('../config/activities');
 const fs = require('fs');
+const aws = require('aws-sdk');
 
 function toObjectId(str) {
     var ObjectId = (require('mongoose').Types.ObjectId);
@@ -152,23 +153,35 @@ exports.getAccount = (req, res) => {
   });
 };
 
+function uploadPicture (filename, fileBuffer, mimetype, callback) {
+    //aws credentials
+    aws.config = new aws.Config();
+    aws.config.accessKeyId = secrets.aws.accessKeyId;
+    aws.config.secretAccessKey = secrets.aws.secretAccessKey;
+    aws.config.region = secrets.aws.region;
+    var BUCKET_NAME = secrets.aws.bucketName;
+
+    var s3 = new aws.S3();
+    s3.putObject({
+      ACL: 'public-read',
+      Bucket: BUCKET_NAME,
+      Key: filename,
+      Body: fileBuffer,
+      ContentType: mimetype
+    }, function (error, response) {
+      console.log('uploaded file ' + filename);
+      callback(error);
+    });
+}
+
 /**
  * POST /account/profile
  * Update profile information.
  */
 exports.postUpdateProfile = (req, res, next) => {
-  req.assert('email', 'Please enter a valid email address.').isEmail();
-  req.sanitize('email').normalizeEmail({ remove_dots: false });
+  User.findById(req.user.id, function(err, user) {
+    if (err) return next(err);
 
-  const errors = req.validationErrors();
-
-  if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/account');
-  }
-
-  User.findById(req.user.id, (err, user) => {
-    if (err) { return next(err); }
     user.email = req.body.email || '';
     user.profile.name = req.body.name || '';
     user.profile.gender = req.body.gender || '';
@@ -178,16 +191,27 @@ exports.postUpdateProfile = (req, res, next) => {
     user.aboutMe = req.body.aboutme || '';
     user.interests = JSON.parse(req.body.interests) || [];
     user.skills = JSON.parse(req.body.skills) || [];
-    user.save((err) => {
-      if (err) {
-        if (err.code === 11000) {
-          req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
-          return res.redirect('/account');
+
+    var mimetype = req.file.mimetype;
+    var filename = req.user._id + '.' + mimetype.split('/').pop();
+    async.waterfall([
+      function (callback) {
+        uploadPicture(filename, req.file.buffer, mimetype, callback);
+      },
+      function (callback) {
+        user.profile.picture = 'https://s3.' + secrets.aws.region + '.' + 'amazonaws.com/' + secrets.aws.bucketName + '/' + filename;
+        user.save(callback);
+      },
+    ], function (err) {
+        if (err) {
+          if (err.code === 11000) {
+            req.flash('errors', { msg: 'The email address you have entered is already associated with an account.' });
+            return res.redirect('/account');
+          }
+          return next(err);
         }
-        return next(err);
-      }
-      req.flash('success', { msg: 'Profile information has been updated.' });
-      res.redirect('/account');
+        req.flash('success', { msg: 'Profile information has been updated.' });
+        res.redirect('/account');
     });
   });
 };

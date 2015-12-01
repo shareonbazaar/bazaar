@@ -5,7 +5,7 @@ block content
   .page-header
     h3 Profile Information
 
-  form.form-horizontal(action='/account/profile', method='POST')
+  form.form-horizontal(action='/account/profile', method='POST' enctype="multipart/form-data")
     input(type='hidden', name='_csrf', value=_csrf)
     .form-group
       label.col-sm-3.control-label(for='email') Email
@@ -27,6 +27,13 @@ block content
         label.radio.col-sm-3
           input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
           span Other
+    .form-group
+      label.col-sm-2.control-label(for='profilepic') Profile picture
+      .col-sm-4
+        input(type='file', accept='image/*', name='profilepic', id='profile-pic-input' style='display: none;')
+        .account-profile-pic(onclick="$('#profile-pic-input').click();")
+          img(id='profile-img' width=200 src='#{user.profile.picture}')
+          .upload-message Update photo
     .form-group
       label.col-sm-3.control-label(for='status') Status (refugees will be matched with natives and vice versa)
       .col-sm-4
