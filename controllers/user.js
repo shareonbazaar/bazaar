@@ -186,14 +186,19 @@ exports.postUpdateProfile = function(req, res, next) {
     user.interests = JSON.parse(req.body.interests) || [];
     user.skills = JSON.parse(req.body.skills) || [];
 
-    var mimetype = req.file.mimetype;
-    var filename = req.user._id + '.' + mimetype.split('/').pop();
     async.waterfall([
       function (callback) {
-        uploadPicture(filename, req.file.buffer, mimetype, callback);
+        // If there is a file, upload it to AWS
+        if (req.file) {
+          var mimetype = req.file.mimetype;
+          var filename = req.user._id + '.' + mimetype.split('/').pop();
+          user.profile.picture = 'https://s3.' + secrets.aws.region + '.' + 'amazonaws.com/' + secrets.aws.bucketName + '/' + filename;
+          uploadPicture(filename, req.file.buffer, mimetype, callback);
+        } else {
+          callback(null);
+        }
       },
       function (callback) {
-        user.profile.picture = 'https://s3.' + secrets.aws.region + '.' + 'amazonaws.com/' + secrets.aws.bucketName + '/' + filename;
         user.save(callback);
       },
     ], function (err) {
