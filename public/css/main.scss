@@ -5,7 +5,7 @@
 @import "lib/font-awesome/font-awesome";
 @import "lib/jquery-ui";
 
-@import "themes/default/default";
+@import "themes/flatly";
 
 // Scaffolding
 // -------------------------
@@ -117,6 +117,7 @@ textarea {
   margin: 0 auto;
   width: 50%;
   padding: 5px;
+  margin-top: 10px;
 }
 
 // Account page
