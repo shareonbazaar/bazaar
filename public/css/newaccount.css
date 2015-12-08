@@ -11,7 +11,7 @@ body {
     position:absolute;
     top:0;left:0;
     overflow:hidden;
-    background-color: #CCCCCC;
+    background-color: #2c3e50;
 }
 
 #mask {
@@ -31,7 +31,7 @@ body {
     height: 80%;
     top: 10%;
     margin: 0 auto;
-    background-color: #003366;
+    background-color: white;
     position: relative;
 }
 
@@ -41,7 +41,6 @@ body {
 }
 
 .status:hover {
-    color: green;
     text-decoration: none;
 }
 
@@ -72,7 +71,7 @@ body {
 }
 
 .question, .activity-title {
-    color: white;
+    color: #2c3e50;
 }
 
 .activity {
@@ -103,9 +102,9 @@ body {
     line-height: 120px;
     border-radius: 50%;
     color: white;
-    background-color: #CCCC99;
+    background-color: #2c3e50;
     display: inline-block;
-    margin: 0px 10px 0px 10px;
+    margin: 10px 10px 0px 10px;
     text-decoration: none;
     padding: 20px;
 }
