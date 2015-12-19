@@ -250,6 +250,7 @@ app.get('/newaccount', passportConf.isAuthenticated, function (req, res) {
 });
 app.post('/newaccount', userController.newAccount);
 app.get('/about', homeController.about);
+app.get('/newabout', homeController.newabout);
 app.get('/login', userController.getLogin);
 app.post('/login', userController.postLogin);
 app.get('/logout', userController.logout);

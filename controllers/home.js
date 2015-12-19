@@ -16,6 +16,10 @@ exports.about = function(req, res) {
   res.render('about');
 };
 
+exports.newabout = function(req, res) {
+  res.render('newabout');
+};
+
 exports.splash = function(req, res) {
   res.render('splash');
 };
