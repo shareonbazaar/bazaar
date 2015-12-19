@@ -17,6 +17,10 @@ exports.about = (req, res) => {
   res.render('about');
 };
 
+exports.newabout = (req, res) => {
+  res.render('newabout');
+};
+
 exports.splash = (req, res) => {
   res.render('splash');
 };
