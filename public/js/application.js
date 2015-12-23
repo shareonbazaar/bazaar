@@ -19,4 +19,6 @@
 //= require lib/jquery-scroll-to
 //= require lib/jquery.dropotron.min.js
 //= require lib/jquery.scrollgress.min.js
+//= require lib/jquery.scrollex.min.js
+//= require lib/jquery.scrolly.min.js
 //= require main

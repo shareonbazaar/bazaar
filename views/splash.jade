@@ -1,6 +1,6 @@
 doctype html
 //
-  Alpha by HTML5 UP
+  Spectral by HTML5 UP
   html5up.net | @n33co
   Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 html
@@ -9,100 +9,138 @@ html
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     //if lte IE 8
-      script(src='assets/js/ie/html5shiv.js')
-    link(rel='stylesheet', href='/css/splash.css')
+      script(src='js/ie/html5shiv.js')
+    link(rel='stylesheet', href='css/splash.css')
     //if lte IE 8
-      link(rel='stylesheet', href='/css/ie8.css')
+      link(rel='stylesheet', href='css/ie8.css')
+    //if lte IE 9
+      link(rel='stylesheet', href='css/ie9.css')
   body.landing
+    // Page Wrapper
     #page-wrapper
       // Header
       header#header.alt
         h1
-          a(href='/') Bazaar
+          a(href='index.html') Bazaar
         nav#nav
           ul
-            li
-              a(href='/login') Login
-            li
-              a.button(href='/signup') Sign Up
+            li.special
+              a.menuToggle(href='#menu')
+                span Menu
+              #menu
+                ul
+                  li
+                    a(href='/') Home
+                  li
+                    a(href='/signup') Sign Up
+                  li
+                    a(href='/login') Log In
       // Banner
       section#banner
-        h2 Welcome to the Bazaar
-        p A site to bring together refugees and locals over shared skills and interests
-        ul.actions
-          li
-            a.button.special(href='/signup') Sign Up
-          li
-            a.button(href='/about') Learn More
-      // Main
-      section#main.container
-        section.box.special
+        .inner
+          h2 Bazaar
+          p
+            | HALLO, SALAM,
+            br
+            |               HELLO, BONJOUR,
+            br
+            |               MARHABA, OLÁ!
+          ul.actions
+            li
+              a.button.special(href='#') SIGN IN
+        a.more.scrolly(href='#zero') Learn More
+      // Zero
+      section#zero.wrapper.style0.special
+        .inner
           header.major
             h2
-              | Introducing a way for refugees and locals to come together
+              | Bazaar is a place for empowerment
               br
-              |                             and learn from each other
+              |                 
             p
-              | Make a profile where you list your skills and interests.
+              | We believe, locals and refugees should share their skills and learn from each other.
+      // One
+      section#one.wrapper.style1.special
+        .inner
+          header.major
+            h2
+              | What skills can you share here? 
+            p
+              | People offer cool things from leisure time activities to professional competences. Currently we have about thirty skills to choose from. 
+          img(width="75%" src='images/skills.png')
+      // Two
+      section#two.wrapper.alt.style2.special(style='padding: 40px 0px;')
+        .inner
+          header.major
+            h2
+              | Our vision
+            p
+              | Let‘s create a network where everyone can offer a skill they have.  
               br
-              |                             Browse through profiles or use the filter box to search for specific skills you might need. Meet up in real life and share!
-          span.image.featured
-            img(src='/images/pic01.jpg', alt='')
-        section.box.special.features
-          .features-row
-            section
-              span.icon.major.fa-bank.accent2
-              h3 Time Banking
-              p
-                | For one hour of work you receive one Time-Coin from the person you worked for. You can exchange that coin for an hour of service from another person whose skills you need.
-            section
-              span.icon.major.fa-paint-brush.accent3
-              h3 Share Your Talent
-              p
-                | A skill can be anything from knowing German to knowing how to fix road bikes. Everyone has something to share and everyone can benefit from other people's talents.
-          .features-row
-            section
-              span.icon.major.fa-bolt.accent4
-              h3 Empowerment
-              p
-                | Integration through active participation in society. The best way for people to come together is by working together.
-            section
-              span.icon.major.fa-users.accent5
-              h3 Meetup
-              p
-                |  By sharing their skills native germans and refugees might become friends, pick up the other person’s language, or learn about each other's culture. See it as a social service; see it as your way to contribute to a better society.
-
+              |                 We see huge potential in all the people coming to new countries at the moment.  Bazaar wants to enable them and provide a tool to participate in their new society 
+          img(width="75%" src='images/network.png')
+      // Three
+      section#three.wrapper.style3
+        .inner
+          header.major
+            h2 How does it work?
+            p
+              | We use time banking to make skills exchange fair and flexible.
+              br
+              |                 Here is an example:
+          ol
+            li Mustafa helps Maria fixing her bike, which takes one hour
+            li Therefore, Maria pays Mustafa one Time-Coin. 
+            li With this Time-Coin, Mustafa can receive one hour of German lessons from Luigi, who is a cook. 
+            li That way, they not only exchange skills but learn about their backgrounds and cultural values. 
+          img(style="display:block; margin:0 auto;" width="75%" src='images/timebanking.png')
       // CTA
-      section#cta
-        a.button(style="margin-bottom: 20px;" href="/signup") Sign up now
-        p At the moment our service is in beta. Please give us as much feedback as possible. We are always looking to improve.
+      section#cta.wrapper.style4(style='padding: 12em 0 10em 0;')
+        .inner
+          header
+            h2 Sound good?
+            p
+              | Let's get started! It's easy.
+          ul.actions.vertical
+            li
+              a.button.fit.special(href='/signup') Sign Up
+            li
+              a.button.fit(href='/login') Login
       // Footer
       footer#footer
+        h3 Our Team
+        .team
+          .person
+            img(src='/images/nina.png')
+            p Nina
+          .person
+            img(src='/images/thorben.png')
+            p Thorben
+          .person
+            img(src='/images/omer.png')
+            p Omer
+          .person
+            img(src='/images/rory.png')
+            p Rory
         ul.icons
           li
             a.icon.fa-twitter(href='#')
               span.label Twitter
           li
-            a.icon.fa-facebook(href='#')
+            a.icon.fa-facebook(href='https://www.facebook.com/share.at.bazaar')
               span.label Facebook
           li
-            a.icon.fa-instagram(href='#')
+            a.icon.fa-instagram(href='https://www.instagram.com/shareonbazaar/')
               span.label Instagram
           li
-            a.icon.fa-github(href='#')
-              span.label Github
-          li
-            a.icon.fa-google-plus(href='#')
-              span.label Google+
+            a.icon.fa-envelope-o(href='/contact')
+              span.label Email
         ul.copyright
-          li © Bazaar. All rights reserved.
-          li
-            | Design: 
-            a(href='http://html5up.net') HTML5 UP
+          li © Bazaar
     // Scripts
     != js('application')
-
-    script(src='/js/skel.min.js')
-    script(src='/js/util.js')
-    script(src='/js/splash.js')
-
+    script(src='js/skel.min.js')
+    script(src='js/util.js')
+    //if lte IE 8
+      script(src='js/ie/respond.min.js')
+    script(src='js/main.js')
