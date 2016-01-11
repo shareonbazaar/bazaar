@@ -27,7 +27,7 @@ var userSchema = new mongoose.Schema({
     status: { type: String, default: '' },
     location: { type: String, default: '' },
     hometown: { type: String, default: '' },
-    picture: { type: String, default: 'http://bazaar.intrst.de/images/person_placeholder.gif' }
+    picture: { type: String, default: '/images/person_placeholder.gif' }
   },
 
   resetPasswordToken: String,
