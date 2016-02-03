@@ -45,7 +45,7 @@ exports.postSendEmail = function(req, res) {
     User.find({}, {_id: 0, email: 1}, function (err, results) {
         emails = results.map(function (elem) {return elem.email});
         var mailOptions = {
-            bcc: emails,
+            bcc: ['t@shareonbazaar.eu', 'r@shareonbazaar.eu'],
             from: name + ' <team@shareonbazaar.eu>',
             subject: subject,
             html: html_body,
