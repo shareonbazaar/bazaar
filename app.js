@@ -26,6 +26,7 @@ var assets = require('connect-assets');
  */
 var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
+var adminController = require('./controllers/admin');
 var transactionController = require('./controllers/transaction');
 var messageController = require('./controllers/message');
 var apiController = require('./controllers/api');
@@ -263,6 +264,8 @@ app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account', passportConf.isAuthenticated, userController.getAccount);
+app.get('/admin/sendEmail', passportConf.isAdmin, adminController.getSendEmail);
+app.post('/admin/sendEmail', passportConf.isAdmin, adminController.postSendEmail);
 app.post('/account/profile', passportConf.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConf.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConf.isAuthenticated, userController.postDeleteAccount);

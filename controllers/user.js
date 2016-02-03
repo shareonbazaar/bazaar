@@ -569,7 +569,7 @@ function sendWelcomeEmail (user, callback) {
 
     var mailOptions = {
       to: user.email,
-      from: 'Bazaar Team <team@intrst.de>',
+      from: 'Bazaar Team <team@shareonbazaar.eu>',
       subject: 'Welcome to the Bazaar, ' + user.profile.name,
       text: 'Hi ' + user.profile.name + ',\n\n' +
         'Thanks for signing up to Bazaar!.\n',

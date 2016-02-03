@@ -3,4 +3,5 @@ $(document).ready(function() {
         $('[data-toggle="popover"]').popover()
     });
 
+    CKEDITOR.replace( 'email_editor' );
 });
