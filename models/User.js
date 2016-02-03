@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
   twitter: String,
   google: String,
   tokens: Array,
+  isAdmin: { type: Boolean, default: false },
 
   profile: {
     name: { type: String, default: '' },

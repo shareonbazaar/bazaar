@@ -29,10 +29,11 @@ dotenv.load({ path: '.env.example' });
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
-const apiController = require('./controllers/api');
+const adminController = require('./controllers/admin');
 const transactionController = require('./controllers/transaction');
-const contactController = require('./controllers/contact');
 const messageController = require('./controllers/message');
+const apiController = require('./controllers/api');
+const contactController = require('./controllers/contact');
 
 /**
  * API keys and Passport configuration.
@@ -270,13 +271,15 @@ app.post('/signup', userController.postSignup);
 app.get('/contact', contactController.getContact);
 app.post('/contact', contactController.postContact);
 app.get('/account', passportConfig.isAuthenticated, userController.getAccount);
+app.get('/admin/sendEmail', passportConfig.isAdmin, adminController.getSendEmail);
+app.post('/admin/sendEmail', passportConfig.isAdmin, adminController.postSendEmail);
 app.post('/account/profile', passportConfig.isAuthenticated, userController.postUpdateProfile);
 app.post('/account/password', passportConfig.isAuthenticated, userController.postUpdatePassword);
 app.post('/account/delete', passportConfig.isAuthenticated, userController.postDeleteAccount);
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/messages', passportConfig.isAuthenticated, messageController.showMessages);
 app.get('/_threadMessages/:id', passportConfig.isAuthenticated, messageController.getMessages);
-app.get('/_numUnreadThreads', passportConfig.isAuthenticated, function (req, res) {
+app.get('/_numUnreadThreads', passportConfig.isAuthenticated, (req, res) => {
     res.json({
         count: req.user.unreadThreads.length,
     });

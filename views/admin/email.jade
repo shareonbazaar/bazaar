@@ -1,0 +1,29 @@
+extends ../layout
+
+block content
+  form.email_form.form-horizontal(role='form', method='POST')
+    input(type='hidden', name='_csrf', value=_csrf)
+    .form-group
+      label(class='col-sm-2 control-label', for='name') From name
+      .col-sm-8
+        input.form-control(type='text', name='name', id='name', autofocus=true)
+    .form-group
+      label(class='col-sm-2 control-label', for='subject') Subject
+      .col-sm-8
+        input.form-control(type='text', name='subject', id='subject')
+    .form-group
+      label(class='col-sm-2 control-label', for='email_editor') HTML Body
+      .col-sm-8
+        textarea(name="email_editor", id="email_editor", rows="10", cols="80")
+    .form-group
+      label(class='col-sm-2 control-label', for='text_body') Text Body
+      .col-sm-8
+        textarea.form-control(type='text', name='text_body', id='text_body', rows='7')
+    .form-group
+      .col-sm-offset-2.col-sm-8
+        button.btn.btn-primary(type='submit')
+          i.fa.fa-envelope
+          | Send
+
+
+    script(src='/ckeditor/ckeditor.js')
