@@ -20,6 +20,15 @@ block content
       .col-sm-8
         textarea.form-control(type='text', name='text_body', id='text_body', rows='7')
     .form-group
+      label.col-sm-2.control-label(for='scope') Scope
+      .col-sm-4
+        label.radio.col-sm-4
+          input(type='radio', name='scope', value='admins', data-toggle='radio')
+          span Only Admins
+        label.radio.col-sm-4
+          input(type='radio', name='scope', value='all', data-toggle='radio')
+          span Everyone
+    .form-group
       .col-sm-offset-2.col-sm-8
         button.btn.btn-primary(type='submit')
           i.fa.fa-envelope
