@@ -3,5 +3,7 @@ $(document).ready(function() {
         $('[data-toggle="popover"]').popover()
     });
 
-    CKEDITOR.replace( 'email_editor' );
+    if ($('#email_editor').length > 0) {
+        CKEDITOR.replace('email_editor');
+    }
 });

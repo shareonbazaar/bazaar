@@ -21,4 +21,5 @@
 //= require lib/jquery.scrollgress.min.js
 //= require lib/jquery.scrollex.min.js
 //= require lib/jquery.scrolly.min.js
+//= require lib/ckeditor/ckeditor.js
 //= require main
