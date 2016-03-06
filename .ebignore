@@ -1,6 +1,5 @@
 lib-cov
 *.seed
-*.log
 *.csv
 *.dat
 *.out
@@ -11,24 +10,14 @@ lib-cov
 pids
 logs
 results
-tmp
+tmp/
 
-# API keys and secrets
-.env
-
-# Dependency directory
-node_modules
-bower_components
-
-# Editors
+.git/
+node_modules/
 .idea
 *.iml
-
-# OS metadata
 .DS_Store
 Thumbs.db
-
-config/secrets.js
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
