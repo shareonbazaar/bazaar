@@ -1,6 +1,5 @@
 lib-cov
 *.seed
-*.log
 *.csv
 *.dat
 *.out
@@ -11,16 +10,14 @@ lib-cov
 pids
 logs
 results
-tmp
+tmp/
 
-npm-debug.log
-node_modules
+.git/
+node_modules/
 .idea
 *.iml
 .DS_Store
 Thumbs.db
-
-config/secrets.js
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
