@@ -6,4 +6,15 @@ $(document).ready(function() {
     if ($('#email_editor').length > 0) {
         CKEDITOR.replace('email_editor');
     }
+
+    var grid = $('.grid').masonry({
+        gutter: 20,
+        itemSelector: '.grid-item',
+        columnWidth: 300,
+        fitWidth: true,
+    });
+
+    grid.imagesLoaded().progress(function () {
+        grid.masonry('layout');
+    });
 });
