@@ -11,7 +11,7 @@ block content
 
         .profile-info
           .header
-            .profile-pic(class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skill_labels.join(', ')}" )
+            .profile-pic(onclick='window.location = "/profile/#{user.id}"' class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}")
             .contact-icons
               include ../partials/newmessage
               .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}")
@@ -24,7 +24,7 @@ block content
             h4=user.profile.location
           .skill-icons
             each skill in user.skills
-              img.icons(src='/images/skill_icons/' + 'tools.svg')
+              img.icons(title=skill.label alt=skill.label src='/images/skill_icons/' + skill.name + '.png')
           p=user.aboutMe
 
   script(src='/js/showall.js')

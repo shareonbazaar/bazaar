@@ -466,6 +466,13 @@ exports.findUsers = function(req, res) {
         } else {
             user.match = 'none';
         }
+
+        user.skills = user.skills.map(function (skill) {
+            return {
+                name: skill,
+                label: activities.getActivityLabelForName(skill),
+            };
+        });
         user.skill_labels = user.skills.map(activities.getActivityLabelForName);
 
         if (typeof user.loc.coordinates === 'undefined') {
