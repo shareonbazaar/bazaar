@@ -1,22 +1,20 @@
-button.btn.btn-primary(type="button", data-toggle="modal", data-target="#messageModal", data-name="#{spotlight_user.profile.name}") Message #{spotlight_user.profile.name}
-
-#messageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="messageModalLabel")
-  .modal-dialog(role="document")
-    .modal-content
-      .modal-header
-        button.close(type="button", data-dismiss="modal", aria-label="Close")
-          span(aria-hidden="true") &#215;
-        h4#messageModalLabel.modal-title New message
-      .modal-body
-        form#profile-message-form
-          - var participants = [user.id, spotlight_user.id]
-          #data-div(style="display:none;" data-thread-participants=participants data-thread-id="#{thread_id}")
-          .form-group
-            label.control-label(for="recipient-name") Recipient:
-            input#recipient-name.form-control(type="text" value="#{spotlight_user.profile.name}" readonly)
-          .form-group
-            label.control-label(for="message-text") Message:
-            textarea#text-input.form-control
-      .modal-footer
-        button.btn.btn-default(type="button", data-dismiss="modal") Close
-        button.btn.btn-primary#submit-profile-message(type="button") Send message
+mixin message(recipient_user)
+  #messageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="messageModalLabel")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          button.close(type="button", data-dismiss="modal", aria-label="Close")
+            span(aria-hidden="true") &#215;
+          h4#messageModalLabel.modal-title New message
+        .modal-body
+          form#profile-message-form
+            #data-div(style="display:none;" data-thread-participants=[recipient_user.id])
+            .form-group
+              label.control-label(for="recipient-name") Recipient:
+              input#recipient-name.form-control(type="text" value="#{recipient_user.profile.name}" readonly)
+            .form-group
+              label.control-label(for="message-text") Message:
+              textarea#text-input.form-control
+        .modal-footer
+          button.btn.btn-default(type="button", data-dismiss="modal") Close
+          button.btn.btn-primary#submit-profile-message(type="button") Send message

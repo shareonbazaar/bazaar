@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('#submit-profile-message').click(function () {
         var packet = {
             message: $('#text-input').val(),
-            thread_id: $('#data-div').attr('data-thread-id'),
-            isNewThread: $('#data-div').attr('data-thread-id') < 0,
             to: JSON.parse($('#data-div').attr('data-thread-participants')),
         };
         socket.emit('send message', packet);

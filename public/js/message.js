@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var packet = {
             message: message_text,
             thread_id: current_message.thread_id,
-            isNewThread: current_message.thread_id < 0,
             to: [current_message.recipient.id],
         };
 

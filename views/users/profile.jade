@@ -8,7 +8,9 @@ block content
       p= "About me: " + spotlight_user.aboutMe
       p= "Hometown: " + spotlight_user.profile.hometown
       p= "Location: " + spotlight_user.profile.location
+      button.btn.btn-primary(type="button", data-toggle="modal", data-target="#messageModal", data-name="#{spotlight_user.profile.name}") Message #{spotlight_user.profile.name}
       include ../partials/newmessage
+      +message(spotlight_user)
     .col-sm-8
       .container
         .row

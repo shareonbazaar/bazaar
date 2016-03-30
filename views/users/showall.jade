@@ -13,10 +13,12 @@ block content
           .header
             .profile-pic(class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}" data-content="Skills: #{user.skill_labels.join(', ')}" )
             .contact-icons
-              a.icon-links(href='/messages')
-                img.icons(src='/images/chat_bubble.svg')
-              a.icon-links(href='/transactions')
-                img.icons(src='/images/request_exchange.svg')
+              include ../partials/newmessage
+              .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}")
+                img.icons(src='/images/chat_bubble.png')
+              +message(user)
+              .icon-links#second-icon(href='/transactions')
+                img.icons(src='/images/request_exchange.png')
           .name-location
             h3=user.profile.name.split(' ')[0]
             h4=user.profile.location
@@ -26,3 +28,4 @@ block content
           p=user.aboutMe
 
   script(src='/js/showall.js')
+  script(src='/js/profile.js')
