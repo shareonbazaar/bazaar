@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var dist = distance(position.coords.longitude, position.coords.latitude,
                 user_long, user_lat);
             if (!isNaN(dist)) {
-                $(obj).attr('data-original-title', $(obj).attr('data-original-title') + ' (' + Math.round(dist) + 'km)');
+                $(obj).attr('data-content', Math.round(dist) + 'km away');
             }
         });
     }
