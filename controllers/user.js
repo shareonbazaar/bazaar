@@ -514,18 +514,14 @@ exports.showProfile = function(req, res) {
       });
       return;
     }
-    var participants = [req.params.id, req.user.id].sort().map(toObjectId);
     user.skill_labels = user.skills.map(activities.getActivityLabelForName);
     user.interest_labels = user.interests.map(activities.getActivityLabelForName);
-    Thread.find({'_participants': participants}, function (err, threads) {
-      Transaction.find({'_recipient': user._id}, function (err, transactions) {
-        res.render('users/profile', {
-            spotlight_user: user,
-            thread_id: threads.length > 0 ? threads[0].id : -1,
-            transactions: transactions,
-        });
-      })
-    })
+    Transaction.find({'_recipient': user._id}, function (err, transactions) {
+      res.render('users/profile', {
+          spotlight_user: user,
+          transactions: transactions,
+      });
+    });
   });
 };
 

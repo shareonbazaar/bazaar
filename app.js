@@ -129,6 +129,11 @@ function onAuthorizeFail(data, message, error, accept){
   }
 }
 
+function toObjectId(str) {
+    var ObjectId = (require('mongoose').Types.ObjectId);
+    return new ObjectId(str);
+};
+
 //With Socket.io >= 1.0
 io.use(passportSocketIo.authorize({
   cookieParser: cookieParser,
@@ -204,13 +209,14 @@ function sendMessage (socket, data, thread_id, newMsg, callback) {
 }
 
 function saveThread (socket, data, unused_id, callback) {
-    var newThread = new Thread({
-        _participants: [socket.request.user._id].concat(data.to).sort(),
-        lastUpdated: new Date(),
-    });
+    var participants = [socket.request.user._id].concat(data.to).map(toObjectId);
+    var now = new Date();
 
-    newThread.save(function (err) {
-        callback(null, socket, data, newThread._id);
+    Thread.findOneAndUpdate({'_participants': participants},
+    { lastUpdated: now },
+    { upsert: true, new: true },
+    function (err, thread) {
+      callback(null, socket, data, thread._id);
     });
 }
 
@@ -222,7 +228,7 @@ io.sockets.on('connection', function (socket) {
             sendMessage,
         ];
 
-        if (data.isNewThread) {
+        if (typeof data.thread_id == 'undefined' || data.thread_id < 0) {
             arr.unshift(saveThread);
         }
 
