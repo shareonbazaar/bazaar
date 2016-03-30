@@ -15,6 +15,7 @@ function toObjectId(str) {
 
 function getThreadMessages (thread, callback, current_user_id) {
   return Message.find({'_thread': toObjectId(thread._id)})
+    .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {
         if (err) {
@@ -69,6 +70,7 @@ exports.showMessages = function(req, res) {
 exports.getMessages = function(req, res) {
     var thread_id = req.params.id;
     Message.find({'_thread': toObjectId(thread_id)})
+    .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {
         res.json(messages.map(function (message) {
