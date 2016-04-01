@@ -2,6 +2,7 @@ extends ../layout
 
 block content
   include ../partials/newmessage
+  include ../partials/newrequest
   .row
     input#user-search.user-search-box(placeholder="Search a skill here, e.g. cooking")
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
@@ -16,7 +17,7 @@ block content
             .contact-icons
               .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}", data-id="#{user.id}")
                 img.icons(src='/images/chat_bubble.png')
-              .icon-links#second-icon(href='/transactions')
+              .icon-links#second-icon(data-toggle="modal", data-target="#requestModal", data-name="#{user.profile.name}" data-id="#{user.id}" data-skills=user.skills)
                 img.icons(src='/images/request_exchange.png')
           .name-location
             h3=user.profile.name.split(' ')[0]
