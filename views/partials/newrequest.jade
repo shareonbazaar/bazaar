@@ -1,0 +1,14 @@
+#requestModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="requestModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#requestModalLabel.modal-title
+      .modal-body
+        form.profile-request-form
+          #request-data-div(style="display:none;" recipient)
+          select#skill-select
+      .modal-footer
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+        button.btn.btn-primary#submit-skill-request(type="button") Request

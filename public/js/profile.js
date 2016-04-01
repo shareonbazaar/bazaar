@@ -17,6 +17,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('#messageModal').modal('hide')
     });
 
+    $('#submit-skill-request').click(function () {
+        var packet = {
+            message: "You have received a request for " + $('#skill-select option:selected').text(),
+            to: [$('#request-data-div').attr('recipient')],
+        };
+        socket.emit('send message', packet);
+        $('#requestModal').modal('hide');
+    });
+
     $('#messageModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id')
@@ -24,6 +33,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
         modal.find('.modal-title').text('New message to ' + button.data('name'));
         modal.find('.modal-body input').val(button.data('name'));
         modal.find('.modal-body #message-data-div').attr('recipient', id);
+    });
+
+    $('#requestModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.data('id');
+        var skills = button.data('skills');
+        var modal = $(this);
+        modal.find('.modal-body #request-data-div').attr('recipient', id);
+        modal.find('.modal-title').text('Choose a skill to request from ' + button.data('name'));
+        skills.forEach(function (skill) {
+            var option = '<option name=' + skill.name + '>' + skill.label + '</option>';
+            $('#skill-select').append(option);
+        });
     });
 
     $('.submit-activities').click(function () {
