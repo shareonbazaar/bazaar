@@ -1,6 +1,7 @@
 extends ../layout
 
 block content
+  include ../partials/newmessage
   .row
     input#user-search.user-search-box(placeholder="Search a skill here, e.g. cooking")
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
@@ -13,10 +14,8 @@ block content
           .header
             .profile-pic(onclick='window.location = "/profile/#{user.id}"' class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}")
             .contact-icons
-              include ../partials/newmessage
-              .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}")
+              .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}", data-id="#{user.id}")
                 img.icons(src='/images/chat_bubble.png')
-              +message(user)
               .icon-links#second-icon(href='/transactions')
                 img.icons(src='/images/request_exchange.png')
           .name-location
