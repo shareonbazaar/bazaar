@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('#submit-profile-message').click(function () {
         var packet = {
             message: $('#text-input').val(),
-            to: JSON.parse($('#data-div').attr('data-thread-participants')),
+            to: [$('#message-data-div').attr('recipient')],
         };
         socket.emit('send message', packet);
         $('#text-input').val('');
@@ -19,11 +19,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $('#messageModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var recipient = button.data('name') // Extract info from data-* attributes
+        var id = button.data('id')
         var modal = $(this)
-        modal.find('.modal-title').text('New message to ' + recipient)
-        modal.find('.modal-body input').val(recipient)
-    })
+        modal.find('.modal-title').text('New message to ' + button.data('name'));
+        modal.find('.modal-body input').val(button.data('name'));
+        modal.find('.modal-body #message-data-div').attr('recipient', id);
+    });
 
     $('.submit-activities').click(function () {
         var id = $(this).attr('id');

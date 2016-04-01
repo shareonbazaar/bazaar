@@ -1,20 +1,19 @@
-mixin message(recipient_user)
-  #messageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="messageModalLabel")
-    .modal-dialog(role="document")
-      .modal-content
-        .modal-header
-          button.close(type="button", data-dismiss="modal", aria-label="Close")
-            span(aria-hidden="true") &#215;
-          h4#messageModalLabel.modal-title New message
-        .modal-body
-          form#profile-message-form
-            #data-div(style="display:none;" data-thread-participants=[recipient_user.id])
-            .form-group
-              label.control-label(for="recipient-name") Recipient:
-              input#recipient-name.form-control(type="text" value="#{recipient_user.profile.name}" readonly)
-            .form-group
-              label.control-label(for="message-text") Message:
-              textarea#text-input.form-control
-        .modal-footer
-          button.btn.btn-default(type="button", data-dismiss="modal") Close
-          button.btn.btn-primary#submit-profile-message(type="button") Send message
+#messageModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="messageModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#messageModalLabel.modal-title New message
+      .modal-body
+        form#profile-message-form
+          #message-data-div(style="display:none;" recipient)
+          .form-group
+            label.control-label(for="recipient-name") Recipient:
+            input#recipient-name.form-control(type="text" readonly)
+          .form-group
+            label.control-label(for="message-text") Message:
+            textarea#text-input.form-control
+      .modal-footer
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+        button.btn.btn-primary#submit-profile-message(type="button") Send message
