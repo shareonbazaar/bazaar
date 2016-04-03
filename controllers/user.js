@@ -497,7 +497,10 @@ exports.findUsers = (req, res) => {
  */
 exports.list = function(req, res) {
   var regex = new RegExp(req.query.term, 'i')
-  User.find({'profile.name': {$regex: regex}}, function (err, results) {
+  User.find({
+    'profile.name': {$regex: regex},
+    _id: {$ne: req.user.id},
+  }, function (err, results) {
     data = results.map(function (user) {
         return {
           label: user.profile.name,
