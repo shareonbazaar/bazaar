@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var modal = $(this);
         modal.find('.modal-body #request-data-div').attr('recipient', id);
         modal.find('.modal-title').text('Choose a skill to request from ' + button.data('name'));
+        $('#skill-select').empty();
         skills.forEach(function (skill) {
             var option = '<option name=' + skill.name + '>' + skill.label + '</option>';
             $('#skill-select').append(option);
