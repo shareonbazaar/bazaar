@@ -490,7 +490,7 @@ exports.findUsers = function(req, res) {
  * List all users whose name matches the query term. Used for searching
  */
 exports.list = function(req, res) {
-  var regex = new RegExp(req.query.term, 'i')
+  var regex = new RegExp(req.query.term.replace(/\\/g, ''), 'i');
   User.find({
     'profile.name': {$regex: regex},
     _id: {$ne: req.user.id},
