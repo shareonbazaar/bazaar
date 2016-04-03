@@ -55,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     socket.on('new message', function (data) {
-        console.log(JSON.stringify(data, null, 2))
         var match = $('#thread-list').find('[data-thread-id="' + data.thread._id + '"]');
         // If its a message for an existing thread, add it and set that thread to 'pending'
         if (match.length > 0) {
