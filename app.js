@@ -39,9 +39,6 @@ var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
 var activities = require('./config/activities');
 
-var Message = require('./models/Message');
-var Thread = require('./models/Thread');
-
 /**
  * Create Express server.
  */
@@ -106,136 +103,8 @@ app.use(function(req, res, next) {
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
-var io = require('socket.io').listen(server);
-var passportSocketIo = require("passport.socketio");
-var async = require('async');
-
-function onAuthorizeSuccess(data, accept){
-  console.log('successful connection to socket.io');
-  accept();
-}
-
-function onAuthorizeFail(data, message, error, accept){
-  console.log('failed connection to socket.io:', message);
-  if(error) {
-    accept(new Error(message));
-  }
-}
-
-function toObjectId(str) {
-    var ObjectId = (require('mongoose').Types.ObjectId);
-    return new ObjectId(str);
-};
-
-//With Socket.io >= 1.0
-io.use(passportSocketIo.authorize({
-  cookieParser: cookieParser,
-  key:          'connect.sid',
-  secret:       secrets.sessionSecret,
-  store:        store,
-  success:      onAuthorizeSuccess,
-  fail:         onAuthorizeFail,
-}));
-
-var socket_map = {};
-
-function saveMessage (socket, data, thread_id, callback) {
-    var newMsg = new Message({
-        message: data.message,
-        timeSent: new Date(),
-        _thread: thread_id,
-        _sender: socket.request.user._id,
-    });
-    newMsg.save(function (err) {
-        if (err) {
-            throw err;
-        }
-        callback(null, socket, data, thread_id, newMsg)
-    });
-}
-
-function sendMessage (socket, data, thread_id, newMsg, callback) {
-    var sender = socket.request.user;
-    Thread.findOne({_id: thread_id})
-    .populate('_participants')
-    .exec(function (err, thread) {
-        async.each(thread._participants, function (user, user_callback) {
-            var is_me = sender._id.toString() == user._id.toString();
-            // if recipient is online, ping him the message via socket
-            if (socket_map[user._id]) {
-                io.to(socket_map[user._id]).emit('new message', {
-                    message: newMsg.message,
-                    timeSent: newMsg.timeSent,
-                    thread: thread,
-                    author: {
-                        name: sender.profile.name,
-                        pic: sender.profile.picture,
-                        id: sender._id,
-                        isMe: is_me,
-                    },
-                });
-            }
-
-            // always send an e-mail to recipient other than me, even if they are not online
-            if (!is_me) {
-                messageController.sendMessageEmail(sender, user, newMsg.message, function (err) {
-                  if (err)
-                      console.log(err);
-                });
-
-                // Increment unread message count
-                if (user.unreadThreads.indexOf(thread.id) < 0) {
-                    user.unreadThreads.push(thread.id);
-                }
-                user.save(function (err) {
-                    if (err) {
-                        user_callback(err);
-                    } else {
-                        user_callback();
-                    }
-                });
-            }
-        }, function (err) {
-            callback(err);
-        });
-    });
-}
-
-function saveThread (socket, data, unused_id, callback) {
-    var participants = [socket.request.user._id].concat(data.to).map(toObjectId);
-    var now = new Date();
-
-    Thread.findOneAndUpdate({'_participants': participants},
-    { lastUpdated: now },
-    { upsert: true, new: true },
-    function (err, thread) {
-      callback(null, socket, data, thread._id);
-    });
-}
-
-io.sockets.on('connection', function (socket) {
-    socket_map[socket.request.user._id] = socket.id;
-    socket.on('send message', function (data) {
-        var arr = [
-            saveMessage,
-            sendMessage,
-        ];
-
-        if (typeof data.thread_id == 'undefined' || data.thread_id < 0) {
-            arr.unshift(saveThread);
-        }
-
-        arr.unshift(function (callback) {
-            callback(null, socket, data, data.thread_id);
-        })
-
-        async.waterfall(arr, function (err, results) {
-            if (err) {
-                console.log("Error: " + err);
-            }
-        });
-    });
-});
+// Initialize the sockets for sending and receiving messages
+messageController.initSockets(server, store, cookieParser);
 
 /**
  * Primary app routes.
