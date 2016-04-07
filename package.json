@@ -1,9 +1,9 @@
 {
-  "name": "hackathon-starter",
-  "version": "4.0.1",
+  "name": "bazaar",
+  "version": "4.1.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/sahat/hackathon-starter.git"
+    "url": "https://github.com/rmacqueen/bazaar.git"
   },
   "scripts": {
     "start": "node app.js",
