@@ -32,7 +32,6 @@ const userController = require('./controllers/user');
 const adminController = require('./controllers/admin');
 const transactionController = require('./controllers/transaction');
 const messageController = require('./controllers/message');
-const apiController = require('./controllers/api');
 const contactController = require('./controllers/contact');
 
 /**
@@ -101,13 +100,7 @@ app.use((req, res, next) => {
   res.locals.user = req.user;
   next();
 });
-app.use((req, res, next) => {
-  // After successful login, redirect back to /api, /contact or /
-  if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
-    req.session.returnTo = req.path;
-  }
-  next();
-});
+
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
 
 // Initialize the sockets for sending and receiving messages
@@ -188,15 +181,6 @@ app.post('/location', passportConfig.isAuthenticated, userController.postLocatio
  */
 app.get('/users', passportConfig.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
-
-
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get('/api/facebook', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getFacebook);
-app.get('/api/twitter', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.getTwitter);
-app.post('/api/twitter', passportConfig.isAuthenticated, passportConfig.isAuthorized, apiController.postTwitter);
 
 /**
  * OAuth authentication routes. (Sign in)
