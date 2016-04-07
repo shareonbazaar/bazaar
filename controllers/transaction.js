@@ -1,5 +1,10 @@
+var async = require('async');
+
 var Transaction = require('../models/Transaction');
 var activities = require('../config/activities');
+var Enums = require('../models/Enums');
+var messageController = require('../controllers/message');
+
 
 function dateString (date) {
     return [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('/');
@@ -14,39 +19,27 @@ exports.showTransactions = function(req, res) {
     .populate('_sender')
     .populate('_recipient')
     .exec(function (err, transactions) {
-        var data = transactions.map(function (transaction) {
-            return {
-                partner: transaction._sender._id == req.user.id ? transaction._recipient : transaction._sender,
-                date: dateString(transaction.timeSent),
-                service: activities.getActivityLabelForName(transaction.service),
-                amount: transaction.amount,
-            }
+        transactions.forEach(function (t) {
+            t.service_label = activities.getActivityLabelForName(t.service);
+        })
+        var proposed = transactions.filter(function (t) {
+            return t.status === Enums.StatusType.PROPOSED && t._recipient._id.toString() === req.user.id.toString();
         });
+
+        var proposed_ids = proposed.map(function (t) {return t._id.toString()});
+        var rest = transactions.filter(function (t) {
+            return proposed_ids.indexOf(t._id.toString()) < 0;
+        });
+
         res.render('users/transactions', {
-            transactions: data,
-            activity_list: activities.getAllActivityLabels(),
+            proposed_transactions: proposed,
+            other_transactions: rest,
         });
   });
 };
 
-
-/**
- * POST /transactions
- * Add a transaction for current user
- */
-exports.postTransaction = function(req, res) {
-    var trans = new Transaction({
-        amount: req.body.amount,
-        review: {
-            text: req.body.review,
-            rating: req.body.rating,
-        },
-        timeSent: new Date(),
-        service: req.body.service,
-        _recipient: req.body.recipient,
-        _sender: req.user.id,
-    });
-    trans.save(function (err) {
+function respondToAjax (res) {
+    return function (err) {
         var error = null;
         if (err) {
             error = err;
@@ -54,5 +47,64 @@ exports.postTransaction = function(req, res) {
         res.json({
             error: error,
         });
-    });
+    }
+};
+
+/**
+ * POST /reviews
+ * Add a review for a transaction
+ */
+
+exports.postReview = function (req, res) {
+    Transaction.findOneAndUpdate({_id: req.body.id}, {
+        review: {
+            text: req.body.review,
+            rating: req.body.rating,
+        },
+    }, respondToAjax(res));
+};
+
+/**
+ * POST /acceptRequest
+ * Accept a request for an exchange.
+ */
+
+exports.postAccept = function (req, res) {
+    async.waterfall([
+            function (callback) {
+                Transaction.findOneAndUpdate(
+                    {_id: req.body.id},
+                    {status: Enums.StatusType.ACCEPTED},
+                    callback);
+            },
+
+            function (trans, callback) {
+                messageController.addMessageToThread(req.user.id, [trans._sender], req.body.message, callback);
+            },
+        ], respondToAjax(res));
+};
+
+/**
+ * POST /transactions
+ * Add a transaction for current user
+ */
+exports.postTransaction = function(req, res) {
+    async.waterfall([
+        function (callback) {
+            var trans = new Transaction({
+                amount: req.body.amount,
+                timeSent: new Date(),
+                service: req.body.service,
+                _recipient: req.body.recipient,
+                _sender: req.user.id,
+                status: Enums.StatusType.PROPOSED,
+            });
+            trans.save(callback);
+        },
+
+        function (t, num, callback) {
+            var message = "Hi! I would like to request an exchange of " + activities.getActivityLabelForName(req.body.service);
+            messageController.addMessageToThread(req.user.id, [req.body.recipient], message, callback);
+        },
+    ], respondToAjax(res));
 };

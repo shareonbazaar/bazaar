@@ -1,25 +1,30 @@
 extends ../layout
 
 block content
-    h1 Transactions
+  include ../partials/acceptModal
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  h3 Requests for you
 
-    .row
-      .col-md-4
-        p="My Account"
-        include ../partials/newtransaction
-      .col-md-8
-        table.transaction-table
-          thead
-            tr
-              th Date
-              th Service
-              th Partner
-              th Value
-          tbody
-            each transaction, i in transactions
-              tr
-                td= transaction.date
-                td= transaction.service
-                td= transaction.partner.profile.name
-                td= transaction.amount
-    script(src='/js/transaction.js')
+  each request in proposed_transactions
+    .request
+      img(src=request._sender.profile.picture)
+      .request-message
+        p #{request._sender.profile.name} has requested #{request.amount} hours of #{request.service_label} with you
+        p(data-toggle="modal" data-target="#acceptModal" data-id="#{request._id}").accept Click here to accept
+
+  h3 Other Exchanges
+  table.transaction-table
+    thead
+      tr
+        th Service
+        th Partner
+        th Value
+        th Status
+    tbody
+      each transaction in other_transactions
+        tr
+          td= transaction.service_label
+          td= transaction._sender.profile.name
+          td= transaction.amount
+          td= transaction.status
+  script(src='/js/transaction.js')
