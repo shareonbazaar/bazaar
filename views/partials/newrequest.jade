@@ -7,8 +7,12 @@
         h4#requestModalLabel.modal-title
       .modal-body
         form.profile-request-form
-          #request-data-div(style="display:none;" recipient)
-          select#skill-select
+          #request-recipient(style="display:none;" recipient)
+          .form-group
+            select#skill-select
+          .form-group
+            label.control-label(for="amount") Amount:
+            input#request-amount.form-control(type="number")
       .modal-footer
         button.btn.btn-default(type="button", data-dismiss="modal") Close
         button.btn.btn-primary#submit-skill-request(type="button") Request

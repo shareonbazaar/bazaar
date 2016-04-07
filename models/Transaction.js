@@ -1,8 +1,13 @@
 var mongoose = require('mongoose');
 var User = require('../models/User');
+var Enums = require('../models/Enums');
 
 var transactionSchema = new mongoose.Schema({
   amount: Number,
+  status: {
+    type: String,
+    enum: Object.keys(Enums.StatusType).map(function (key) { Enums.StatusType[key] }),
+  },
   timeSent: Date,
   review: {
       text: { type: String, default: '' },
@@ -14,14 +19,3 @@ var transactionSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
-
-transactionSchema.post('save', function (transaction) {
-    User.findById(transaction._sender, function (err, user) {
-        user.coins -= transaction.amount;
-        user.save();
-    });
-    User.findById(transaction._recipient, function (err, user) {
-        user.coins += transaction.amount;
-        user.save();
-    });
-});

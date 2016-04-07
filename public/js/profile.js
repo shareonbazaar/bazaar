@@ -18,12 +18,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     $('#submit-skill-request').click(function () {
-        var packet = {
-            message: "You have received a request for " + $('#skill-select option:selected').text(),
-            to: [$('#request-data-div').attr('recipient')],
+        var data = {
+            recipient: $('#request-recipient').attr('recipient'),
+            amount: $('#request-amount').val(),
+            _csrf: $('#csrf_token').val(),
+            service: $('#skill-select option:selected').attr('name'),
         };
-        socket.emit('send message', packet);
-        $('#requestModal').modal('hide');
+        $.ajax({
+            url: '/transactions',
+            method: 'POST',
+            data: data,
+        }).done(function (data) {
+            console.log(data)
+        })
+        $('#requestModal').modal('hide')
+        return false;
     });
 
     $('#messageModal').on('show.bs.modal', function (event) {
@@ -40,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var id = button.data('id');
         var skills = button.data('skills');
         var modal = $(this);
-        modal.find('.modal-body #request-data-div').attr('recipient', id);
+        modal.find('.modal-body #request-recipient').attr('recipient', id);
         modal.find('.modal-title').text('Choose a skill to request from ' + button.data('name'));
         $('#skill-select').empty();
         skills.forEach(function (skill) {

@@ -1,0 +1,16 @@
+#acceptModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="acceptModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#acceptModalLabel.modal-title Confirm acceptance by suggesting a meetup time
+      .modal-body
+        form.profile-accept-form
+          #request-id(style="display:none;" request-id)
+          .form-group
+            label.control-label(for="message-text") Message:
+            textarea#text-input.form-control
+      .modal-footer
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+        button.btn.btn-primary#submit-acceptance(type="button") Confirm Acceptance
