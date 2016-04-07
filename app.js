@@ -29,7 +29,6 @@ var userController = require('./controllers/user');
 var adminController = require('./controllers/admin');
 var transactionController = require('./controllers/transaction');
 var messageController = require('./controllers/message');
-var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 
 /**
@@ -95,10 +94,6 @@ app.use(lusca({
 }));
 app.use(function(req, res, next) {
   res.locals.user = req.user;
-  next();
-});
-app.use(function(req, res, next) {
-  if (/api/i.test(req.path)) req.session.returnTo = req.path;
   next();
 });
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
@@ -181,15 +176,6 @@ app.post('/location', passportConf.isAuthenticated, userController.postLocation)
  */
 app.get('/users', passportConf.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
-
-
-/**
- * API examples routes.
- */
-app.get('/api', apiController.getApi);
-app.get('/api/facebook', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getFacebook);
-app.get('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.getTwitter);
-app.post('/api/twitter', passportConf.isAuthenticated, passportConf.isAuthorized, apiController.postTwitter);
 
 /**
  * OAuth authentication routes. (Sign in)
