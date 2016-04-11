@@ -10,16 +10,24 @@ block content
         .search-box
           input#message-search(type="text" placeholder="Search by name")
         ul.thread-list#thread-list
-         each thread, i in threads
-           - var participants = thread.participants.map(function(user){return user._id}).sort()
-           - var thread_klass = user.unreadThreads.indexOf(thread._id) >= 0 ? 'is-pending' : ''
-           li(data-thread-id="#{thread._id}" data-thread-participants=participants class="#{thread_klass}")
-             .message-snippet
-               img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
-               .snippet-text
-                 .timestamp=thread.messages.slice(-1)[0].timeSent.getHours() + ':' + ('0'+ thread.messages.slice(-1)[0].timeSent.getMinutes()).slice(-2)
-                 .sender=thread.participants[0].profile.name
-                 .message-content=thread.messages.slice(-1)[0].message
+          each thread, i in threads
+            - var participants = thread.participants.map(function(user){return user._id}).sort()
+            - var thread_klass = user.unreadThreads.indexOf(thread._id) >= 0 ? 'is-pending' : ''
+            li(data-thread-id="#{thread._id}" data-thread-participants=participants class="#{thread_klass}")
+              .message-snippet
+                img.profile-pic(src=thread.participants[0].profile.picture || "images/person_placeholder.gif")
+                .snippet-text
+                  - var timestamp = thread.messages.slice(-1)[0].timeSent
+                  - var wasToday = timestamp.toDateString() == (new Date()).toDateString()
+                  - var wasThisWeek = (new Date() - timestamp) < (1000 * 60 * 60 * 24 * 7)
+                  if wasToday
+                    .timestamp=('0' + timestamp.getHours()).slice(-2) + ':' + ('0'+ timestamp.getMinutes()).slice(-2)
+                  else if wasThisWeek
+                    .timestamp=timestamp.toDateString().slice(0, 3)
+                  else
+                    .timestamp=('0' + timestamp.getDate()).slice(-2) + '/' + ('0' + (timestamp.getMonth() + 1)).slice(-2)
+                  .sender=thread.participants[0].profile.name
+                  .message-content=thread.messages.slice(-1)[0].message
     .col-md-9
       .conversation-container
         .header#conversation-header
