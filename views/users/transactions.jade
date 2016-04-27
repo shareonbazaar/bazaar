@@ -20,6 +20,7 @@ block content
         th Partner
         th Value
         th Status
+        th Confirm
     tbody
       each transaction in other_transactions
         tr
@@ -27,4 +28,5 @@ block content
           td= transaction._sender.profile.name
           td= transaction.amount
           td= transaction.status
+          td.confirm(data-id=transaction.id) Click here to confirm
   script(src='/js/transaction.js')

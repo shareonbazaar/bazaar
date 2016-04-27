@@ -23,4 +23,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var modal = $(this);
         modal.find('.modal-body #request-id').attr('request-id', id);
     });
+
+    $('.confirm').click(function () {
+        $.ajax({
+            url: '/confirmExchange/' + $(this).data('id'),
+            method: 'GET',
+        }).done(function (data) {
+            console.log(data);
+        });
+    })
 });
