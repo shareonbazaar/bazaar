@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             method: 'POST',
             data: data,
         }).done(function (data) {
-            console.log(data)
+            console.log(data);
         })
         $('#acceptModal').modal('hide')
         return false;
