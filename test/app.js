@@ -25,10 +25,10 @@ describe('GET /signup', function() {
   });
 });
 
-describe('GET /api', function() {
+describe('GET /privacy', function() {
   it('should return 200 OK', function(done) {
     request(app)
-      .get('/api')
+      .get('/privacy')
       .expect(200, done);
   });
 });
