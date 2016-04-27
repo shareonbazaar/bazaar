@@ -8,6 +8,7 @@ var fs = require('fs');
 var secrets = require('../config/secrets');
 var Message = require('../models/Message');
 var Thread = require('../models/Thread');
+var helpers = require('./helpers');
 
 var io;
 var socket_map;
@@ -51,13 +52,8 @@ exports.initSockets = function (server, store, cookieParser) {
     });
 }
 
-function toObjectId(str) {
-    var ObjectId = (require('mongoose').Types.ObjectId);
-    return new ObjectId(str);
-};
-
 function addMessageToThread (sender_id, recipients, message_text, add_message_callback, thread_id) {
-    var participants = [sender_id].concat(recipients).sort().map(toObjectId);
+    var participants = [sender_id].concat(recipients).sort().map(helpers.toObjectId);
     var now = new Date();
 
     var query = {};
@@ -169,7 +165,7 @@ function sendMessageEmail (sender, recipient, message, callback) {
 }
 
 function getThreadMessages (thread, callback, current_user_id) {
-  return Message.find({'_thread': toObjectId(thread._id)})
+  return Message.find({'_thread': helpers.toObjectId(thread._id)})
     .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {
@@ -199,7 +195,7 @@ function getThreadMessages (thread, callback, current_user_id) {
  * Show a user's messages.
  */
 exports.showMessages = function(req, res) {
-  Thread.find({'_participants': toObjectId(req.user.id)})
+  Thread.find({'_participants': helpers.toObjectId(req.user.id)})
     .populate('_participants')
     .exec(function (err, threads) {
         var func = function (thread, callback) {
@@ -224,7 +220,7 @@ exports.showMessages = function(req, res) {
 */
 exports.getMessages = function(req, res) {
     var thread_id = req.params.id;
-    Message.find({'_thread': toObjectId(thread_id)})
+    Message.find({'_thread': helpers.toObjectId(thread_id)})
     .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {
