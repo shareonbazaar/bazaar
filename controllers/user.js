@@ -11,11 +11,6 @@ const activities = require('../config/activities');
 const fs = require('fs');
 const aws = require('aws-sdk');
 
-function toObjectId(str) {
-    var ObjectId = (require('mongoose').Types.ObjectId);
-    return new ObjectId(str);
-};
-
 /**
  * GET /login
  * Login page.
