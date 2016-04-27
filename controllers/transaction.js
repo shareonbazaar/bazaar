@@ -4,6 +4,7 @@ var Transaction = require('../models/Transaction');
 var activities = require('../config/activities');
 var Enums = require('../models/Enums');
 var messageController = require('../controllers/message');
+var helpers = require('./helpers');
 
 
 function dateString (date) {
@@ -62,6 +63,58 @@ exports.postReview = function (req, res) {
             rating: req.body.rating,
         },
     }, respondToAjax(res));
+};
+
+/**
+ * GET /confirmExchange
+ * Confirm that an exchange happened.
+ */
+exports.confirmExchange = function (req, res) {
+    console.log(req.params.id)
+    Transaction.findById(req.params.id, function (err, transaction) {
+        if (req.user.id.toString() !== transaction._sender.toString()
+            && req.user.id.toString() !== transaction._recipient.toString()) {
+            res.json({
+                error: "You cannot make updates to a transaction to which you are not party.",
+            });
+            return;
+        }
+
+        var partner_acknowledged_status, me_acknowledged_status;
+        if (req.user.id.toString() == transaction._sender.toString()) {
+            partner_acknowledged_status = Enums.StatusType.RECIPIENT_ACK;
+            me_acknowledged_status = Enums.StatusType.SENDER_ACK;
+        } else {
+            partner_acknowledged_status = Enums.StatusType.SENDER_ACK;
+            me_acknowledged_status = Enums.StatusType.RECIPIENT_ACK;
+        }
+        // The bulkWrite approach here ensures that avoid race conditions vis-a-vis
+        // the updating of the 'status' field. See http://bit.ly/1pFiOVS
+        Transaction.collection.bulkWrite(
+            [
+               { "updateOne": {
+                   "filter": {
+                       "_id": helpers.toObjectId(transaction.id),
+                       "status": partner_acknowledged_status,
+                   },
+                   "update": {
+                       "$set": { "status": Enums.StatusType.COMPLETE }
+                   }
+               }},
+               { "updateOne": {
+                   "filter": {
+                       "_id": helpers.toObjectId(transaction.id),
+                       "status": Enums.StatusType.ACCEPTED,
+                   },
+                   "update": {
+                       "$set": { "status": me_acknowledged_status }
+                   }
+               }}
+            ],
+            { "ordered": false },
+            respondToAjax(res)
+        );
+    });
 };
 
 /**
