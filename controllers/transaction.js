@@ -68,7 +68,6 @@ exports.postReview = function (req, res) {
  * POST /acceptRequest
  * Accept a request for an exchange.
  */
-
 exports.postAccept = function (req, res) {
     async.waterfall([
             function (callback) {
