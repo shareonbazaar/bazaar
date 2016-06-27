@@ -24,6 +24,8 @@ bower_components
 .idea
 *.iml
 
+public/css/main.css
+
 # OS metadata
 .DS_Store
 Thumbs.db
