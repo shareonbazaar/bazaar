@@ -480,6 +480,28 @@ exports.findUsers = function(req, res) {
   });
 };
 
+function getPublicUserData(user) {
+    return {
+        name: user.profile.name,
+        _id: user._id,
+        picture: user.profile.picture,
+        hometown: user.profile.hometown,
+        location: user.profile.location,
+        status: user.profile.status,
+        gender: user.profile.gender,
+        coins: user.coins,
+        skills: user.skills.map(activities.getActivityLabelForName),
+        interests: user.interests.map(activities.getActivityLabelForName),
+        aboutMe: user.aboutMe,
+    }
+};
+
+exports.allUsers = function (req, res) {
+  User.find({}, function (err, results) {
+    res.json(results.map(getPublicUserData));
+  });
+}
+
 /**
  * GET /list
  * List all users whose name matches the query term. Used for searching
