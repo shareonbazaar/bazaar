@@ -48,6 +48,16 @@ textarea {
   margin: -15px 15px -15px;
 }
 
+.navbar {
+  .container-fluid {
+    text-align: center;
+  }
+}
+
+.navbar-brand {
+  padding: 19.5px 10px;
+}
+
 // Alerts
 // -------------------------
 
@@ -178,12 +188,22 @@ textarea {
   width: 50%;
 }
 
-.user-search-box {
-  display: inherit;
-  margin: 0 auto;
+.search-box {
+  margin: 15px auto 0px auto;
   width: 50%;
   padding: 5px;
-  margin-top: 10px;
+  background-color: #2C3E50;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.white, .white a {
+  color: #fff;
+}
+
+::-webkit-input-placeholder {
+   color: white;
 }
 
 .profile-request-form {

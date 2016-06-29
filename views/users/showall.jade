@@ -3,8 +3,6 @@ extends ../layout
 block content
   include ../partials/newmessage
   include ../partials/newrequest
-  .row
-    input#user-search.user-search-box(placeholder="Search a skill here, e.g. cooking")
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .grid.user-list
     each user, i in users
