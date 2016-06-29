@@ -39,18 +39,6 @@ exports.showTransactions = function(req, res) {
   });
 };
 
-function respondToAjax (res) {
-    return function (err) {
-        var error = null;
-        if (err) {
-            error = err;
-        }
-        res.json({
-            error: error,
-        });
-    }
-};
-
 /**
  * POST /reviews
  * Add a review for a transaction
@@ -62,7 +50,7 @@ exports.postReview = function (req, res) {
             text: req.body.review,
             rating: req.body.rating,
         },
-    }, respondToAjax(res));
+    }, helpers.respondToAjax(res));
 };
 
 /**
@@ -112,7 +100,7 @@ exports.confirmExchange = function (req, res) {
                }}
             ],
             { "ordered": false },
-            respondToAjax(res)
+            helpers.respondToAjax(res)
         );
     });
 };
@@ -133,7 +121,7 @@ exports.postAccept = function (req, res) {
             function (trans, callback) {
                 messageController.addMessageToThread(req.user.id, [trans._sender], req.body.message, callback);
             },
-        ], respondToAjax(res));
+        ], helpers.respondToAjax(res));
 };
 
 /**
@@ -158,5 +146,5 @@ exports.postTransaction = function(req, res) {
             var message = "Hi! I would like to request an exchange of " + activities.getActivityLabelForName(req.body.service);
             messageController.addMessageToThread(req.user.id, [req.body.recipient], message, callback);
         },
-    ], respondToAjax(res));
+    ], helpers.respondToAjax(res));
 };
