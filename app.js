@@ -182,6 +182,7 @@ app.get('/bookmark/:id', passportConfig.isAuthenticated, userController.postBook
 app.get('/users', passportConfig.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
 app.get('/users/search', passportConfig.isAuthenticated, userController.search);
+app.get('/users/surprise', passportConfig.isAuthenticated, userController.surprise);
 
 /**
  * OAuth authentication routes. (Sign in)

@@ -500,6 +500,14 @@ exports.search = (req, res) => {
   });
 }
 
+exports.surprise = (req, res) => {
+    // FIXME: Match on one skill/interest overlap
+    User.find({}, (err, results) => {
+        var match = results[Math.floor(Math.random() * (results.length))];
+        res.redirect('/profile/' + match._id)
+    });
+}
+
 /**
  * GET /list
  * List all users whose name matches the query term. Used for searching
