@@ -16,8 +16,8 @@ block content
           .col-sm-4
             h3= "I can offer:"
             ul
-              each label, i in spotlight_user.skill_labels
-                li= label
+              each skill, i in spotlight_user.skills
+                li= skill.label
           .col-sm-4
             h3= "I am interested in:"
             ul

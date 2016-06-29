@@ -7,15 +7,6 @@ $(document).ready(function() {
         CKEDITOR.replace('email_editor');
     }
 
-    var grid = $('.grid').masonry({
-        gutter: 20,
-        itemSelector: '.grid-item',
-        columnWidth: 300,
-        fitWidth: true,
-    });
-
-    grid.imagesLoaded().progress(function () {
-        grid.masonry('layout');
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#sidebar-wrapper").toggleClass("toggled");

@@ -1,3 +1,5 @@
+mixin userCard(curr_user, card_user)
+  include ../partials/userCard
 extends ../layout
 
 block content
@@ -5,25 +7,8 @@ block content
   include ../partials/newrequest
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .grid.user-list
-    each user, i in users
-      - var image_uri = user.profile.picture || '/images/person_placeholder.gif'
-      .grid-item
-
-        .profile-info
-          .header
-            .profile-pic(onclick='window.location = "/profile/#{user.id}"' class="#{user.match}" data-long=user.loc.coordinates[0] data-lat=user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{user.profile.name}")
-            .contact-icons
-              .icon-links(data-toggle="modal", data-target="#messageModal", data-name="#{user.profile.name}", data-id="#{user.id}")
-                img.icons(src='/images/chat_bubble.png')
-              .icon-links#second-icon(data-toggle="modal", data-target="#requestModal", data-name="#{user.profile.name}" data-id="#{user.id}" data-skills=user.skills)
-                img.icons(src='/images/request_exchange.png')
-          .name-location
-            h3=user.profile.name.split(' ')[0]
-            h4=user.profile.location
-          .skill-icons
-            each skill in user.skills
-              img.icons(title=skill.label alt=skill.label src='/images/skill_icons/' + skill.name + '.png')
-          p=user.aboutMe
+    each person, i in users
+      mixin userCard(user, person)
 
   script(src='/js/showall.js')
   script(src='/js/profile.js')

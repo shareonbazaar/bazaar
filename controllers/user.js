@@ -468,13 +468,7 @@ exports.findUsers = (req, res) => {
             user.match = 'none';
         }
 
-        user.skills = user.skills.map(function (skill) {
-            return {
-                name: skill,
-                label: activities.getActivityLabelForName(skill),
-            };
-        });
-        user.skill_labels = user.skills.map(activities.getActivityLabelForName);
+        user.skills = activities.populateLabels(user.skills);
 
         if (typeof user.loc.coordinates === 'undefined') {
           user.loc.coordinates = [null, null];
@@ -482,6 +476,7 @@ exports.findUsers = (req, res) => {
     })
     res.render('users/showall', {
         users: results,
+        current_user_interests: activities.populateLabels(my_interests),
     });
   });
 };
@@ -519,7 +514,7 @@ exports.showProfile = function(req, res) {
       });
       return;
     }
-    user.skill_labels = user.skills.map(activities.getActivityLabelForName);
+    user.skills = activities.populateLabels(user.skills);
     user.interest_labels = user.interests.map(activities.getActivityLabelForName);
     Transaction.find({'_recipient': user._id}, function (err, transactions) {
       res.render('users/profile', {

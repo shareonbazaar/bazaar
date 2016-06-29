@@ -4,7 +4,7 @@ var activities = JSON.parse(fs.readFileSync('config/activities.json', 'utf8'));
 
 exports.activityMap = activities;
 
-exports.getActivityLabelForName = function (name) {
+function getActivityLabelForName (name) {
   for (var category in activities) {
       var match = activities[category].filter(function (activity) {
           return activity.name == name;
@@ -14,6 +14,17 @@ exports.getActivityLabelForName = function (name) {
       }
   }
   return '';
+}
+
+exports.getActivityLabelForName = getActivityLabelForName;
+
+exports.populateLabels = function (skills) {
+  return skills.map(function (skill) {
+    return {
+      name: skill,
+      label: getActivityLabelForName(skill),
+    };
+  });
 }
 
 exports.getAllActivityLabels = function () {

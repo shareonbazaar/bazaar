@@ -97,7 +97,7 @@ textarea {
   border: 2px black solid;
   background-size: cover;
   background-position: center;
-  float: left;
+  margin: 0 auto;
 }
 
 .user-list .profile-pic.both {
@@ -150,42 +150,128 @@ textarea {
 .grid-item {
   width: 300px;
   margin-bottom: 10px;
+  border: 1px solid black;
+  border-radius: 1%;
 }
 
-.user-list .profile-info .name-location {
-  clear: both;
-  background-color: #18bc9c;
-  margin: 20px 0px;
-  padding: 2px 0;
+.service-type {
   text-align: center;
-  white-space: nowrap;
-  margin-top: 10px;
+  background-color: lightgray;
+  padding: 10px 0px;
+  border-bottom: 1px solid black;
+  &.selected {
+    background-color: darkblue;
+  }
+  &:nth-child(2) {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+  }
 }
 
-.user-list .profile-info .name-location h3 {
-  color: white;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 4px;
+.filter-options {
+  background-color: lightgray;
+  width: 100%;
+  z-index: 1;
+  position: fixed;
+  top: -350px;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+
+  &.open {
+    top: 60px;
+  }
+
+  .category-filter, .range-filter {
+    padding-top: 1%;
+    padding-bottom: 1%;
+  }
+  padding-bottom: 1%;
+
+  .button-wrapper {
+    display: inline-block;
+    width: 50%;
+    padding: 0 10%;
+    button {
+      width: 100%;
+    }
+  }
 }
 
-.user-list .profile-info .skill-icons {
-  overflow: hidden;
-  border-bottom: 2px solid #18bc9c;
-  padding-bottom: 10px;
+.skill-label {
+  display: inline-block;
+  padding: 5px;
+  margin: 3px;
+  border: 1px solid black;
+  border-radius: 10px;
+  &.selected {
+    color: white;
+    background-color: black;
+  }
 }
 
-.user-list .profile-info .skill-icons .icons {
-  margin: 8px;
-}
+.user-list {
+  .bookmark {
+    width: 50px;
+    float: left;
+    margin: -2px 0px 0px -5px;
+  }
 
-.user-list .profile-info p {
-  color: #18bc9c;
-  margin-top: 5px;
-}
+  .profile-info {
+    .name-location {
+      clear: both;
+      margin: 20px 0px;
+      padding: 2px 0;
+      text-align: center;
+      white-space: nowrap;
+      margin-top: 10px;
+    }
 
-.user-list .profile-info .popover {
-  width: 50%;
+    .name-location h3 {
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 4px;
+    }
+
+    .skill-icons {
+      overflow: hidden;
+      padding-top: 10px;
+
+      .icons {
+        margin: 8px;
+      }
+    }
+
+    hr {
+      border-top: 1px solid gray;
+      margin: 0px -20px;
+    }
+
+    p {
+      color: #18bc9c;
+      margin-top: 5px;
+    }
+
+    .popover {
+      width: 50%;
+    }
+  }
+
+  .action-calls {
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+    padding: 10px 0px;
+
+    &:nth-child(1) {
+      background-color: gray;
+    }
+
+    &:nth-child(2) {
+      background-color: lightgray;
+    }
+  }
 }
 
 .search-box {

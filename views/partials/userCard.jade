@@ -1,0 +1,17 @@
+.grid-item
+  - var image_uri = card_user.profile.picture || '/images/person_placeholder.gif'
+  - var bookmark_uri = curr_user.bookmarks.indexOf(card_user._id) >= 0 ? 'bookmark_active.svg' : 'bookmark_inactive.svg'
+  img.bookmark(src='/images/#{bookmark_uri}', data-user-id=card_user.id)
+  .profile-info
+    .profile-pic(onclick='window.location = "/profile/#{card_user.id}"' class="#{card_user.match}" data-long=card_user.loc.coordinates[0] data-lat=card_user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{card_user.profile.name}")
+    .name-location
+      h3=card_user.profile.name.split(' ')[0]
+      h4=card_user.profile.location
+    p=card_user.aboutMe
+    hr.separator
+    .skill-icons
+      each skill in card_user.skills.splice(0, 5)
+        .skill-label #{skill.label}
+  .card-footer
+    .action-calls(data-toggle="modal", data-target="#messageModal", data-name="#{card_user.profile.name}", data-id="#{card_user.id}") Message
+    .action-calls(data-toggle="modal", data-target="#requestModal", data-name="#{card_user.profile.name}" data-id="#{card_user.id}" data-skills=card_user.skills) Share

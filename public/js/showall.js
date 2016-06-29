@@ -66,5 +66,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     });
 
+
+    var grid = $('.grid').masonry({
+        gutter: 20,
+        itemSelector: '.grid-item',
+        columnWidth: 300,
+        fitWidth: true,
+    });
+
+    grid.imagesLoaded().progress(function () {
+        grid.masonry('layout');
+    });
+
     getLocation();
 });
