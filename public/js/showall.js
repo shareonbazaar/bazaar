@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
+    // FIXME: Remove this unused code?
     $("#user-search").on('input', function () {
         var query = $("#user-search").val();
         $('.user-list .col-md-4').each(function () {

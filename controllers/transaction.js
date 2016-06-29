@@ -128,7 +128,7 @@ exports.postAccept = function (req, res) {
  * POST /transactions
  * Add a transaction for current user
  */
-exports.postTransaction = function(req, res) {
+exports.postTransaction = function (req, res) {
     async.waterfall([
         function (callback) {
             var trans = new Transaction({

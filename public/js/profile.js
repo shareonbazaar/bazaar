@@ -29,8 +29,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
             method: 'POST',
             data: data,
         }).done(function (data) {
-            console.log(data)
-        })
+            console.log(data);
+        });
         $('#requestModal').modal('hide')
         return false;
     });

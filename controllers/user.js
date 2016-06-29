@@ -448,6 +448,7 @@ function numElementsInCommon (arr1, arr2) {
 /**
  * GET /users
  * If user is a refugee, show native users and vice versa.
+ * FIXME: change name of this func
  */
 exports.findUsers = (req, res) => {
   var my_interests = req.user.interests;
@@ -569,7 +570,7 @@ exports.newAccount = function (req, res) {
 
 /**
  * POST /location
- * Post loaction data for a user
+ * Post location data for a user
  */
 exports.postLocation = (req, res) => {
     User.findById(req.user.id, function (err, user) {
