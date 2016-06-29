@@ -6,6 +6,25 @@ block content
   include ../partials/newmessage
   include ../partials/newrequest
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  .row.filter-options
+    .col-xs-4.service-type.selected Learn
+    .col-xs-4.service-type Share
+    .col-xs-4.service-type Exchange
+    .clearfix.visible-xs-block.visible-sm-block
+    .col-md-6.category-filter
+      .glyphicon.glyphicon-triangle-right
+      | Categories
+      div
+        each skill in current_user_interests
+          .skill-label #{skill.label}
+    .col-md-6.range-filter
+      | Distance
+      input(type='range', min='0', max='20')
+    .col-md-12
+      .button-wrapper
+        button.btn.btn-primary.btn-large.filter-button(type='submit') Apply filter
+      .button-wrapper
+        button.btn.btn-primary.btn-large(onclick="location.href='/users/surprise';" type='submit') Surprise me!
   .grid.user-list
     each person, i in users
       mixin userCard(user, person)

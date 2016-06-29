@@ -483,6 +483,23 @@ exports.findUsers = (req, res) => {
   });
 };
 
+exports.search = (req, res) => {
+  // FIXME: switch on request type, json or HTML
+  User.find({}, (err, results) => {
+    async.map(results, (item, cb) => {
+      item.skills = activities.populateLabels(item.skills);
+      console.log(item.skills)
+      res.app.render('partials/userCard', {
+        layout: false,
+        curr_user: req.user,
+        card_user: item,
+      }, cb)
+    }, (err, results) => {
+      res.json(results);
+    });
+  });
+}
+
 /**
  * GET /list
  * List all users whose name matches the query term. Used for searching

@@ -80,6 +80,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     });
 
+    $('.search-box').click(function () {
+        $('.filter-options').addClass('open');
+    });
+
+    $('.service-type').click(function () {
+        $('.service-type').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('.skill-label').click(function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $(this).addClass('selected');
+        }
+    });
+
     var grid = $('.grid').masonry({
         gutter: 20,
         itemSelector: '.grid-item',
@@ -89,6 +106,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     grid.imagesLoaded().progress(function () {
         grid.masonry('layout');
+    });
+
+    $('.filter-button').click(function () {
+        $('.filter-options').removeClass('open');
+        $.ajax({
+            url: '/users/search',
+            data: {
+                distance: 10,
+                service_type: '',
+                skills: [],
+            },
+        }).done(function (response) {
+            $('.grid').masonry('remove', $('.grid').masonry('getItemElements'));
+            // FIXME: don't know why masonry doesnt let me pass array to 'appended'
+            // as suggested in docs. If we do 'appeneded' for each one, we get
+            // different animation and might be slower?
+            response.forEach(function (html) {
+                var content = $(html);
+                $('.grid').masonry().append(content).masonry('addItems', content);
+            });
+            $('.grid').masonry('layout');
+        });
+    });
+
+    var previousScroll = 0;
+    $(window).scroll(function(event){
+       var scroll = $(this).scrollTop();
+       if (scroll > previousScroll){
+           $('.filter-options').removeClass('open');
+       }
+       previousScroll = scroll;
     });
 
     getLocation();
