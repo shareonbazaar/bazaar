@@ -10,6 +10,8 @@ const secrets = require('../config/secrets');
 const activities = require('../config/activities');
 const fs = require('fs');
 const aws = require('aws-sdk');
+const helpers = require('./helpers');
+
 
 /**
  * GET /login
@@ -550,17 +552,23 @@ exports.postLocation = (req, res) => {
             type: 'Point',
             coordinates: [Number(req.body.longitude), Number(req.body.latitude)],
         };
-        user.save(function (err) {
-            var error = null;
-            if (err) {
-                console.log(err);
-                error = err;
-            }
-            res.json({
-                error: error,
-            });
-        });
+        user.save(helpers.respondToAjax(res));
     });
+}
+
+/**
+ * POST /bookmark/:id
+ * Bookmark the profile of another user for the current user, or
+ * unbookmark if it is already bookmarked.
+ */
+exports.postBookmark = (req, res) => {
+    var index = req.user.bookmarks.indexOf(req.params.id);
+    if (index < 0) {
+        req.user.bookmarks.push(req.params.id);
+    } else {
+        req.user.bookmarks.splice(index);
+    }
+    req.user.save(helpers.respondToAjax(res));
 }
 
 var email_template = fs.readFileSync('config/welcome_email.html', 'utf8');

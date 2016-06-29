@@ -174,6 +174,7 @@ app.post('/acceptRequest', passportConfig.isAuthenticated, transactionController
 app.get('/confirmExchange/:id', passportConfig.isAuthenticated, transactionController.confirmExchange);
 
 app.post('/location', passportConfig.isAuthenticated, userController.postLocation);
+app.get('/bookmark/:id', passportConfig.isAuthenticated, userController.postBookmark);
 
 /**
  * User routes
