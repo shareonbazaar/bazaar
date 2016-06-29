@@ -16,5 +16,8 @@ $(document).ready(function() {
 
     grid.imagesLoaded().progress(function () {
         grid.masonry('layout');
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#sidebar-wrapper").toggleClass("toggled");
     });
 });
