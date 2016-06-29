@@ -502,6 +502,20 @@ exports.allUsers = function (req, res) {
   });
 }
 
+exports.profileData = function (req, res) {
+  User.findById(req.params.id, function (err, user) {
+    if (!user) {
+      res.status(404).json({
+        status: 404,
+        message: 'No user found with that id',
+      });
+      return;
+    }
+    res.json(getPublicUserData(user));
+  });
+}
+
+
 /**
  * GET /list
  * List all users whose name matches the query term. Used for searching

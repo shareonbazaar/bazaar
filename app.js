@@ -178,6 +178,7 @@ app.post('/location', passportConf.isAuthenticated, userController.postLocation)
 app.get('/users', passportConf.isAuthenticated, userController.findUsers);
 app.get('/users/list', userController.list);
 app.get('/api/users', userController.allUsers);
+app.get('/api/users/:id', userController.profileData);
 
 /**
  * OAuth authentication routes. (Sign in)
