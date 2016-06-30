@@ -1,32 +1,34 @@
 extends ../layout
 
-block content
-  include ../partials/acceptModal
-  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
-  h3 Requests for you
-
-  each request in proposed_transactions
-    .request
-      img(src=request._sender.profile.picture)
-      .request-message
-        p #{request._sender.profile.name} has requested #{request.amount} hours of #{request.service_label} with you
-        p(data-toggle="modal" data-target="#acceptModal" data-id="#{request._id}").accept Click here to accept
-
-  h3 Other Exchanges
+mixin showTransactions(t_list)
   table.transaction-table
     thead
       tr
         th Service
         th Partner
-        th Value
         th Status
-        th Confirm
+        th Action
     tbody
-      each transaction in other_transactions
+      each t in t_list
         tr
-          td= transaction.service_label
-          td= transaction._sender.profile.name
-          td= transaction.amount
-          td= transaction.status
-          td.confirm(data-id=transaction.id) Click here to confirm
+          td= t.service_label
+          td= t._sender.profile.name
+          td= t.status
+          td Click
+
+block content
+  include ../partials/acceptModal
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  
+  .transaction-page
+    .row.options
+      .col-xs-4.exchange-type.selected Proposed
+      .col-xs-4.exchange-type Upcoming
+      .col-xs-4.exchange-type Complete
+
+
+    mixin showTransactions (transactions.proposed)
+    mixin showTransactions (transactions.upcoming)
+    mixin showTransactions (transactions.complete)
+
   script(src='/js/transaction.js')

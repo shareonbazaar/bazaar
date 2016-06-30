@@ -430,6 +430,34 @@ input.activity-checkbox {
 
 // Transaction page
 
+.transaction-page {
+
+  margin: 0 10%;
+
+  .options {
+    text-align: center;
+
+    .exchange-type {
+      &.selected {
+        background-color: black;
+        color: white;
+      }
+    }
+  }
+
+  .transaction-table {
+    &:nth-child(2), &:nth-child(3) {
+      display: none;
+    }
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    th {
+      text-align: center;
+    }
+  }
+}
+
 .request {
   margin: 10px 0;
 }
@@ -445,15 +473,6 @@ input.activity-checkbox {
 
 .request-message {
   display: inline-block;
-}
-
-.transaction-table {
-  width: 100%;
-}
-
-.transaction-table .confirm {
-  cursor: pointer;
-  text-decoration: underline;
 }
 
 .rating {

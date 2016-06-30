@@ -22,19 +22,26 @@ exports.showTransactions = function(req, res) {
     .exec(function (err, transactions) {
         transactions.forEach(function (t) {
             t.service_label = activities.getActivityLabelForName(t.service);
-        })
-        var proposed = transactions.filter(function (t) {
-            return t.status === Enums.StatusType.PROPOSED && t._recipient._id.toString() === req.user.id.toString();
         });
-
-        var proposed_ids = proposed.map(function (t) {return t._id.toString()});
-        var rest = transactions.filter(function (t) {
-            return proposed_ids.indexOf(t._id.toString()) < 0;
+        var data = transactions.reduce(function (map, t) {
+            if (t.status === Enums.StatusType.PROPOSED) {
+                map.proposed.push(t);
+            } else if (t.status === Enums.StatusType.ACCEPTED) {
+                map.upcoming.push(t);
+            } else if (t.status === Enums.StatusType.REJECTED) {
+              // Don't show rejected exchanges
+            } else {
+                map.complete.push(t);
+            }
+            return map;
+        }, {
+          'proposed': [],
+          'upcoming': [],
+          'complete': [],
         });
 
         res.render('users/transactions', {
-            proposed_transactions: proposed,
-            other_transactions: rest,
+            transactions: data,
         });
   });
 };
@@ -126,13 +133,13 @@ exports.postAccept = function (req, res) {
 
 /**
  * POST /transactions
- * Add a transaction for current user
+ * Add a transaction for current user. This is the initial
+ * request so status is PROPOSED.
  */
 exports.postTransaction = function (req, res) {
     async.waterfall([
         function (callback) {
             var trans = new Transaction({
-                amount: req.body.amount,
                 timeSent: new Date(),
                 service: req.body.service,
                 _recipient: req.body.recipient,
@@ -143,8 +150,12 @@ exports.postTransaction = function (req, res) {
         },
 
         function (t, num, callback) {
-            var message = "Hi! I would like to request an exchange of " + activities.getActivityLabelForName(req.body.service);
-            messageController.addMessageToThread(req.user.id, [req.body.recipient], message, callback);
+            var message = req.body.message;
+            if (message) {
+              messageController.addMessageToThread(req.user.id, [req.body.recipient], message, callback);
+            } else {
+              callback(null);
+            }
         },
     ], helpers.respondToAjax(res));
 };

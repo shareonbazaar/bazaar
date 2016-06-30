@@ -57,6 +57,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     });
 
+
+    // For account page
     $('.submit-activities').click(function () {
         var id = $(this).attr('id');
         var section_name = '#' + id.slice('submit-'.length) + '-section';

@@ -31,5 +31,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }).done(function (data) {
             console.log(data);
         });
-    })
+    });
+
+    $('.exchange-type').click(function () {
+        $('.exchange-type').removeClass('selected');
+        $(this).addClass('selected');
+        var index = $('.exchange-type').index($(this));
+        $('.transaction-table').hide();
+        $('.transaction-table').eq(index).fadeIn();
+    });
 });
