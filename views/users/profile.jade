@@ -1,38 +1,47 @@
 extends ../layout
 
 block content
-  h3= spotlight_user.profile.name
-  .row
-    .col-sm-3
-      img.img-responsive.img-rounded(src=spotlight_user.profile.picture)
-      p= "About me: " + spotlight_user.aboutMe
-      p= "Hometown: " + spotlight_user.profile.hometown
-      p= "Location: " + spotlight_user.profile.location
-      button.btn.btn-primary(type="button", data-toggle="modal", data-target="#messageModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}") Message #{spotlight_user.profile.name}
-      include ../partials/newmessage
-    .col-sm-8
-      .container
-        .row
-          .col-sm-4
-            h3= "I can offer:"
-            ul
-              each skill, i in spotlight_user.skills
-                li= skill.label
-          .col-sm-4
-            h3= "I am interested in:"
-            ul
-              each label, i in spotlight_user.interest_labels
-                li= label
-        .row
-          .col-sm-8
-            h3= "Reviews"
-            each transaction, i in transactions
-              .review
-                quote= transaction.review.text
-                .rating
-                  - var num = 0
-                  while num < transaction.review.rating
-                    span ★
-                    - num++
+  include ../partials/newrequest
+  .user-profile
+    .row
+      .col-md-6
+        .box
+          img.profile-pic.img-responsive.img-rounded(src=spotlight_user.profile.picture)
+          h3= spotlight_user.profile.name
+          .place
+            p.info From:
+            p #{spotlight_user.profile.hometown}
+          .place
+            p.info Lives in:
+            p #{spotlight_user.profile.location}
+          p= "About me: " + spotlight_user.aboutMe
+
+        button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user.skills) Request
+
+      .col-md-6
+        .skills-box
+          .box
+            h4 I can offer
+            each skill in spotlight_user.skills
+              .skill-label #{skill.label}
+
+        .skills-box
+          .box
+            h4 I am interested in
+            each interest in spotlight_user.interests
+              .skill-label #{interest.label}
+    .row
+      .col-md-12
+        .box
+          h3 Reviews
+          each transaction, i in transactions
+            .review
+              .rating
+                - var num = 0
+                while num < transaction.review.rating
+                  span ★
+                  - num++
+              quote= transaction.review.text
+            hr
 
   script(src='/js/profile.js')

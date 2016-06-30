@@ -205,7 +205,10 @@ textarea {
   margin: 3px;
   border: 1px solid black;
   border-radius: 10px;
-  &.selected {
+}
+
+.skill-select {
+  .skill-label.selected {
     color: white;
     background-color: black;
   }
@@ -237,10 +240,6 @@ textarea {
     .skill-icons {
       overflow: hidden;
       padding-top: 10px;
-
-      .icons {
-        margin: 8px;
-      }
     }
 
     hr {
@@ -346,8 +345,67 @@ input.activity-checkbox {
 
 // Profile page
 
-.review .rating {
-  display: inline;
+
+.user-profile {
+  margin: 0 10%;
+  img.profile-pic {
+    width: 200px;
+    margin: 0 auto;
+  }
+
+  .row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    &:nth-child(1) {
+      @media (min-width: $screen-md) {
+        display: flex;
+      }
+    }
+  }
+
+  h3 {
+    text-align: center;
+  }
+
+  .skills-box {
+    height: 50%;
+    &:nth-child(2) {
+      padding-top: 10px;
+    }
+    .box {
+      height: 100%;
+    }
+  }
+
+  .box {
+    background-color: lightgray;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+  }
+
+  .place {
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+    color: white;
+    padding: 10px 0;
+    p {
+      margin: 0;
+    }
+    .info {
+      font-size: 10px;
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .review {
+    margin: 30px 0;
+  }
 }
 
 .review .rating span {
