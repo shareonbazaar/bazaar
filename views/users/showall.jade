@@ -3,7 +3,6 @@ mixin userCard(curr_user, card_user)
 extends ../layout
 
 block content
-  include ../partials/newmessage
   include ../partials/newrequest
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .row.filter-options

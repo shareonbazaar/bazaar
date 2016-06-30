@@ -13,5 +13,4 @@
       each skill in card_user.skills.splice(0, 5)
         .skill-label #{skill.label}
   .card-footer
-    .action-calls(data-toggle="modal", data-target="#messageModal", data-name="#{card_user.profile.name}", data-id="#{card_user.id}") Message
-    .action-calls(data-toggle="modal", data-target="#requestModal", data-name="#{card_user.profile.name}" data-id="#{card_user.id}" data-skills=card_user.skills) Share
+    .action-calls(data-toggle="modal", data-target="#requestModal", data-name="#{card_user.profile.name}" data-id="#{card_user.id}" data-skills=card_user.skills) Request me

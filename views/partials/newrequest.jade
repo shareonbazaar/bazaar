@@ -6,13 +6,15 @@
           span(aria-hidden="true") &#215;
         h4#requestModalLabel.modal-title
       .modal-body
+        .container-fluid
+          .row
+            .col-xs-4.service-type Learn
+            .col-xs-4.service-type Share
+            .col-xs-4.service-type Exchange
         form.profile-request-form
           #request-recipient(style="display:none;" recipient)
           .form-group
-            select#skill-select
-          .form-group
-            label.control-label(for="amount") Amount:
-            input#request-amount.form-control(type="number")
+            label.control-label(for="skill") Request one skill:
+            .skill-select
       .modal-footer
-        button.btn.btn-default(type="button", data-dismiss="modal") Close
         button.btn.btn-primary#submit-skill-request(type="button") Request

@@ -85,19 +85,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.filter-options').addClass('open');
     });
 
-    $('.service-type').click(function () {
-        $('.service-type').removeClass('selected');
-        $(this).addClass('selected');
-    });
-
-    $('.skill-label').click(function () {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        } else {
-            $(this).addClass('selected');
-        }
-    });
-
     var grid = $('.grid').masonry({
         gutter: 20,
         itemSelector: '.grid-item',

@@ -20,9 +20,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('#submit-skill-request').click(function () {
         var data = {
             recipient: $('#request-recipient').attr('recipient'),
-            amount: $('#request-amount').val(),
             _csrf: $('#csrf_token').val(),
-            service: $('#skill-select option:selected').attr('name'),
+            service: $('.skill-select div.selected').attr('name'),
         };
         $.ajax({
             url: '/transactions',
@@ -50,11 +49,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var skills = button.data('skills');
         var modal = $(this);
         modal.find('.modal-body #request-recipient').attr('recipient', id);
-        modal.find('.modal-title').text('Choose a skill to request from ' + button.data('name'));
-        $('#skill-select').empty();
+        modal.find('.modal-title').text('Request from ' + button.data('name'));
+        $('.skill-select').empty();
         skills.forEach(function (skill) {
-            var option = '<option name=' + skill.name + '>' + skill.label + '</option>';
-            $('#skill-select').append(option);
+            var option = '<div class="skill-label" name=' + skill.name + '>' + skill.label + '</div>';
+            $('.skill-select').append(option);
         });
     });
 
@@ -88,7 +87,26 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
             reader.readAsDataURL(this.files[0]);
         }
-    })
+    });
+
+    $('.skill-select').on('click', '.skill-label', function () {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        } else {
+            $(this).addClass('selected');
+        }
+    });
+
+    $('.service-type').click(function () {
+        $('.service-type').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    $('.rating span').click(function () {
+        $('.rating span').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
 });
 
 
