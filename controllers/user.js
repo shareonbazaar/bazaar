@@ -543,7 +543,7 @@ exports.showProfile = function(req, res) {
       return;
     }
     user.skills = activities.populateLabels(user.skills);
-    user.interest_labels = user.interests.map(activities.getActivityLabelForName);
+    user.interests = activities.populateLabels(user.interests);
     Transaction.find({'_recipient': user._id}, function (err, transactions) {
       res.render('users/profile', {
           spotlight_user: user,
