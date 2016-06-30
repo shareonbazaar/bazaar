@@ -56,14 +56,18 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $("#user-search").on('input', function () {
         var query = $("#user-search").val();
-        $('.user-list .col-md-4').each(function () {
-            var content = $(this).find('.profile-pic').attr('data-content').substr("Skills:".length);
-            if (content.toLowerCase().indexOf(query.toLowerCase()) >= 0) {
+        $('.user-list .grid-item').each(function () {
+            var content = JSON.parse($(this).find('#second-icon').attr('data-skills'));
+            content = content.map(function (a) {
+                return a.label.toLowerCase();
+            });
+            if (content.filter(function (word) { return word.startsWith(query.toLowerCase()) }).length > 0) {
                 $(this).show();
             } else {
                 $(this).fadeOut();
             }
         });
+        $('.grid').masonry('layout');
     });
 
     getLocation();
