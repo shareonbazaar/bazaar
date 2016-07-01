@@ -25,7 +25,10 @@ block content
       each transaction in other_transactions
         tr
           td= transaction.service_label
-          td= transaction._sender.profile.name
+          if user.profile.name == transaction._recipient.profile.name
+            td= transaction._sender.profile.name
+          else
+            td= transaction._recipient.profile.name
           td= transaction.amount
           td= transaction.status
           td.confirm(data-id=transaction.id) Click here to confirm

@@ -22,7 +22,11 @@ exports.showTransactions = function(req, res) {
     .exec(function (err, transactions) {
         transactions.forEach(function (t) {
             t.service_label = activities.getActivityLabelForName(t.service);
-        })
+        });
+
+        transactions = transactions.filter(function (t) {
+          return t._sender != null && t._recipient != null;
+        });
         var proposed = transactions.filter(function (t) {
             return t.status === Enums.StatusType.PROPOSED && t._recipient._id.toString() === req.user.id.toString();
         });
