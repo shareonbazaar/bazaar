@@ -7,21 +7,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     };
     var socket = io();
 
-    $('#submit-profile-message').click(function () {
-        var packet = {
-            message: $('#text-input').val(),
-            to: [$('#message-data-div').attr('recipient')],
-        };
-        socket.emit('send message', packet);
-        $('#text-input').val('');
-        $('#messageModal').modal('hide')
-    });
-
     $('#submit-skill-request').click(function () {
         var data = {
             recipient: $('#request-recipient').attr('recipient'),
             _csrf: $('#csrf_token').val(),
             service: $('.skill-select div.selected').attr('name'),
+            message: $('#message-text').val(),
         };
         $.ajax({
             url: '/transactions',
@@ -34,15 +25,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         return false;
     });
 
-    $('#messageModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
-        var id = button.data('id')
-        var modal = $(this)
-        modal.find('.modal-title').text('New message to ' + button.data('name'));
-        modal.find('.modal-body input').val(button.data('name'));
-        modal.find('.modal-body #message-data-div').attr('recipient', id);
-    });
-
     $('#requestModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id');
@@ -50,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var modal = $(this);
         modal.find('.modal-body #request-recipient').attr('recipient', id);
         modal.find('.modal-title').text('Request from ' + button.data('name'));
+        $('#text-input').val('');
         $('.skill-select').empty();
         skills.forEach(function (skill) {
             var option = '<div class="skill-label" name=' + skill.name + '>' + skill.label + '</div>';
@@ -108,7 +91,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.rating span').removeClass('selected');
         $(this).addClass('selected');
     });
-
 });
 
 
