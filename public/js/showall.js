@@ -72,6 +72,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.filter-options').addClass('open');
     });
 
+    $('body > .container-fluid').click(function () {
+        $('.filter-options').removeClass('open');
+    });
+
     var grid = $('.grid').masonry({
         gutter: 20,
         itemSelector: '.grid-item',
