@@ -84,64 +84,7 @@ textarea {
 // Home
 
 
-// Users
-
-.user-list {
-  margin-top: 20px;
-}
-
-.user-list .profile-pic {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  border: 2px black solid;
-  background-size: cover;
-  background-position: center;
-  margin: 0 auto;
-}
-
-.user-list .profile-pic.both {
-  border-color: green;
-}
-
-.user-list .profile-pic.one {
-  border-color: orange;
-}
-
-.user-list .profile-pic.none {
-  border-color: black;
-}
-
-.user-list .profile-info .header {
-  width: 70%;
-  margin: 0 auto;
-  overflow: hidden;
-}
-
-.user-list .profile-info {
-  padding: 20px;
-  background-color: white;
-}
-
-.user-list .profile-info .header .contact-icons {
-  float: right;
-}
-
-.icons {
-  width: 35px;
-}
-
-.user-list .profile-info .header .icons {
-  display: block;
-}
-
-.user-list .profile-info .icon-links {
-  cursor: pointer;
-}
-
-.user-list .profile-info .icon-links#second-icon img {
-  margin-top: 20px;
-}
+// Community page
 
 .grid {
   margin: 10px auto;
@@ -215,6 +158,10 @@ textarea {
 }
 
 .user-list {
+  margin-top: 20px;
+}
+
+.user-card {
   .bookmark {
     width: 50px;
     float: left;
@@ -222,6 +169,31 @@ textarea {
   }
 
   .profile-info {
+    padding: 20px;
+    background-color: white;
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px black solid;
+      background-size: cover;
+      background-position: center;
+      margin: 0 auto;
+
+      &.both {
+        border-color: green;
+      }
+
+      &.one {
+        border-color: orange;
+      }
+
+      &.none {
+        border-color: black;
+      }
+    }
+
     .name-location {
       clear: both;
       margin: 20px 0px;
@@ -229,12 +201,12 @@ textarea {
       text-align: center;
       white-space: nowrap;
       margin-top: 10px;
-    }
 
-    .name-location h3 {
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 4px;
+      h3 {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+      }
     }
 
     .skill-icons {
@@ -290,22 +262,19 @@ textarea {
    color: white;
 }
 
-.profile-request-form {
-  margin: 20px auto 0 auto;
-  width: 90%;
-}
+#requestModal {
+  .profile-request-form {
+    margin: 20px auto 0 auto;
+    width: 90%;
+  }
 
-.profile-request-form select {
-  width: 100%;
-  height: 100px;
+  #submit-skill-request {
+    width: 80%;
+  }
 }
 
 .modal-footer {
   text-align: center;
-}
-
-#submit-skill-request {
-  width: 80%;
 }
 
 // Account page
@@ -325,14 +294,14 @@ input.activity-checkbox {
 .account-profile-pic {
   position: relative;
   display: inline-block;
-}
 
-.account-profile-pic:hover {
-  cursor: pointer;
-}
+  &:hover {
+    cursor: pointer;
 
-.account-profile-pic:hover .upload-message {
-  display: block;
+    .upload-message {
+      display: block;
+    }
+  }
 }
 
 .upload-message {
@@ -351,11 +320,6 @@ input.activity-checkbox {
 }
 
 // Profile page
-
-#requestModal {
-  .service-type {
-  }
-}
 
 .user-profile {
   margin: 0 10%;
@@ -458,23 +422,7 @@ input.activity-checkbox {
   }
 }
 
-.request {
-  margin: 10px 0;
-}
-
-.request img {
-  width: 75px;
-  vertical-align: initial;
-}
-
-.request .accept {
-  cursor: pointer;
-}
-
-.request-message {
-  display: inline-block;
-}
-
+/* This is for when selecting rating for new review */
 .rating {
   unicode-bidi: bidi-override;
   direction: rtl;
@@ -500,59 +448,55 @@ input.activity-checkbox {
 
 // Messaging
 
-.message-layout-grid .sidebar {
-  float: left;
-  width: 30%;
-}
-
 .message-snippet {
   padding-bottom: 20px;
-}
 
-.message-snippet .profile-pic {
-  width: 60px;
-  margin-left:2%;
-  float:left;
-  margin-right: 8px;
-}
+  .profile-pic {
+    width: 60px;
+    height: 60px;
+    margin-left:2%;
+    float:left;
+    margin-right: 8px;
+  }
 
-.message-snippet .snippet-text .timestamp {
-  float: right;
-  font-size: 11px;
-  margin-right: 5px;
-}
-
-.message-snippet .snippet-text .sender {
-  font-weight: bold;
-}
-
-.message-snippet .snippet-text .message-content {
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .snippet-text {
+    .timestamp {
+      float: right;
+      font-size: 11px;
+      margin-right: 5px;
+    }
+    .sender {
+      font-weight: bold;
+    }
+    .message-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+  }
 }
 
 .thread-list {
   list-style-type: none;
   padding: 0 0 0 0;
-}
 
-.thread-list li {
-  border: 1px #e9eaed solid;
-  height: 75px;
-}
+  li {
+    border: 1px #e9eaed solid;
+    height: 75px;
 
-.thread-list li.is-pending {
-  background-color: #e9eaed;
-}
+    &:hover {
+      background-color: #f5f7fa;
+    }
 
-.thread-list li.is-active, .thread-list li.is-active:hover {
-  background-color: #6d84b4;
-  color: white;
-}
+    &.is-pending {
+      background-color: #e9eaed;
+    }
 
-.thread-list li:hover {
-  background-color: #f5f7fa;
+    &.is-active, &.is-active:hover {
+      background-color: #6d84b4;
+      color: white;
+    }
+  }
 }
 
 .sidebar .search-box input {
@@ -562,66 +506,63 @@ input.activity-checkbox {
 .conversation-container {
   width: 100%;
   float: left;
-}
 
-.conversation-container .header {
-  padding-bottom: 2px;
-  border-bottom: 2px grey solid;
-}
+  .header {
+    padding-bottom: 2px;
+    border-bottom: 2px grey solid;
 
-.conversation-container .header h3 {
-  margin: 0 0 0 0;
-}
+    h3 {
+      margin: 0 0 0 0;
+    }
 
-.conversation-container .header .new-message-button {
-  float: right;
-  font-size: initial;
-}
+    .new-message-button {
+      float: right;
+      font-size: initial;
+    }
+  }
 
-.conversation-container .conversation {
-  overflow-y: auto;
-  height: 400px;
-}
+  .conversation {
+    overflow-y: auto;
+    height: 400px;
 
-.conversation .message-details {
-  margin-top: 4px;
-  margin-bottom: 4px;
-  max-width: 50%;
-}
+    .message-details {
+      margin-top: 4px;
+      margin-bottom: 4px;
+      max-width: 50%;
 
-.conversation .message-details .comment {
-  padding: 8px;
-  border-radius: 5px;
-  box-shadow: 0 0 6px #B2B2B2;
-  margin-bottom: 3px;
-}
+      &.myself {
+        float: right;
+        clear: both;
+        margin-right: 5px;
+        .comment {
+          background-color: #D1EEFC;
+        }
+      }
 
-.conversation .myself {
-  float: right;
-  clear: both;
-  margin-right: 5px;
-}
+      &.other-person {
+        float: left;
+        clear: both;
+        margin-left: 5px;
+        .comment {
+          background-color: #F2F2F2;
+        }
+      }
 
-.conversation .message-details.myself .comment {
-  background-color: #D1EEFC;
-}
+      .comment {
+        padding: 8px;
+        border-radius: 5px;
+        box-shadow: 0 0 6px #B2B2B2;
+        margin-bottom: 3px;
+      }
 
-.conversation .other-person {
-  float: left;
-  clear: both;
-  margin-left: 5px;
-}
-
-.conversation .message-details.other-person .comment {
-  background-color: #F2F2F2;
-}
-
-.conversation .author {
-  font-size: 8px;
-}
-
-.conversation-container .message-form textarea {
-  width: 100%;
+      .author {
+        font-size: 8px;
+      }
+    }
+  }
+  .message-form textarea {
+    width: 100%;
+  }
 }
 
 // Email users

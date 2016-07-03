@@ -1,4 +1,4 @@
-.grid-item
+.grid-item.user-card
   - var image_uri = card_user.profile.picture || '/images/person_placeholder.gif'
   - var bookmark_uri = curr_user.bookmarks.indexOf(card_user._id) >= 0 ? 'bookmark_active.svg' : 'bookmark_inactive.svg'
   img.bookmark(src='/images/#{bookmark_uri}', data-user-id=card_user.id)
