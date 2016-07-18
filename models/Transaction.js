@@ -14,8 +14,8 @@ var transactionSchema = new mongoose.Schema({
       rating: Number,
   },
   service: String,
-  _recipient: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  _sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  _participants:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });
 
 module.exports = mongoose.model('Transaction', transactionSchema);

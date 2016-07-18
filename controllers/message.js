@@ -43,7 +43,7 @@ exports.initSockets = function (server, store, cookieParser) {
     io.sockets.on('connection', function (socket) {
         socket_map[socket.request.user._id] = socket.id;
         socket.on('send message', function (data) {
-            addMessageToThread(socket.request.user._id, data.to, data.message, function(){}, data.thread_id);
+            addMessageToTransaction(socket.request.user._id, data.message, data.transaction_id, function(){});
         });
     });
 
@@ -52,63 +52,48 @@ exports.initSockets = function (server, store, cookieParser) {
     });
 }
 
-function addMessageToThread (sender_id, recipients, message_text, add_message_callback, thread_id) {
-    var participants = [sender_id].concat(recipients).sort().map(helpers.toObjectId);
-    var now = new Date();
-
-    var query = {};
-    if (typeof thread_id == 'undefined' || thread_id < 0) {
-        query = {'_participants': participants};
-    } else {
-        query = {'_id': thread_id};
-    }
-
+function addMessageToTransaction (sender_id, message_text, transaction_id, add_message_callback) {
     async.waterfall([
         function (callback) {
-            Thread.findOneAndUpdate(query,
-                { lastUpdated: now },
-                { upsert: true, new: true },
-                callback);
-        },
-
-        function (thread, callback) {
-            var newMsg = new Message({
+            var now = new Date();
+            var new_msg = new Message({
                 message: message_text,
                 timeSent: now,
-                _thread: thread._id,
+                _transaction: transaction_id,
                 _sender: sender_id,
             });
-            newMsg.save(callback);
+            new_msg.save(callback);
         },
 
         function (message, num, callback) {
-            Thread.findOne({_id: message._thread})
+            Transaction.findOne({_id: message._transaction})
             .populate('_participants')
-            .exec(function (err, thread) {
-                var sender = thread._participants.filter(function (user) {
+            .exec(function (err, transaction) {
+                // Grab the full document of the sender. We need this
+                // for sending socket info.
+                var sender = transaction._participants.filter(function (user) {
                     return user._id.toString() == message._sender.toString();
                 })[0];
-                async.each(thread._participants, function (user, each_user_callback) {
-                    // if recipient is online, ping him the message via socket
-                    // note we ping everyone - sender and recipients
+                async.each(transaction._participants, function (user, each_user_callback) {
                     var isMe = (sender == user);
 
-                    // always send an e-mail to recipient other than me, even if they are not online
                     async.waterfall([
                         function (callback) {
                             // Increment unread message count
-                            if (user.unreadThreads.indexOf(thread.id) < 0) {
-                                user.unreadThreads.push(thread.id);
+                            if (user.unreadThreads.indexOf(transaction.id) < 0) {
+                                user.unreadThreads.push(transaction.id);
                             }
                             user.save(callback);
                         },
 
                         function (user, num, callback) {
+                            // if recipient is online, ping him the message via socket.
+                            // note we ping everyone - sender and recipients
                             if (socket_map[user._id]) {
                                 io.to(socket_map[user._id]).emit('new message', {
                                     message: message.message,
                                     timeSent: message.timeSent,
-                                    thread: thread,
+                                    transaction: transaction,
                                     author: {
                                         name: sender.profile.name,
                                         pic: sender.profile.picture,
@@ -121,6 +106,8 @@ function addMessageToThread (sender_id, recipients, message_text, add_message_ca
                         },
 
                         function (callback) {
+                            // always send an e-mail to recipient other than me
+                            // even if they are not online
                             if (isMe)
                                 callback(null)
                             else
@@ -135,7 +122,7 @@ function addMessageToThread (sender_id, recipients, message_text, add_message_ca
     ], add_message_callback);
 };
 
-exports.addMessageToThread = addMessageToThread;
+exports.addMessageToTransaction = addMessageToTransaction;
 
 var email_template = fs.readFileSync('config/message_email.html', 'utf8');
 
@@ -164,15 +151,15 @@ function sendMessageEmail (sender, recipient, message, callback) {
     });
 }
 
-function getThreadMessages (thread, callback, current_user_id) {
-  return Message.find({'_thread': helpers.toObjectId(thread._id)})
+function getThreadMessages (transaction, callback, current_user_id) {
+  return Message.find({'_transaction': helpers.toObjectId(transaction._id)})
     .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {
         if (err) {
             callback(err, null);
         } else {
-            var sorted_participants = thread._participants.sort(function (a, b) {
+            var sorted_participants = transaction._participants.sort(function (a, b) {
                 if (a._id == current_user_id) {
                     return 1;
                 }
@@ -184,7 +171,7 @@ function getThreadMessages (thread, callback, current_user_id) {
             callback(null, {
                 participants: sorted_participants,
                 messages: messages,
-                _id: thread._id,
+                _id: transaction._id,
             });
         }
     });
@@ -219,8 +206,8 @@ exports.showMessages = function(req, res) {
  * for loading each thread when it is clicked.
 */
 exports.getMessages = function(req, res) {
-    var thread_id = req.params.id;
-    Message.find({'_thread': helpers.toObjectId(thread_id)})
+    var transaction_id = req.params.id;
+    Message.find({'_transaction': helpers.toObjectId(transaction_id)})
     .sort('timeSent')
     .populate('_sender')
     .exec(function (err, messages) {

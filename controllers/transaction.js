@@ -126,7 +126,7 @@ exports.postAccept = function (req, res) {
             },
 
             function (trans, callback) {
-                messageController.addMessageToThread(req.user.id, [trans._sender], req.body.message, callback);
+                messageController.addMessageToTransaction(req.user.id, [trans._sender], req.body.message, callback);
             },
         ], helpers.respondToAjax(res));
 };
