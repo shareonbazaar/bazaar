@@ -45,7 +45,7 @@ const activities = require('./config/activities');
  */
 const app = express();
 
-var server = require('http').createServer(app);
+var server = require('http').Server(app);
 
 /**
  * Connect to MongoDB.
@@ -229,7 +229,7 @@ if (app.settings.env === 'production') {
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), () => {
+server.listen(app.get('port'), () => {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 

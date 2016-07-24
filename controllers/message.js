@@ -14,7 +14,7 @@ var io;
 var socket_map;
 
 exports.initSockets = function (server, store, cookieParser) {
-    io = require('socket.io').listen(server);
+    io = require('socket.io')(server);
 
     function onAuthorizeSuccess(data, accept){
       console.log('successful connection to socket.io');
