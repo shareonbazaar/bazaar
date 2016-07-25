@@ -4,13 +4,14 @@ exports.toObjectId = function (str) {
 };
 
 exports.respondToAjax = function (res) {
-    return function (err) {
+    return function (err, data) {
         var error = null;
         if (err) {
             error = err;
         }
         res.json({
             error: error,
+            data: data,
         });
     }
 };
