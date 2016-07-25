@@ -5,6 +5,7 @@ var activities = require('../config/activities');
 var Enums = require('../models/Enums');
 var messageController = require('../controllers/message');
 var helpers = require('./helpers');
+var moment = require('moment');
 
 
 function dateString (date) {
@@ -16,9 +17,9 @@ function dateString (date) {
  * Show transactions for current user
  */
 exports.showTransactions = function(req, res) {
-  Transaction.find({$or: [{_sender: req.user.id}, {_recipient: req.user.id}]})
-    .populate('_sender')
-    .populate('_recipient')
+  Transaction.find({$or: [{_creator: req.user.id}, {_participants: req.user.id}]})
+    .populate('_creator')
+    .populate('_participants')
     .exec(function (err, transactions) {
         transactions.forEach(function (t) {
             t.service_label = activities.getActivityLabelForName(t.service);
@@ -42,6 +43,7 @@ exports.showTransactions = function(req, res) {
 
         res.render('users/transactions', {
             transactions: data,
+            moment: moment,
         });
   });
 };
@@ -129,6 +131,18 @@ exports.postAccept = function (req, res) {
                 messageController.addMessageToTransaction(req.user.id, [trans._sender], req.body.message, callback);
             },
         ], helpers.respondToAjax(res));
+};
+
+/**
+ * POST /rejectRequest
+ * Accept a request for an exchange.
+ */
+exports.rejectRequest = function (req, res) {
+    Transaction.findOneAndUpdate(
+      {_id: req.params.id},
+      {
+        status: Enums.StatusType.REJECTED,
+      }, helpers.respondToAjax(res));
 };
 
 /**

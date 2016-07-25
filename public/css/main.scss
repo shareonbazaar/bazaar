@@ -410,14 +410,46 @@ input.activity-checkbox {
   }
 
   .transaction-table {
-    &:nth-child(2), &:nth-child(3) {
+    &:nth-child(3), &:nth-child(4) {
       display: none;
     }
     margin-top: 30px;
     width: 100%;
     text-align: center;
-    th {
-      text-align: center;
+    .request-info {
+      span {
+        margin: 0 7px;
+      }
+      text-align: left;
+      background-color: white;
+      margin: 10px auto;
+      width: 70%;
+      border-radius: 10px;
+      @media(max-width: 600px) {
+        width: 100%;
+      }
+      overflow: hidden;
+      .content {
+        float: left;
+      }
+      .timestamp {
+        float: right;
+        font-size: 10px;
+      }
+      .see-more {
+        padding: 20px 5px;
+        width: 100%;
+        display: inline-block;
+      }
+      .responses {
+        text-align: center;
+        padding: 1% 0;
+        button {
+          width: 35%;
+          margin: 0 7%;
+        }
+      }
+
     }
   }
 }

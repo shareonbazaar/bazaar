@@ -1,20 +1,21 @@
 extends ../layout
 
 mixin showTransactions(t_list)
-  table.transaction-table
-    thead
-      tr
-        th Service
-        th Partner
-        th Status
-        th Action
-    tbody
-      each t in t_list
-        tr
-          td= t.service_label
-          td= t._sender.profile.name
-          td= t.status
-          td Click
+  .transaction-table
+    each t, i in t_list
+      .request-info(data-id="#{t._id}")
+        .panel-container
+          a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
+            .content
+              img.img-circle(width=30 src="#{t._creator.profile.picture}")
+              span= t._creator.profile.name
+              em= t.service_label
+            time.timestamp #{moment(t.timeSent).startOf('day').fromNow()}
+        .collapse(id="request-collapse-#{t.status}-#{i}")
+          if t.status == 'proposed'
+            .responses
+              button.btn.btn-primary.accept(data-toggle="modal", data-target="#acceptModal") Accept
+              button.btn.btn-primary.reject Reject
 
 block content
   include ../partials/acceptModal

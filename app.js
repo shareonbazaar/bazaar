@@ -171,6 +171,7 @@ app.get('/profile/:id', passportConfig.isAuthenticated, userController.showProfi
 app.get('/transactions', passportConfig.isAuthenticated, transactionController.showTransactions);
 app.post('/transactions', passportConfig.isAuthenticated, transactionController.postTransaction);
 app.post('/acceptRequest', passportConfig.isAuthenticated, transactionController.postAccept);
+app.get('/rejectRequest/:id', passportConfig.isAuthenticated, transactionController.rejectRequest);
 app.get('/confirmExchange/:id', passportConfig.isAuthenticated, transactionController.confirmExchange);
 
 app.post('/location', passportConfig.isAuthenticated, userController.postLocation);

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
 
     $('#submit-acceptance').click(function () {
         var data = {
@@ -15,6 +15,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
         })
         $('#acceptModal').modal('hide')
         return false;
+    });
+
+    $('.reject').click( function () {
+        $(this).closest('.request-info').hide('slide',{direction:'right'},1000);
+        $.ajax({
+            url: '/rejectRequest/' + $(this).closest('.request-info').data('id'),
+            method: 'GET',
+        }).done(function (data) {
+            console.log(data);
+        });
     });
 
     $('#acceptModal').on('show.bs.modal', function (event) {
