@@ -6,10 +6,14 @@
           span(aria-hidden="true") &#215;
         h4#acceptModalLabel.modal-title Confirm acceptance by suggesting a meetup time
       .modal-body
+        .checkmark
+          svg(width="150", height="120")
+            path(id="check", d="M10,30 l30,50 l95,-70")
+          .statement
         form.profile-accept-form
           #request-id(style="display:none;" request-id)
           .form-group
-            label.control-label(for="message-text") Message:
+            label.control-label(for="message-text") Message (you'll be able to chat further once you accept):
             textarea#text-input.form-control
       .modal-footer
         button.btn.btn-default(type="button", data-dismiss="modal") Close

@@ -450,9 +450,39 @@ input.activity-checkbox {
         }
       }
 
+      .messaging {
+        margin: 0 15px;
+        textarea {
+          width: 100%;
+        }
+      }
     }
   }
 }
+
+#acceptModal {
+  #check {
+    fill: none;
+    stroke: green;
+    stroke-width: 20;
+    stroke-dasharray: 180;
+    stroke-dashoffset: 180;
+    -webkit-animation: draw 2s ease forwards;
+    animation: draw 2s ease forwards;
+
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .checkmark {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
 
 /* This is for when selecting rating for new review */
 .rating {
@@ -552,48 +582,46 @@ input.activity-checkbox {
       font-size: initial;
     }
   }
+}
 
-  .conversation {
-    overflow-y: auto;
-    height: 400px;
 
-    .message-details {
-      margin-top: 4px;
-      margin-bottom: 4px;
-      max-width: 50%;
+.conversation {
+  overflow-y: auto;
+  height: 400px;
 
-      &.myself {
-        float: right;
-        clear: both;
-        margin-right: 5px;
-        .comment {
-          background-color: #D1EEFC;
-        }
-      }
+  .message-details {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    max-width: 50%;
 
-      &.other-person {
-        float: left;
-        clear: both;
-        margin-left: 5px;
-        .comment {
-          background-color: #F2F2F2;
-        }
-      }
-
+    &.myself {
+      float: right;
+      clear: both;
+      margin-right: 5px;
       .comment {
-        padding: 8px;
-        border-radius: 5px;
-        box-shadow: 0 0 6px #B2B2B2;
-        margin-bottom: 3px;
-      }
-
-      .author {
-        font-size: 8px;
+        background-color: #D1EEFC;
       }
     }
-  }
-  .message-form textarea {
-    width: 100%;
+
+    &.other-person {
+      float: left;
+      clear: both;
+      margin-left: 5px;
+      .comment {
+        background-color: #F2F2F2;
+      }
+    }
+
+    .comment {
+      padding: 8px;
+      border-radius: 5px;
+      box-shadow: 0 0 6px #B2B2B2;
+      margin-bottom: 3px;
+    }
+
+    .author {
+      font-size: 8px;
+    }
   }
 }
 

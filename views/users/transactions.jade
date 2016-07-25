@@ -16,6 +16,15 @@ mixin showTransactions(t_list)
             .responses
               button.btn.btn-primary.accept(data-toggle="modal", data-target="#acceptModal") Accept
               button.btn.btn-primary.reject Reject
+          else
+            .messaging
+              .conversation
+
+              form.message-form
+                .form-group
+                  textarea.text-input(placeholder="Write message" rows=4)
+                .form-group
+                  button.btn.btn-primary.btn-md#send-button(type="submit") Send message
 
 block content
   include ../partials/acceptModal

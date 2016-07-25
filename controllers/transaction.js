@@ -1,6 +1,7 @@
 var async = require('async');
 
 var Transaction = require('../models/Transaction');
+var Message = require('../models/Message');
 var activities = require('../config/activities');
 var Enums = require('../models/Enums');
 var messageController = require('../controllers/message');
@@ -10,6 +11,34 @@ var moment = require('moment');
 
 function dateString (date) {
     return [date.getDate(), date.getMonth() + 1, date.getFullYear()].join('/');
+}
+
+function getMessagesForTransaction (t_id, user_id, callback) {
+    Message.find({'_transaction': t_id})
+    .sort('timeSent')
+    .populate('_sender')
+    .exec(function (err, messages) {
+        if (err) {
+          callback(err);
+        } else {
+            callback(null, messages.map(function (message) {
+                return {
+                    message: message.message,
+                    timeSent: message.timeSent,
+                    author: {
+                        name: message._sender.profile.name,
+                        pic: message._sender.profile.picture,
+                        id: message._sender._id,
+                        isMe: (message._sender._id == user_id),
+                    },
+                };
+            }));
+        }
+    });
+}
+
+exports.getMessages = function (req, res) {
+    getMessagesForTransaction(req.params.id, req.user.id, helpers.respondToAjax(res));
 }
 
 /**

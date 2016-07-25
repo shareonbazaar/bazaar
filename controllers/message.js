@@ -8,6 +8,7 @@ var fs = require('fs');
 var secrets = require('../config/secrets');
 var Message = require('../models/Message');
 var Thread = require('../models/Thread');
+var Transaction = require('../models/Transaction');
 var helpers = require('./helpers');
 
 var io;
@@ -43,7 +44,7 @@ exports.initSockets = function (server, store, cookieParser) {
     io.sockets.on('connection', function (socket) {
         socket_map[socket.request.user._id] = socket.id;
         socket.on('send message', function (data) {
-            addMessageToTransaction(socket.request.user._id, data.message, data.transaction_id, function(){});
+            addMessageToTransaction(socket.request.user._id, data.message, data.t_id, function(){});
         });
     });
 
