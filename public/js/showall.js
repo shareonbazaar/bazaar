@@ -76,6 +76,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.filter-options').removeClass('open');
     });
 
+    $('.filter-options').click(function (event) {
+        event.stopPropagation();
+    });
+
     var grid = $('.grid').masonry({
         gutter: 20,
         itemSelector: '.grid-item',
