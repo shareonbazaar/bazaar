@@ -9,10 +9,6 @@ var transactionSchema = new mongoose.Schema({
     enum: Object.keys(Enums.StatusType).map(function (key) { Enums.StatusType[key] }),
   },
   timeSent: Date,
-  review: {
-      text: { type: String, default: '' },
-      rating: Number,
-  },
   service: String,
   _participants:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },

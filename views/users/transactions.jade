@@ -14,9 +14,12 @@ mixin showTransactions(t_list)
         .collapse(id="request-collapse-#{t.status}-#{i}")
           if t.status == 'proposed'
             .responses
-              button.btn.btn-primary.accept(data-toggle="modal", data-target="#acceptModal") Accept
-              button.btn.btn-primary.reject Reject
-          else
+              if t._creator._id == user.id
+                button.btn.btn-danger.cancel Cancel
+              else
+                button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
+                button.btn.btn-danger.reject Reject
+          else if t.status == 'accepted'
             .messaging
               .conversation
 
@@ -24,10 +27,14 @@ mixin showTransactions(t_list)
                 .form-group
                   textarea.text-input(placeholder="Write message" rows=4)
                 .form-group
-                  button.btn.btn-primary.btn-md#send-button(type="submit") Send message
+                  button.btn.btn-primary.btn-md.send-button(type="submit") Send message
+            hr
+            .success-box
+              button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete
 
 block content
   include ../partials/acceptModal
+  include ../partials/review
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   
   .transaction-page

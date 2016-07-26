@@ -27,6 +27,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     });
 
+    $('.cancel').click( function () {
+        $(this).closest('.request-info').hide('slide',{direction:'right'},1000);
+        $.ajax({
+            url: '/cancelRequest/' + $(this).closest('.request-info').data('id'),
+            method: 'GET',
+        }).done(function (data) {
+            console.log(data);
+        });
+    });
+
     function newChatBubble (message) {
         var klass = message.author.isMe ? 'myself' : 'other-person';
         var chat = '<div class="message-details {who}">'.replace('{who}', klass) +
@@ -52,15 +62,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         };
 
         socket.emit('send message', packet);
-        $('#text-input').val('');
+        $('.text-input').val('');
 
         return false;
     });
 
     socket.on('new message', function (data) {
         var match = $('.transaction-table').find('[data-id="' + data.transaction._id + '"]');
-        // If its a message for an existing thread, add it and set that thread to 'pending'
-        if (match.length > 0) {
+        // If its a message for an existing transaction, and that transaction has conversation
+        // div already set up, then append it.
+        if (match.length > 0 && $(match[0]).find('.conversation').length > 0) {
             var request = match[0];
 
             // If its a message for the current thread, make a new chat bubble and append it
@@ -77,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('.see-more').click(function () {
         var type = $(this).attr('href');
-        if (type.indexOf('proposed') >= 0)
+        if (type.indexOf('accepted') != 0)
             return;
         var request_info = $(this).closest('.request-info');
         $.ajax({
@@ -106,13 +117,55 @@ document.addEventListener("DOMContentLoaded", function (event) {
         modal.find('.modal-body .statement').html('Get ready for ' + skill_label);
     });
 
-    $('.confirm').click(function () {
+    $('#submit-review').click(function () {
+        var rating = 1;
+        $('.rating span').each(function (i, obj) {
+            if ($(obj).hasClass('selected')) {
+                rating = 5 - i;
+            }
+        });
+        var data = {
+            t_id: $('#transaction-id').attr('transaction-id'),
+            _csrf: $('#review-csrf_token').val(),
+            message: $('#review-text-input').val(),
+            rating: rating
+        };
         $.ajax({
-            url: '/confirmExchange/' + $(this).data('id'),
+            url: '/submitReview',
+            method: 'POST',
+            data: data,
+        }).done(function (response) {
+            console.log(response);
+        })
+        $('#reviewModal').modal('hide')
+        return false;
+    });
+
+    $('.rating span').click(function () {
+        $('.rating span').removeClass('selected');
+        $(this).addClass('selected');
+    });
+
+    function confirmExchange (t_id) {
+        $.ajax({
+            url: '/confirmExchange/' + t_id,
             method: 'GET',
         }).done(function (data) {
             console.log(data);
         });
+    }
+
+    $('#reviewModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var id = button.closest('.request-info').data('id');
+        button.closest('.request-info').hide('slide',{direction:'right'},1000);
+
+        confirmExchange(id);
+
+        var skill_label = button.closest('.request-info').find('.content em').html();
+        var modal = $(this);
+        modal.find('.modal-body #transaction-id').attr('transaction-id', id);
+        modal.find('.modal-body #review-activity').val(skill_label);
     });
 
     $('.exchange-type').click(function () {

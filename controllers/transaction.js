@@ -78,17 +78,20 @@ exports.showTransactions = function(req, res) {
 };
 
 /**
- * POST /reviews
+ * POST /submitReview
  * Add a review for a transaction
  */
 
-exports.postReview = function (req, res) {
-    Transaction.findOneAndUpdate({_id: req.body.id}, {
-        review: {
-            text: req.body.review,
-            rating: req.body.rating,
-        },
-    }, helpers.respondToAjax(res));
+exports.submitReview = function (req, res) {
+    var review = new Review({
+      text: req.body.message,
+      rating: req.body.rating,
+      _creator: req.user.id,
+      timeSent: new Date(),
+      _exchange: req.body.t_id,
+    });
+
+    review.save(helpers.respondToAjax(res));
 };
 
 /**
@@ -96,18 +99,10 @@ exports.postReview = function (req, res) {
  * Confirm that an exchange happened.
  */
 exports.confirmExchange = function (req, res) {
-    console.log(req.params.id)
+    // FIXME: Add condition that current user is creator or participant
     Transaction.findById(req.params.id, function (err, transaction) {
-        if (req.user.id.toString() !== transaction._sender.toString()
-            && req.user.id.toString() !== transaction._recipient.toString()) {
-            res.json({
-                error: "You cannot make updates to a transaction to which you are not party.",
-            });
-            return;
-        }
-
         var partner_acknowledged_status, me_acknowledged_status;
-        if (req.user.id.toString() == transaction._sender.toString()) {
+        if (req.user.id.toString() == transaction._creator.toString()) {
             partner_acknowledged_status = Enums.StatusType.RECIPIENT_ACK;
             me_acknowledged_status = Enums.StatusType.SENDER_ACK;
         } else {
@@ -148,6 +143,7 @@ exports.confirmExchange = function (req, res) {
  * Accept a request for an exchange.
  */
 exports.postAccept = function (req, res) {
+    // FIXME: Add condition that current user is not creator
     async.waterfall([
             function (callback) {
                 Transaction.findOneAndUpdate(
@@ -167,10 +163,25 @@ exports.postAccept = function (req, res) {
  * Accept a request for an exchange.
  */
 exports.rejectRequest = function (req, res) {
+    // FIXME: Add condition that current user is not creator
     Transaction.findOneAndUpdate(
-      {_id: req.params.id},
+      {_id: req.params.id,
+        _participants: req.user.id},
       {
         status: Enums.StatusType.REJECTED,
+      }, helpers.respondToAjax(res));
+};
+
+/**
+ * POST /cancelRequest
+ * Accept a request for an exchange.
+ */
+exports.cancelRequest = function (req, res) {
+    Transaction.findOneAndUpdate(
+      {_id: req.params.id,
+        _creator: req.user.id},
+      {
+        status: Enums.StatusType.CANCELLED,
       }, helpers.respondToAjax(res));
 };
 
@@ -185,8 +196,9 @@ exports.postTransaction = function (req, res) {
             var trans = new Transaction({
                 timeSent: new Date(),
                 service: req.body.service,
-                _recipient: req.body.recipient,
-                _sender: req.user.id,
+                _participants: [req.body.recipient, req.user.id],
+                amount: 1,
+                _creator: req.user.id,
                 status: Enums.StatusType.PROPOSED,
             });
             trans.save(callback);
