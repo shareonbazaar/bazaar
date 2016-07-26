@@ -5,17 +5,14 @@
       a(href='#')
         | Bazaar
     li
-      a(href='#') Home
+      a(href='/') Home
+    if user
+      li
+        a(href='/transactions') Wallet
+      li
+        a(href='/profile/#{user.id}') Profile
     li
-      a(href='/transactions') Wallet
+      a(href='/contact') Contact
     li
-      a(href='#') Profile
-    li
-      a(href='#') Coins
-    li
-      a(href='#') Contact
-    li
-      a(href='#') About
-    li
-      a(href='#') Settings
+      a(href='/about') About
 link(rel='stylesheet', href='/css/sidebar.css')
