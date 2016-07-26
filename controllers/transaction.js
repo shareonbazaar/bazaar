@@ -153,7 +153,7 @@ exports.postAccept = function (req, res) {
             },
 
             function (trans, callback) {
-                messageController.addMessageToTransaction(req.user.id, [trans._sender], req.body.message, callback);
+                messageController.addMessageToTransaction(req.user.id, req.body.message, trans._id, callback);
             },
         ], helpers.respondToAjax(res));
 };
@@ -207,7 +207,7 @@ exports.postTransaction = function (req, res) {
         function (t, num, callback) {
             var message = req.body.message;
             if (message) {
-              messageController.addMessageToThread(req.user.id, [req.body.recipient], message, callback);
+              messageController.addMessageToTransaction(req.user.id, message, t._id, callback);
             } else {
               callback(null);
             }
