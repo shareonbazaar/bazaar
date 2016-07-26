@@ -101,13 +101,15 @@ textarea {
   text-align: center;
   background-color: lightgray;
   padding: 10px 0px;
-  border-bottom: 1px solid black;
+  border: 1px solid black;
   &.selected {
-    background-color: darkblue;
+    background-color: lightblue;
   }
-  &:nth-child(2) {
-    border-left: 1px solid black;
-    border-right: 1px solid black;
+  &:nth-child(3) {
+    border-left: none;
+  }
+  &:nth-child(1) {
+    border-right: none;
   }
 }
 
@@ -233,14 +235,6 @@ textarea {
     text-align: center;
     width: 100%;
     padding: 10px 0px;
-
-    &:nth-child(1) {
-      background-color: gray;
-    }
-
-    &:nth-child(2) {
-      background-color: lightgray;
-    }
   }
 }
 
@@ -402,8 +396,10 @@ input.activity-checkbox {
     text-align: center;
 
     .exchange-type {
+      padding: 10px 0px;
+      background-color: gray;
       &.selected {
-        background-color: black;
+        background-color: lightblue;
         color: white;
       }
     }
@@ -454,6 +450,16 @@ input.activity-checkbox {
         margin: 0 15px;
         textarea {
           width: 100%;
+          resize: none;
+          border: 1px solid #ccc;
+        }
+      }
+
+      .success-box {
+        text-align: center;
+        button {
+          width: 30%;
+          margin-bottom: 10px;
         }
       }
     }
