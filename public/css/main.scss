@@ -377,12 +377,17 @@ input.activity-checkbox {
   }
 }
 
-.review .rating span {
-  color: gold;
-}
-
-.review quote {
-  padding-right: 10px;
+.review {
+  padding: 0 5px 10px 5px;
+  text-align: left;
+  .rating span {
+    color: gold;
+  }
+  .review-timestamp {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
 }
 
 
@@ -413,7 +418,7 @@ input.activity-checkbox {
     width: 100%;
     text-align: center;
     .request-info {
-      span {
+      .content span {
         margin: 0 7px;
       }
       text-align: left;

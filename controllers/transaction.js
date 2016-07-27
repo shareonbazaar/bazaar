@@ -2,6 +2,7 @@ var async = require('async');
 
 var Transaction = require('../models/Transaction');
 var Message = require('../models/Message');
+var Review = require('../models/Review');
 var activities = require('../config/activities');
 var Enums = require('../models/Enums');
 var messageController = require('../controllers/message');
@@ -39,6 +40,40 @@ function getMessagesForTransaction (t_id, user_id, callback) {
 
 exports.getMessages = function (req, res) {
     getMessagesForTransaction(req.params.id, req.user.id, helpers.respondToAjax(res));
+}
+
+exports.getReviews = function (req, res) {
+    Review.find({'_transaction': req.params.id})
+    .populate('_creator')
+    .exec(function (err, reviews) {
+        if (err) {
+            res.json({error: err});
+            return;
+        }
+        var curr_user_review = reviews.find((review) => review._creator._id == req.user.id);
+        // If there is a review that is not ours, it must be another review about us
+        var other_review = reviews.find((review) => review._creator._id != req.user.id);
+        if (!curr_user_review) {
+            res.json({curr_user_has_review: false});
+            return;
+        } else if (!other_review) {
+            res.json({partner_has_review: false});
+            return;
+        } else {
+            res.json({
+                review: {
+                    author: {
+                        name: other_review._creator.profile.name,
+                        picture: other_review._creator.profile.picture,
+                        id: other_review._creator._id,
+                    },
+                    text: other_review.text,
+                    rating: other_review.rating,
+                    timestamp: moment(other_review.timeSent).startOf('day').fromNow(),
+                }
+            });
+        }
+    });
 }
 
 /**
@@ -81,14 +116,14 @@ exports.showTransactions = function(req, res) {
  * POST /submitReview
  * Add a review for a transaction
  */
-
 exports.submitReview = function (req, res) {
+    // FIXME: Add subject?
     var review = new Review({
-      text: req.body.message,
-      rating: req.body.rating,
-      _creator: req.user.id,
-      timeSent: new Date(),
-      _exchange: req.body.t_id,
+        timeSent: new Date(),
+        text: req.body.message,
+        rating: req.body.rating,
+        _transaction: req.body.t_id,
+        _creator: req.user.id,
     });
 
     review.save(helpers.respondToAjax(res));

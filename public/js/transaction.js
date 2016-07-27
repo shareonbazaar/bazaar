@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('.see-more').click(function () {
         var type = $(this).attr('href');
-        if (type.indexOf('accepted') != 0)
+        if (type.indexOf('accepted') < 0)
             return;
         var request_info = $(this).closest('.request-info');
         $.ajax({
@@ -136,8 +136,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             data: data,
         }).done(function (response) {
             console.log(response);
-        })
-        $('#reviewModal').modal('hide')
+        });
+        $('#reviewModal').modal('hide');
         return false;
     });
 
@@ -157,10 +157,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('#reviewModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
-        var id = button.closest('.request-info').data('id');
-        button.closest('.request-info').hide('slide',{direction:'right'},1000);
+        var request = button.closest('.request-info');
+        var id = request.data('id');
+        var status = request.data('status');
 
-        confirmExchange(id);
+        // If it's accepted, that means it was in the upcoming column, so we
+        // should slide it out of view
+        if (status == 'accepted') {
+            button.closest('.request-info').hide('slide',{direction:'right'},1000);
+        }
+
+        if (status != 'complete') {
+            confirmExchange(id);
+        }
+
 
         var skill_label = button.closest('.request-info').find('.content em').html();
         var modal = $(this);

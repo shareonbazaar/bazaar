@@ -31,6 +31,11 @@ mixin showTransactions(t_list)
             hr
             .success-box
               button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete
+          else if t.status != 'complete'
+            .success-box
+              .notice Your partner has marked this exchange as complete. Please confirm completion
+              button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Confirm exchange
+
 
 block content
   include ../partials/acceptModal

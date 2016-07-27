@@ -145,6 +145,7 @@ app.post('/account/delete', passportConfig.isAuthenticated, userController.postD
 app.get('/account/unlink/:provider', passportConfig.isAuthenticated, userController.getOauthUnlink);
 app.get('/messages', passportConfig.isAuthenticated, messageController.showMessages);
 app.get('/_transactionMessages/:id', passportConfig.isAuthenticated, transactionController.getMessages);
+app.get('/_transactionReviews/:id', passportConfig.isAuthenticated, transactionController.getReviews);
 app.get('/_numUnreadThreads', passportConfig.isAuthenticated, (req, res) => {
     res.json({
         count: req.user.unreadThreads.length,
