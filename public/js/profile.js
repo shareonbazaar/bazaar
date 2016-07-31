@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         message: '',
         recipient: {},
     };
-    var socket = io();
 
     $('#submit-skill-request').click(function () {
         var data = {
