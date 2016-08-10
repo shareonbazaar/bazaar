@@ -108,6 +108,7 @@ exports.showTransactions = function(req, res) {
         res.render('users/transactions', {
             transactions: data,
             moment: moment,
+            StatusType: Enums.StatusType,
         });
   });
 };
@@ -168,7 +169,13 @@ exports.confirmExchange = function (req, res) {
                }}
             ],
             { "ordered": false },
-            helpers.respondToAjax(res)
+            function (err, data) {
+                Transaction.findById(req.params.id, function (err, transaction) {
+                    res.json({
+                        status: transaction.status,
+                    });
+                });
+            }
         );
     });
 };
@@ -179,18 +186,20 @@ exports.confirmExchange = function (req, res) {
  */
 exports.postAccept = function (req, res) {
     // FIXME: Add condition that current user is not creator
-    async.waterfall([
-            function (callback) {
-                Transaction.findOneAndUpdate(
-                    {_id: req.body.id},
-                    {status: Enums.StatusType.ACCEPTED},
-                    callback);
-            },
-
-            function (trans, callback) {
-                messageController.addMessageToTransaction(req.user.id, req.body.message, trans._id, callback);
-            },
-        ], helpers.respondToAjax(res));
+    Transaction.findOneAndUpdate(
+        {_id: req.body.id},
+        {status: Enums.StatusType.ACCEPTED},
+        {new: true},
+        function (err, trans) {
+            if (req.body.message) {
+                messageController.addMessageToTransaction(req.user.id, req.body.message, trans._id, function () {});
+            }
+            res.json({
+                id: trans._id,
+                status: trans.status,
+            });
+        }
+    );
 };
 
 /**

@@ -460,13 +460,48 @@ input.activity-checkbox {
         }
       }
 
-      .success-box {
+      .notice {
         text-align: center;
         button {
           width: 30%;
           margin-bottom: 10px;
         }
       }
+
+      .responses, .messaging, .confirmation, .confirmation-pending, .reviews {
+        display: none;
+      }
+
+      &.proposed {
+        .responses {
+          display: block;
+        }
+      }
+
+      &.accepted {
+        .messaging {
+          display: block;
+        }
+      }
+
+      &.recipient_acknowledged.am-sender, &.sender_acknowledged.am-recipient {
+        .confirmation {
+          display: block;
+        }
+      }
+
+      &.recipient_acknowledged.am-recipient, &.sender_acknowledged.am-sender {
+        .confirmation-pending {
+          display: block;
+        }
+      }
+
+      &.complete {
+        .reviews {
+          display: block;
+        }
+      }
+
     }
   }
 }

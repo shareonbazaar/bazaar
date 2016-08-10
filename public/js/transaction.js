@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", function (event) {
 
     $('#submit-acceptance').click(function () {
+        var t_id = $('#request-id').attr('request-id');
         var data = {
-            id: $('#request-id').attr('request-id'),
+            id: t_id,
             _csrf: $('#csrf_token').val(),
             message: $('#text-input').val(),
         };
@@ -11,9 +12,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
             method: 'POST',
             data: data,
         }).done(function (data) {
-            console.log(data);
-        })
-        $('#acceptModal').modal('hide')
+            var request_info = $('[data-id="' + t_id + '"]');
+            $('[data-id="' + t_id + '"]').hide('slide', {direction: 'right'}, 1000, function () {
+                // 'Move' the request info box from the proposed column to the upcoming
+                // column and change CSS classes so the right divs get hidden/shown
+                $(request_info).removeClass($(request_info).attr('data-status'));
+                $(request_info).addClass(data.status);
+                $(request_info).attr('data-status', data.status);
+                $($('.transaction-table')[1]).append(request_info);
+                $($('.transaction-table')[1]).find('.request-info').show();
+                get_messages(request_info);
+                // Force a click to go to the 'Upcoming' tab
+                ($('.exchange-type')[1]).click();
+            });
+        });
+        $('#acceptModal').modal('hide');
+
         return false;
     });
 
@@ -86,11 +100,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
     });
 
-    $('.see-more').click(function () {
-        var type = $(this).attr('href');
-        if (type.indexOf('accepted') < 0)
-            return;
-        var request_info = $(this).closest('.request-info');
+    function get_messages (request_info) {
         $.ajax({
             url: '/_transactionMessages/' + $(request_info).data('id'),
         }).done(function (response) {
@@ -100,16 +110,63 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 $(request_info).find('.conversation').append(chat);
             });
             $(request_info).find('.conversation').scrollTop($(request_info).find('.conversation')[0].scrollHeight);
-            // $.ajax({
-            //     url: '/_ackThread/' + clicked_thread_id,
-            // }).done(function (data) {
-            //     $('#thread-count').html(data.count);
-            // });
         });
-    })
+    }
+
+    function createReview (data) {
+        var rating = '';
+        for (var i = 0; i < data.rating; i++) {
+            rating += '<span>★</span>';
+        }
+        var review = '<div class="review">' +
+                        '<div class="rating">' +
+                            rating +
+                        '</div>' +
+                        '<time class="review-timestamp">' +
+                            data.timestamp +
+                        '</time>' +
+                        '<quote>' +
+                            data.text +
+                        '</quote>' +
+                     '</div>';
+        return review;
+    }
+
+    $('.see-more').click(function () {
+        var type = $(this).attr('href');
+        var request_info = $(this).closest('.request-info');
+        if ($(request_info).attr('data-status').indexOf('accepted') >= 0) {
+            get_messages(request_info);
+            // FIgure out how to know if curr user hasn't confirmed it
+        } else if ($(request_info).attr('data-status').indexOf('complete') >= 0) {
+            $.ajax({
+                url: '/_transactionReviews/' + $(request_info).data('id'),
+            }).done(function (response) {
+                var notice = '';
+                if (response.curr_user_has_review == false) {
+                    var review_button = '<button class="btn btn-success" data-toggle="modal" data-target="#reviewModal">' +
+                                            'Write Review' +
+                                        '</button>';
+                    notice = '<div>' +
+                                    'Please write a review for this exchange. ' +
+                                    'You won\'t be able to see your partner\'s review until you write one' +
+                                 '</div>';
+                    $(request_info).find('.notice').html(notice + review_button);
+                } else if (response.partner_has_review == false) {
+                    notice = '<div>' +
+                                'Thank you for submitting a review. ' +
+                                'As soon as your partner submits one, you\'ll be able to see it!' +
+                             '</div>';
+                    $(request_info).find('.notice').html(notice);
+                } else {
+                    $(request_info).find('.reviews').html(createReview(response.review));
+                }
+            });
+        }
+    });
 
     $('#acceptModal').on('show.bs.modal', function (event) {
-        var button = $(event.relatedTarget) // Button that triggered the modal
+        var button = $(event.relatedTarget); // Button that triggered the modal
         var id = button.closest('.request-info').data('id');
         var skill_label = button.closest('.request-info').find('.content em').html();
         var modal = $(this);
@@ -151,7 +208,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
             url: '/confirmExchange/' + t_id,
             method: 'GET',
         }).done(function (data) {
-            console.log(data);
+            var request_info = $('[data-id="' + t_id + '"]');
+            var old_status = $(request_info).attr('data-status');
+
+            // If it's accepted, that means it was in the upcoming column, so we
+            // should slide it out of view. Maybe change this to instead check the
+            // actual column that it is in instead of using status proxy
+            if (old_status == 'accepted') {
+                $('[data-id="' + t_id + '"]').hide('slide', {direction: 'right'}, 1000, function () {
+                    $(request_info).removeClass(old_status);
+                    $(request_info).addClass(data.status);
+                    $(request_info).attr('data-status', data.status);
+                    $($('.transaction-table')[2]).append(request_info);
+                    $($('.transaction-table')[2]).find('.request-info').show();
+                });
+            } else {
+                $(request_info).removeClass(old_status);
+                $(request_info).addClass(data.status);
+                $(request_info).attr('data-status', data.status);
+            }
         });
     }
 
@@ -159,18 +234,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var request = button.closest('.request-info');
         var id = request.data('id');
-        var status = request.data('status');
-
-        // If it's accepted, that means it was in the upcoming column, so we
-        // should slide it out of view
-        if (status == 'accepted') {
-            button.closest('.request-info').hide('slide',{direction:'right'},1000);
-        }
+        var status = request.attr('data-status');
 
         if (status != 'complete') {
             confirmExchange(id);
         }
-
 
         var skill_label = button.closest('.request-info').find('.content em').html();
         var modal = $(this);

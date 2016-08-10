@@ -3,7 +3,11 @@ extends ../layout
 mixin showTransactions(t_list)
   .transaction-table
     each t, i in t_list
-      .request-info(data-id="#{t._id}")
+      if t._creator._id == user.id
+        - var owner_class = 'am-sender'
+      else
+        - var owner_class = 'am-recipient'
+      .request-info(data-id="#{t._id}", class="#{t.status} #{owner_class}" data-status="#{t.status}")
         .panel-container
           a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
             .content
@@ -11,30 +15,30 @@ mixin showTransactions(t_list)
               span= t._creator.profile.name
               em= t.service_label
             time.timestamp #{moment(t.timeSent).startOf('day').fromNow()}
-        .collapse(id="request-collapse-#{t.status}-#{i}")
-          if t.status == 'proposed'
-            .responses
-              if t._creator._id == user.id
-                button.btn.btn-danger.cancel Cancel
-              else
-                button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
-                button.btn.btn-danger.reject Reject
-          else if t.status == 'accepted'
-            .messaging
-              .conversation
+        .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
+          .responses
+            if t._creator._id == user.id
+              button.btn.btn-danger.cancel Cancel
+            else
+              button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
+              button.btn.btn-danger.reject Reject
+          .messaging
+            .conversation
 
-              form.message-form
-                .form-group
-                  textarea.text-input(placeholder="Write message" rows=4)
-                .form-group
-                  button.btn.btn-primary.btn-md.send-button(type="submit") Send message
+            form.message-form
+              .form-group
+                textarea.text-input(placeholder="Write message" rows=4)
+              .form-group
+                button.btn.btn-primary.btn-md.send-button(type="submit") Send message
             hr
-            .success-box
+            .notice
               button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete
-          else if t.status != 'complete'
-            .success-box
-              .notice Your partner has marked this exchange as complete. Please confirm completion
-              button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Confirm exchange
+          .confirmation.notice
+            .notice-message Your partner has marked this exchange as complete. Please confirm completion
+            button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Confirm exchange
+          .confirmation-pending.notice
+            .notice-message This exchange is pending confirmation from the other person that it has been completed
+          .reviews.notice
 
 
 block content
