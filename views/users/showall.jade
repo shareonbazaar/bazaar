@@ -15,7 +15,7 @@ block content
       | Categories
       .skill-select
         each skill in current_user_interests
-          .skill-label #{skill.label}
+          .skill-label(name="#{skill.name}") #{skill.label}
     .col-md-6.range-filter
       | Distance
       input(type='range', min='0', max='20')

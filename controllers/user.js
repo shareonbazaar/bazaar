@@ -486,10 +486,9 @@ exports.findUsers = (req, res) => {
 
 exports.search = (req, res) => {
   // FIXME: switch on request type, json or HTML
-  User.find({}, (err, results) => {
+  User.find({skills: {'$in': req.query.skills}}, (err, results) => {
     async.map(results, (item, cb) => {
       item.skills = activities.populateLabels(item.skills);
-      console.log(item.skills)
       res.app.render('partials/userCard', {
         layout: false,
         curr_user: req.user,

@@ -93,12 +93,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $('.filter-button').click(function () {
         $('.filter-options').removeClass('open');
+        var skill_names = $.map($('.category-filter .skill-select .selected'), function (obj) {
+            return $(obj).attr('name');
+        });
         $.ajax({
             url: '/users/search',
             data: {
                 distance: 10,
                 service_type: '',
-                skills: [],
+                skills: skill_names,
             },
         }).done(function (response) {
             $('.grid').masonry('remove', $('.grid').masonry('getItemElements'));
