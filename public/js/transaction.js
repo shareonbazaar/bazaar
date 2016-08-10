@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function serializeDate (date) {
-        return date.getHours() + ':' + ('0'+ date.getMinutes()).slice(-2)
+        return date.getHours() + ':' + ('0'+ date.getMinutes()).slice(-2);
     }
 
     var socket = io();
