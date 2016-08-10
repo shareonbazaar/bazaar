@@ -494,8 +494,8 @@ exports.search = (req, res) => {
         curr_user: req.user,
         card_user: item,
       }, cb)
-    }, (err, results) => {
-      res.json(results);
+    }, (err, response) => {
+      res.json(response);
     });
   });
 }

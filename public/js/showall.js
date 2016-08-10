@@ -96,6 +96,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var skill_names = $.map($('.category-filter .skill-select .selected'), function (obj) {
             return $(obj).attr('name');
         });
+        if (skill_names.length == 0) {
+            var free_search_text = $('.search-box').val();
+            skill_names = [free_search_text];
+        }
         $.ajax({
             url: '/users/search',
             data: {
