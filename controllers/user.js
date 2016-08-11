@@ -535,7 +535,7 @@ exports.list = function(req, res) {
  */
 exports.showProfile = function(req, res) {
     User.findById(req.params.id, function (err, user) {
-        if (user === null) {
+        if (!user) {
             res.status(404).render('error/404', {
                 status: 404,
                 url: req.url,
