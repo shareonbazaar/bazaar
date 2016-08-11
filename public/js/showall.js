@@ -80,17 +80,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.stopPropagation();
     });
 
-    var grid = $('.grid').masonry({
-        gutter: 20,
-        itemSelector: '.grid-item',
-        columnWidth: 300,
-        fitWidth: true,
-    });
-
-    grid.imagesLoaded().progress(function () {
-        grid.masonry('layout');
-    });
-
     $('.filter-button').click(function () {
         $('.filter-options').removeClass('open');
         var skill_names = $.map($('.category-filter .skill-select .selected'), function (obj) {

@@ -596,6 +596,23 @@ exports.postBookmark = (req, res) => {
     req.user.save(helpers.respondToAjax(res));
 }
 
+/**
+ * GET /bookmarks
+ * Show all bookmarks for current user
+ */
+exports.getBookmarks = (req, res) => {
+    var my_interests = req.user.interests;
+    User.find({'_id': {'$in': req.user.bookmarks}}, (err, users) => {
+        users.forEach((user) => {
+            user.skills = activities.populateLabels(user.skills);
+        });
+        res.render('users/bookmarks', {
+            users: users,
+            current_user_interests: activities.populateLabels(my_interests),
+        });
+    });
+}
+
 var email_template = fs.readFileSync('config/welcome_email.html', 'utf8');
 
 function sendWelcomeEmail (user, callback) {
