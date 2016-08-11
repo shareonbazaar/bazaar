@@ -1,11 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(event) { 
 
-    var current_message = {
-        thread_id: -1,
-        message: '',
-        recipient: {},
-    };
-
     $('#submit-skill-request').click(function () {
         var data = {
             recipient: $('#request-recipient').attr('recipient'),
