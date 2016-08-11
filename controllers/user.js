@@ -591,7 +591,7 @@ exports.postBookmark = (req, res) => {
     if (index < 0) {
         req.user.bookmarks.push(req.params.id);
     } else {
-        req.user.bookmarks.splice(index);
+        req.user.bookmarks.splice(index, 1);
     }
     req.user.save(helpers.respondToAjax(res));
 }
