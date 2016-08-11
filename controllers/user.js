@@ -5,6 +5,7 @@ const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
 const Thread = require('../models/Thread');
+const Review = require('../models/Review');
 const Transaction = require('../models/Transaction');
 const secrets = require('../config/secrets');
 const activities = require('../config/activities');
@@ -533,23 +534,30 @@ exports.list = function(req, res) {
  * Show profile for a given user, specified by :id
  */
 exports.showProfile = function(req, res) {
-  User.findById(req.params.id, function (err, user) {
-    if (user === null) {
-      res.status(404).render('error/404', {
-        status: 404,
-        url: req.url,
-      });
-      return;
-    }
-    user.skills = activities.populateLabels(user.skills);
-    user.interests = activities.populateLabels(user.interests);
-    Transaction.find({'_recipient': user._id}, function (err, transactions) {
-      res.render('users/profile', {
-          spotlight_user: user,
-          transactions: transactions,
-      });
+    User.findById(req.params.id, function (err, user) {
+        if (user === null) {
+            res.status(404).render('error/404', {
+                status: 404,
+                url: req.url,
+            });
+            return;
+        }
+        user.skills = activities.populateLabels(user.skills);
+        user.interests = activities.populateLabels(user.interests);
+
+        // This is kind of gross, that we need two queries just to get reviews
+        // for a user. Other option is to change schema to make reviews an
+        // embedded document of transactions.
+        Transaction.find({'_participants': user._id}, function (err, transactions) {
+            var t_ids = transactions.map((t) => t._id);
+            Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]}, (err, reviews) => {
+                res.render('users/profile', {
+                    spotlight_user: user,
+                    reviews: reviews,
+                });
+            });
+        });
     });
-  });
 };
 
 /**

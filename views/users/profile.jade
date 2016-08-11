@@ -35,14 +35,14 @@ block content
       .col-md-12
         .box
           h3 Reviews
-          each transaction, i in transactions
+          each review, i in reviews
             .review
               .rating
                 - var num = 0
-                while num < transaction.review.rating
+                while num < review.rating
                   span ★
                   - num++
-              quote= transaction.review.text
+              quote= review.text
             hr
 
   script(src='/js/profile.js')
