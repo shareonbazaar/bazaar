@@ -490,6 +490,9 @@ exports.search = (req, res) => {
   User.find({skills: {'$in': req.query.skills}}, (err, results) => {
     async.map(results, (item, cb) => {
       item.skills = activities.populateLabels(item.skills);
+      if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
+          user.loc.coordinates = [null, null];
+      }
       res.app.render('partials/userCard', {
         layout: false,
         curr_user: req.user,
