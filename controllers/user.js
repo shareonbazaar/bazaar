@@ -345,7 +345,7 @@ exports.postReset = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'team@shareonbazaar.eu',
+        from: 'Bazaar Team <team@shareonbazaar.eu>',
         subject: 'Your Bazaar password has been changed',
         text: `Hello,\n\nThis is a confirmation that the password for your account ${user.email} has just been changed.\n`
       };
@@ -418,7 +418,7 @@ exports.postForgot = (req, res, next) => {
       });
       const mailOptions = {
         to: user.email,
-        from: 'team@shareonbazaar.eu',
+        from: 'Bazaar Team <team@shareonbazaar.eu>',
         subject: 'Reset your password on Bazaar',
         text: `You are receiving this email because you (or someone else) have requested the reset of the password for your account.\n\n
           Please click on the following link, or paste this into your browser to complete the process:\n\n
