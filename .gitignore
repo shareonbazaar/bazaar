@@ -30,8 +30,6 @@ public/css/main.css
 .DS_Store
 Thumbs.db
 
-config/secrets.js
-
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml

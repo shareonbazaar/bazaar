@@ -5,7 +5,6 @@ var nodemailer = require('nodemailer');
 var passportSocketIo = require("passport.socketio");
 var fs = require('fs');
 
-var secrets = require('../config/secrets');
 var Message = require('../models/Message');
 var Thread = require('../models/Thread');
 var Transaction = require('../models/Transaction');
@@ -33,7 +32,7 @@ exports.initSockets = function (server, store, cookieParser) {
     io.use(passportSocketIo.authorize({
       cookieParser: cookieParser,
       key:          'connect.sid',
-      secret:       secrets.sessionSecret,
+      secret:       process.env.SESSION_SECRET,
       store:        store,
       success:      onAuthorizeSuccess,
       fail:         onAuthorizeFail,
@@ -131,8 +130,8 @@ function sendMessageEmail (sender, recipient, message, callback) {
     var transporter = nodemailer.createTransport({
       service: 'Mailgun',
       auth: {
-        user: secrets.mailgun.user,
-        pass: secrets.mailgun.password,
+        user: process.env.MAILGUN_USER,
+        pass: process.env.MAILGUN_PASSWORD,
       },
     });
 

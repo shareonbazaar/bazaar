@@ -1,10 +1,9 @@
-const secrets = require('../config/secrets');
 const nodemailer = require("nodemailer");
 const transporter = nodemailer.createTransport({
   service: 'Mailgun',
   auth: {
-    user: secrets.mailgun.user,
-    pass: secrets.mailgun.password
+    user: process.env.MAILGUN_USER,
+    pass: process.env.MAILGUN_PASSWORD, 
   }
 });
 

@@ -7,7 +7,6 @@ const User = require('../models/User');
 const Thread = require('../models/Thread');
 const Review = require('../models/Review');
 const Transaction = require('../models/Transaction');
-const secrets = require('../config/secrets');
 const activities = require('../config/activities');
 const fs = require('fs');
 const aws = require('aws-sdk');
@@ -154,10 +153,10 @@ exports.getAccount = (req, res) => {
 function uploadPicture (filename, fileBuffer, mimetype, callback) {
     //aws credentials
     aws.config = new aws.Config();
-    aws.config.accessKeyId = secrets.aws.accessKeyId;
-    aws.config.secretAccessKey = secrets.aws.secretAccessKey;
-    aws.config.region = secrets.aws.region;
-    var BUCKET_NAME = secrets.aws.bucketName;
+    aws.config.accessKeyId = process.env.AWS_ACCESS_KEY_ID;
+    aws.config.secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY;
+    aws.config.region = process.env.AWS_REGION;
+    var BUCKET_NAME = process.env.AWS_BUCKET_NAME;
 
     var s3 = new aws.S3();
     s3.putObject({
@@ -196,7 +195,7 @@ exports.postUpdateProfile = (req, res, next) => {
         if (req.file) {
           var mimetype = req.file.mimetype;
           var filename = req.user._id + '.' + mimetype.split('/').pop();
-          user.profile.picture = 'https://s3.' + secrets.aws.region + '.' + 'amazonaws.com/' + secrets.aws.bucketName + '/' + filename;
+          user.profile.picture = 'https://s3.' + process.env.AWS_REGION + '.' + 'amazonaws.com/' + process.env.AWS_BUCKET_NAME + '/' + filename;
           uploadPicture(filename, req.file.buffer, mimetype, callback);
         } else {
           callback(null);
@@ -340,8 +339,8 @@ exports.postReset = (req, res, next) => {
       const transporter = nodemailer.createTransport({
         service: 'Mailgun',
         auth: {
-          user: secrets.mailgun.user,
-          pass: secrets.mailgun.password
+          user: process.env.MAILGUN_USER,
+          pass: process.env.MAILGUN_PASSWORD,
         }
       });
       const mailOptions = {
@@ -413,8 +412,8 @@ exports.postForgot = (req, res, next) => {
       const transporter = nodemailer.createTransport({
         service: 'Mailgun',
         auth: {
-          user: secrets.mailgun.user,
-          pass: secrets.mailgun.password
+          user: process.env.MAILGUN_USER,
+          pass: process.env.MAILGUN_PASSWORD
         }
       });
       const mailOptions = {
@@ -630,8 +629,8 @@ function sendWelcomeEmail (user, callback) {
     var transporter = nodemailer.createTransport({
       service: 'Mailgun',
       auth: {
-        user: secrets.mailgun.user,
-        pass: secrets.mailgun.password,
+        user: process.env.MAILGUN_USER,
+        pass: process.env.MAILGUN_PASSWORD,
       },
     });
 

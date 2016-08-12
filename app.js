@@ -21,7 +21,7 @@ const cookieParser = require('cookie-parser');
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-dotenv.load({ path: '.env.example' });
+dotenv.load({ path: '.env' });
 
 /**
  * Controllers (route handlers).
@@ -36,7 +36,6 @@ const contactController = require('./controllers/contact');
 /**
  * API keys and Passport configuration.
  */
-const secrets = require('./config/secrets');
 const passportConfig = require('./config/passport');
 const activities = require('./config/activities');
 
@@ -50,7 +49,7 @@ var server = require('http').Server(app);
 /**
  * Connect to MongoDB.
  */
-mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+mongoose.connect(process.env.MONGODB_URI);
 mongoose.connection.on('error', () => {
   console.error('MongoDB Connection Error. Please make sure that MongoDB is running.');
   process.exit(1);
@@ -72,12 +71,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(cookieParser());
-var store = new MongoStore({ url: secrets.db, autoReconnect: true });
+var store = new MongoStore({ url: process.env.MONGODB_URI, autoReconnect: true });
 app.use(session({
   name: 'connect.sid',
   resave: true,
   saveUninitialized: true,
-  secret: secrets.sessionSecret,
+  secret: process.env.SESSION_SECRET,
   store: store
 }));
 app.use(passport.initialize());

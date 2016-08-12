@@ -10,7 +10,6 @@ const OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 
 const userController = require('../controllers/user');
 
-const secrets = require('./secrets');
 const User = require('../models/User');
 
 passport.serializeUser((user, done) => {
