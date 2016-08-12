@@ -75,7 +75,7 @@ passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_ID,
   clientSecret: process.env.FACEBOOK_SECRET,
   callbackURL: '/auth/facebook/callback',
-  profileFields: ['id', 'emails', 'displayName', 'photos', 'gender', 'location', 'hometown'],
+  profileFields: ['id', 'first_name', 'last_name', 'emails', 'displayName', 'photos', 'gender', 'location', 'hometown'],
   passReqToCallback: true
 }, (req, accessToken, refreshToken, profile, done) => {
   if (req.user) {
