@@ -20,7 +20,6 @@ const userSchema = new mongoose.Schema({
   unreadThreads: [String],
 
   facebook: String,
-  twitter: String,
   google: String,
   tokens: Array,
   isAdmin: { type: Boolean, default: false },

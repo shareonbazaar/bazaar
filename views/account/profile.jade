@@ -127,9 +127,4 @@ block content
           p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
         else
           p: a(href='/auth/facebook') Link your Facebook account
-      .col-sm-offset-3.col-sm-4
-        if user.twitter
-          p: a.text-danger(href='/account/unlink/twitter') Unlink your Twitter account
-        else
-          p: a(href='/auth/twitter') Link your Twitter account
   script(src='/js/profile.js')
