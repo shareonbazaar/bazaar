@@ -10,13 +10,13 @@ mixin activities(modal_title, user_activities)
           h4#messageModalLabel.modal-title Select #{modal_title}
         .modal-body
           .container-fluid
-            each actions, title in activities
-              h4= title
-              .row
-                each action, i in actions
-                  .col-sm-3
-                    input.activity-checkbox(type="checkbox" data-label="#{action.label}" name="#{action.name}" checked=(user_activities.indexOf(action.name) >= 0))
-                    span= action.label
+            .skill-select
+              each actions, title in activities
+                h4= title
+                .row
+                  each action, i in actions
+                    - var klass = user_activities.indexOf(action.name) >= 0 ? 'selected' : ''
+                    .skill-label(class=klass name="#{action.name}")= action.label
         .modal-footer
           button.btn.btn-default(type="button", data-dismiss="modal") Cancel
           button.btn.btn-primary.submit-activities(id='submit-#{modal_title}' type="button") Save preferences

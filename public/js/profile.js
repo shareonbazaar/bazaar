@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('.submit-activities').click(function () {
         var id = $(this).attr('id');
         var section_name = '#' + id.slice('submit-'.length) + '-section';
-        var selected = $(section_name +' .modal input.activity-checkbox:checked');
+        var selected = $(section_name +' .modal .skill-select .skill-label.selected');
         var names = $.map(selected, function (obj) {
             return $(obj).attr('name');
         });
@@ -48,7 +48,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
         $(section_name + ' .user-activities').empty()
         $.map(selected, function (obj) {
-            var label = $(obj).attr('data-label');
+            var label = $(obj).html();
             $(section_name + ' .user-activities').append('<li>' + label + '</li>');
         });
     });
