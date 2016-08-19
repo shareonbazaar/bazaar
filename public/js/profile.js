@@ -26,10 +26,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         modal.find('.modal-body #request-recipient').attr('recipient', id);
         modal.find('.modal-title').text('Request for ' + button.data('name'));
         $('#text-input').val('');
-        $('.skill-select').empty();
+        $('#requestModal .skill-select').empty();
         skills.forEach(function (skill) {
             var option = '<div class="skill-label" name=' + skill.name + '>' + skill.label + '</div>';
-            $('.skill-select').append(option);
+            $('#requestModal .skill-select').append(option);
         });
     });
 
