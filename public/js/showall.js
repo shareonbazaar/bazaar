@@ -80,6 +80,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.stopPropagation();
     });
 
+    var distance_slider = $('#distance-slider').bootstrapSlider({
+        formatter: function(value) {
+            return (2 * value) + ' km';
+        }
+    });
     $('.filter-button').click(function () {
         $('.filter-options').removeClass('open');
         var skill_names = $.map($('.category-filter .skill-select .selected'), function (obj) {
@@ -92,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $.ajax({
             url: '/users/search',
             data: {
-                distance: 10,
                 service_type: '',
+                distance: distance_slider.bootstrapSlider('getValue') * 2, // Distance in km in which to search
                 skills: skill_names,
             },
         }).done(function (response) {

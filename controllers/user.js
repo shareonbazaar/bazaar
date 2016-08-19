@@ -484,9 +484,21 @@ exports.findUsers = (req, res) => {
   });
 };
 
+const EARTH_RADIUS_KM = 6378.1;
 exports.search = (req, res) => {
   // FIXME: switch on request type, json or HTML
-  User.find({skills: {'$in': req.query.skills}}, (err, results) => {
+  User.find({
+      '$and': [
+                {
+                  skills: {'$in': req.query.skills},
+                },
+                {
+                  loc: {
+                          '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },
+                       }
+                }
+              ]
+            }, (err, results) => {
     async.map(results, (item, cb) => {
       item.skills = activities.populateLabels(item.skills);
       if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
