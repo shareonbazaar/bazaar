@@ -1,3 +1,4 @@
+// FIXME: make these const variables
 var async = require('async');
 
 var Transaction = require('../models/Transaction');
