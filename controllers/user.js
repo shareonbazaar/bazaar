@@ -6,6 +6,7 @@ const passport = require('passport');
 const User = require('../models/User');
 const Thread = require('../models/Thread');
 const Review = require('../models/Review');
+const Enums = require('../models/Enums');
 const Transaction = require('../models/Transaction');
 const activities = require('../config/activities');
 const fs = require('fs');
@@ -480,6 +481,7 @@ exports.findUsers = (req, res) => {
     res.render('users/showall', {
         users: results,
         current_user_interests: activities.populateLabels(my_interests),
+        RequestType: Enums.RequestType,
     });
   });
 };
@@ -487,11 +489,24 @@ exports.findUsers = (req, res) => {
 const EARTH_RADIUS_KM = 6378.1;
 exports.search = (req, res) => {
   // FIXME: switch on request type, json or HTML
+
+  // Default match is an EXCHANGE match - that is, user is interested
+  // in both receiving and providing the service.
+  var skill_match_query = {
+      '$and': [
+          {skills: {'$in': req.query.skills}},
+          {interests: {'$in': req.query.skills}},
+      ],
+  };
+  if (req.query.request_type === Enums.RequestType.LEARN) {
+      skill_match_query['$and'].splice(1, 1);
+  } else if (req.query.request_type === Enums.RequestType.SHARE) {
+      skill_match_query['$and'].splice(0, 1);
+  }
+
   User.find({
       '$and': [
-                {
-                  skills: {'$in': req.query.skills},
-                },
+                skill_match_query,
                 {
                   loc: {
                           '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },

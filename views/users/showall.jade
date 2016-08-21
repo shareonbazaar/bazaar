@@ -6,13 +6,13 @@ block content
   include ../partials/newrequest
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .row.filter-options
-    .col-xs-4.service-type.selected Learn
-    .col-xs-4.service-type Share
-    .col-xs-4.service-type Exchange
+    .col-xs-4.service-type.selected(name=RequestType.LEARN) Learn
+    .col-xs-4.service-type(name=RequestType.SHARE) Share
+    .col-xs-4.service-type(name=RequestType.EXCHANGE) Exchange
     .clearfix.visible-xs-block.visible-sm-block
     .col-md-6.category-filter
       .glyphicon.glyphicon-triangle-right
-      | Categories
+      label Categories
       .skill-select
         each skill in current_user_interests
           .skill-label(name="#{skill.name}") #{skill.label}

@@ -97,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $.ajax({
             url: '/users/search',
             data: {
-                service_type: '',
                 distance: distance_slider.bootstrapSlider('getValue') * 2, // Distance in km in which to search
+                request_type: $('.service-type.selected').attr('name'),
                 skills: skill_names,
             },
         }).done(function (response) {

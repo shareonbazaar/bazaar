@@ -7,3 +7,9 @@ exports.StatusType = {
     RECIPIENT_ACK: 'recipient_acknowledged',
     COMPLETE: 'complete',
 };
+
+exports.RequestType = {
+    LEARN: 'learn', // Requester is receiving service
+    SHARE: 'share', // Requester is giving service
+    EXCHANGE: 'exchange', // Requester is both giving and receiving service
+};
