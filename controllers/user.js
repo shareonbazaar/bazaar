@@ -511,7 +511,10 @@ exports.search = (req, res) => {
                   loc: {
                           '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },
                        }
-                }
+                },
+                {
+                  _id: {'$ne': req.user.id}
+                },
               ]
             }, (err, results) => {
     async.map(results, (item, cb) => {
