@@ -56,7 +56,16 @@ textarea {
 }
 
 .navbar-brand {
-  padding: 19.5px 10px;
+  padding: 6px 10px;
+  img {
+    display: initial;
+    margin-right: 5px;
+  }
+  .brand-title {
+    @media (max-width: $screen-sm) {
+      display: none;
+    }
+  }
 }
 
 // Alerts
