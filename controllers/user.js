@@ -683,3 +683,25 @@ function sendWelcomeEmail (user, callback) {
  * Send welcome email to a user after registration
  */
 exports.sendWelcomeEmail = sendWelcomeEmail;
+
+function getPublicUserData(user) {
+    return {
+        name: user.profile.name,
+        _id: user._id,
+        picture: user.profile.picture,
+        hometown: user.profile.hometown,
+        location: user.profile.location,
+        status: user.profile.status,
+        gender: user.profile.gender,
+        coins: user.coins,
+        skills: user.skills.map(activities.getActivityLabelForName),
+        interests: user.interests.map(activities.getActivityLabelForName),
+        aboutMe: user.aboutMe,
+    }
+};
+
+exports.apiAllUsers = function (req, res) {
+  User.find({}, function (err, results) {
+    res.json(results.map(getPublicUserData));
+  });
+}

@@ -201,6 +201,11 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 });
 
 /**
+ * Bazaar API
+ */
+app.get('/api/users', userController.apiAllUsers);
+
+/**
  * Error Handler.
  */
 if (app.settings.env === 'production') {
