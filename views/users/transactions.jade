@@ -14,7 +14,7 @@ mixin showTransactions(t_list)
               img.img-circle(width=30 src="#{t._creator.profile.picture}")
               span= t._creator.profile.name
               em= t.service_label
-            time.timestamp #{moment(t.timeSent).startOf('day').fromNow()}
+            time.timestamp #{moment(t.timeSent).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
           .responses
             if t._creator._id == user.id
