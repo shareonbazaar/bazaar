@@ -10,6 +10,10 @@ var transactionSchema = new mongoose.Schema({
   },
   timeSent: Date,
   service: String,
+  request_type: {
+    type: String,
+    enum: Object.keys(Enums.RequestType).map(function (key) { Enums.RequestType[key] }),
+  },
   _participants:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
 });

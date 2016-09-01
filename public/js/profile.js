@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             _csrf: $('#csrf_token').val(),
             service: $('.skill-select div.selected').attr('name'),
             message: $('#message-text').val(),
+            request_type: $('#requestModal .service-type.selected').attr('name'),
         };
         $.ajax({
             url: '/transactions',

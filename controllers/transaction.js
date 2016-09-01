@@ -241,6 +241,7 @@ exports.postTransaction = function (req, res) {
             var trans = new Transaction({
                 timeSent: new Date(),
                 service: req.body.service,
+                request_type: req.body.request_type,
                 _participants: [req.body.recipient, req.user.id],
                 amount: 1,
                 _creator: req.user.id,

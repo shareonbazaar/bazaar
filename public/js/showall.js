@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             url: '/users/search',
             data: {
                 distance: distance_slider.bootstrapSlider('getValue') * 2, // Distance in km in which to search
-                request_type: $('.service-type.selected').attr('name'),
+                request_type: $('.filter-options .service-type.selected').attr('name'),
                 skills: skill_names,
             },
         }).done(function (response) {

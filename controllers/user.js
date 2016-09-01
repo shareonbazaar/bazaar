@@ -586,6 +586,7 @@ exports.showProfile = function(req, res) {
                 res.render('users/profile', {
                     spotlight_user: user,
                     reviews: reviews,
+                    RequestType: Enums.RequestType,
                 });
             });
         });
