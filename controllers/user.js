@@ -492,31 +492,25 @@ exports.search = (req, res) => {
 
   // Default match is an EXCHANGE match - that is, user is interested
   // in both receiving and providing the service.
-  var skill_match_query = {
-      '$and': [
-          {skills: {'$in': req.query.skills}},
-          {interests: {'$in': req.query.skills}},
-      ],
+  var db_query = {
+      skills: {'$in': req.query.skills},
+      interests: {'$in': req.query.skills},
+      _id: {'$ne': req.user.id},
   };
+
   if (req.query.request_type === Enums.RequestType.LEARN) {
-      skill_match_query['$and'].splice(1, 1);
+      delete db_query['interests'];
   } else if (req.query.request_type === Enums.RequestType.SHARE) {
-      skill_match_query['$and'].splice(0, 1);
+      delete db_query['skills'];
   }
 
-  User.find({
-      '$and': [
-                skill_match_query,
-                {
-                  loc: {
-                          '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },
-                       }
-                },
-                {
-                  _id: {'$ne': req.user.id}
-                },
-              ]
-            }, (err, results) => {
+  if (req.query.distance && req.query.distance > 0) {
+      db_query.loc = {
+          '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },
+      }
+  }
+
+  User.find(db_query, (err, results) => {
     async.map(results, (item, cb) => {
       item.skills = activities.populateLabels(item.skills);
       if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {

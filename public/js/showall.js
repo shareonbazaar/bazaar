@@ -80,9 +80,19 @@ document.addEventListener("DOMContentLoaded", function(event) {
         event.stopPropagation();
     });
 
+    const MAX_SLIDER_VALUE = 50;
     var distance_slider = $('#distance-slider').bootstrapSlider({
-        formatter: function(value) {
-            return (2 * value) + ' km';
+        max: MAX_SLIDER_VALUE,
+        min: 2,
+        step: 2,
+        value: MAX_SLIDER_VALUE,
+        formatter: function (value) {
+            if (value === 50) {
+                $('#distance-label').addClass('inactive');
+                return 'No distance filter';
+            }
+            $('#distance-label').removeClass('inactive');
+            return value + ' km';
         }
     });
     $('.filter-button').click(function () {
@@ -94,10 +104,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var free_search_text = $('.search-box').val();
             skill_names = [free_search_text];
         }
+        var slider_value = distance_slider.bootstrapSlider('getValue');
         $.ajax({
             url: '/users/search',
             data: {
-                distance: distance_slider.bootstrapSlider('getValue') * 2, // Distance in km in which to search
+                distance: slider_value == MAX_SLIDER_VALUE ? -1 : slider_value, // Distance in km in which to search
                 request_type: $('.filter-options .service-type.selected').attr('name'),
                 skills: skill_names,
             },
