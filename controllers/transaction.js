@@ -83,6 +83,7 @@ exports.getReviews = function (req, res) {
  */
 exports.showTransactions = function(req, res) {
   Transaction.find({$or: [{_creator: req.user.id}, {_participants: req.user.id}]})
+    .sort('-timeSent')
     .populate('_creator')
     .populate('_participants')
     .exec(function (err, transactions) {
