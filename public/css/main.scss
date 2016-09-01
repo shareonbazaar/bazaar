@@ -425,7 +425,11 @@ input.activity-checkbox {
     .exchange-type {
       padding: 10px 0px;
       background-color: gray;
-      &.selected {
+      &:hover {
+        background-color: #E6E6E6;
+        cursor: pointer;
+      }
+      &.selected, &.selected:hover {
         background-color: lightblue;
         color: white;
       }
