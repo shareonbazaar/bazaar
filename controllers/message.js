@@ -9,6 +9,7 @@ var Message = require('../models/Message');
 var Thread = require('../models/Thread');
 var Transaction = require('../models/Transaction');
 var helpers = require('./helpers');
+const app = require('../app');
 
 var io;
 var socket_map;
@@ -43,7 +44,7 @@ exports.initSockets = function (server, store, cookieParser) {
     io.sockets.on('connection', function (socket) {
         socket_map[socket.request.user._id] = socket.id;
         socket.on('send message', function (data) {
-            addMessageToTransaction(socket.request.user._id, data.message, data.t_id, function(){});
+            addMessageToTransaction(socket.request.user._id, data.message, data.t_id, socket.request, function(){});
         });
     });
 
@@ -52,7 +53,7 @@ exports.initSockets = function (server, store, cookieParser) {
     });
 }
 
-function addMessageToTransaction (sender_id, message_text, transaction_id, add_message_callback) {
+function addMessageToTransaction (sender_id, message_text, transaction_id, req, add_message_callback) {
     async.waterfall([
         function (callback) {
             var now = new Date();
@@ -111,7 +112,7 @@ function addMessageToTransaction (sender_id, message_text, transaction_id, add_m
                             if (isMe)
                                 callback(null)
                             else
-                                sendMessageEmail(sender, user, message.message, callback);
+                                sendMessageEmail(sender, user, message.message, req, callback);
                         }
                     ], function (err, result) {
                         each_user_callback(err)
@@ -124,9 +125,7 @@ function addMessageToTransaction (sender_id, message_text, transaction_id, add_m
 
 exports.addMessageToTransaction = addMessageToTransaction;
 
-var email_template = fs.readFileSync('config/message_email.html', 'utf8');
-
-function sendMessageEmail (sender, recipient, message, callback) {
+function sendMessageEmail (sender, recipient, message, req, callback) {
     var transporter = nodemailer.createTransport({
       service: 'Mailgun',
       auth: {
@@ -135,19 +134,24 @@ function sendMessageEmail (sender, recipient, message, callback) {
       },
     });
 
-    var html_content = email_template.replace('{sender}', sender.profile.name);
-    html_content = html_content.replace('{profile_pic}', sender.profile.picture);
-    html_content = html_content.replace('{recipient}', recipient.profile.name);
-    html_content = html_content.replace('{message}', message);
-
-    var mailOptions = {
-      to: recipient.email,
-      from: 'Bazaar Team <team@shareonbazaar.eu>',
-      subject: 'New message from ' + sender.profile.name,
-      html: html_content,
-    };
-    transporter.sendMail(mailOptions, function (err) {
-      callback(err);
+    app.render('emailTemplates/message', {
+        layout: false,
+        sender: sender,
+        recipient: recipient,
+        message: message,
+        base_url: (req.secure ? 'https://' : 'http://') + req.headers.host,
+    }, (err, html_content) => {
+        var mailOptions = {
+            to: recipient.email,
+            from: 'Bazaar Team <team@shareonbazaar.eu>',
+            subject: 'New message from ' + sender.profile.name,
+            html: html_content,
+            text: 'Hi ' + recipient.profile.name + ',\n\n' +
+              'You have a new message from ' + sender.profile.name + '! Please log on to Bazaar to read it.\n',
+        };
+        transporter.sendMail(mailOptions, (err) => {
+            callback(err);
+        });
     });
 }
 

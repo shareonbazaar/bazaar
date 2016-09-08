@@ -1,0 +1,19 @@
+div(style='padding:5px')
+  img(style='float:left; padding-right: 4px;', width='40', src='#{base_url}/favicon.png')
+  h3(style='padding-top: 8px;') Bazaar
+  div
+    h4 Dear #{recipient.profile.name},
+    p
+      | You have received a new message from 
+      strong #{sender.profile.name}:
+    img(src='#{sender.profile.picture}', width='50')
+    blockquote(style='font-family: Georgia, serif; font-size: 18px;\
+    font-style: italic;\
+    width: 500px;\
+    margin: 0.25em 0;\
+    padding: 0.25em 40px;\
+    line-height: 1.45;\
+    position: relative;\
+    color: #383838;')
+      | #{message}
+    a(href='#{base_url}/messages', style='padding:5px; background-color: #2469a0; color: white; font-weight: bold; border-radius: 3px; text-decoration: none;') Send a reply

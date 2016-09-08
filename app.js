@@ -24,6 +24,15 @@ const cookieParser = require('cookie-parser');
 dotenv.load({ path: '.env' });
 
 /**
+ * Create Express server.
+ */
+const app = express();
+module.exports = app;
+
+
+var server = require('http').Server(app);
+
+/**
  * Controllers (route handlers).
  */
 const homeController = require('./controllers/home');
@@ -38,13 +47,6 @@ const contactController = require('./controllers/contact');
  */
 const passportConfig = require('./config/passport');
 const activities = require('./config/activities');
-
-/**
- * Create Express server.
- */
-const app = express();
-
-var server = require('http').Server(app);
 
 /**
  * Connect to MongoDB.
@@ -237,5 +239,3 @@ if (app.settings.env === 'production') {
 server.listen(app.get('port'), () => {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
-
-module.exports = app;

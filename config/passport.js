@@ -38,7 +38,7 @@ passport.use(new LocalStrategy({ usernameField: 'email' }, (email, password, don
   });
 }));
 
-function saveNewUser (user, done) {
+function saveNewUser (user, req, done) {
     async.waterfall([
       function (callback) {
         user.save(function (err) {
@@ -46,7 +46,7 @@ function saveNewUser (user, done) {
         });
       },
       function (user, callback) {
-        userController.sendWelcomeEmail(user, callback);
+        userController.sendWelcomeEmail(user, req, callback);
       }
     ], function (err) {
         done(err, user)
@@ -119,7 +119,7 @@ passport.use(new FacebookStrategy({
           user.profile.location = (profile._json.location) ? profile._json.location.name : '';
           user.profile.hometown = (profile._json.hometown) ? profile._json.hometown.name : '';
 
-          saveNewUser(user, done);
+          saveNewUser(user, req, done);
         }
       });
     });
@@ -175,7 +175,7 @@ passport.use(new GoogleStrategy({
           user.profile.gender = profile._json.gender;
           user.profile.picture = profile._json.image.url;
 
-          saveNewUser(user, done);
+          saveNewUser(user, req, done);
         }
       });
     });

@@ -194,7 +194,7 @@ exports.postAccept = function (req, res) {
         {new: true},
         function (err, trans) {
             if (req.body.message) {
-                messageController.addMessageToTransaction(req.user.id, req.body.message, trans._id, function () {});
+                messageController.addMessageToTransaction(req.user.id, req.body.message, trans._id, req, function () {});
             }
             res.json({
                 id: trans._id,
@@ -254,7 +254,7 @@ exports.postTransaction = function (req, res) {
         function (t, num, callback) {
             var message = req.body.message;
             if (message) {
-              messageController.addMessageToTransaction(req.user.id, message, t._id, callback);
+              messageController.addMessageToTransaction(req.user.id, message, t._id, req, callback);
             } else {
               callback(null);
             }

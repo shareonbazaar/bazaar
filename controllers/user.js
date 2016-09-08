@@ -12,7 +12,7 @@ const activities = require('../config/activities');
 const fs = require('fs');
 const aws = require('aws-sdk');
 const helpers = require('./helpers');
-
+const app = require('../app');
 
 /**
  * GET /login
@@ -116,13 +116,11 @@ exports.postSignup = (req, res, next) => {
     async.waterfall([
       function (callback) {
         user.save(function (err) {
+          sendWelcomeEmail(user, req, function () {});
           callback(err, user);
         });
       },
       function (user, callback) {
-        sendWelcomeEmail(user, callback);
-      },
-      function (callback) {
         req.logIn(user, function (err) {
           callback(err)
         })
@@ -648,29 +646,31 @@ exports.getBookmarks = (req, res) => {
     });
 }
 
-var email_template = fs.readFileSync('config/welcome_email.html', 'utf8');
-
-function sendWelcomeEmail (user, callback) {
+function sendWelcomeEmail (user, req, callback) {
     var transporter = nodemailer.createTransport({
-      service: 'Mailgun',
-      auth: {
-        user: process.env.MAILGUN_USER,
-        pass: process.env.MAILGUN_PASSWORD,
-      },
+        service: 'Mailgun',
+        auth: {
+            user: process.env.MAILGUN_USER,
+            pass: process.env.MAILGUN_PASSWORD,
+        },
     });
 
-    var html_content = email_template.replace('{recipient}', user.profile.name);
-
-    var mailOptions = {
-      to: user.email,
-      from: 'Bazaar Team <team@shareonbazaar.eu>',
-      subject: 'Welcome to the Bazaar, ' + user.profile.name,
-      text: 'Hi ' + user.profile.name + ',\n\n' +
-        'Thanks for signing up to Bazaar!.\n',
-      html: html_content,
-    };
-    transporter.sendMail(mailOptions, function (err) {
-      callback(err);
+    app.render('emailTemplates/welcome', {
+        layout: false,
+        recipient: user,
+        base_url: (req.secure ? 'https://' : 'http://') + req.headers.host,
+    }, (err, html_content) => {
+          var mailOptions = {
+              to: user.email,
+              from: 'Bazaar Team <team@shareonbazaar.eu>',
+              subject: 'Welcome to the Bazaar, ' + user.profile.name,
+              text: 'Hi ' + user.profile.name + ',\n\n' +
+                'Thanks for signing up to Bazaar!.\n',
+              html: html_content,
+          };
+          transporter.sendMail(mailOptions, (err) => {
+              callback(err);
+          });
     });
 }
 
