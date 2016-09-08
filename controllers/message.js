@@ -1,14 +1,14 @@
-var _ = require('lodash');
-var async = require('async');
-var mongoose = require('mongoose');
-var nodemailer = require('nodemailer');
-var passportSocketIo = require("passport.socketio");
-var fs = require('fs');
+const _ = require('lodash');
+const async = require('async');
+const mongoose = require('mongoose');
+const nodemailer = require('nodemailer');
+const passportSocketIo = require("passport.socketio");
+const fs = require('fs');
 
-var Message = require('../models/Message');
-var Thread = require('../models/Thread');
-var Transaction = require('../models/Transaction');
-var helpers = require('./helpers');
+const Message = require('../models/Message');
+const Thread = require('../models/Thread');
+const Transaction = require('../models/Transaction');
+const helpers = require('./helpers');
 const app = require('../app');
 
 var io;
