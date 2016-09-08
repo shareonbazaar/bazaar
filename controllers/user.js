@@ -98,10 +98,13 @@ exports.postSignup = (req, res, next) => {
     return res.redirect('/signup');
   }
 
+  var protocol = req.secure ? 'https://' : 'http://';
+  var base_url = protocol + req.headers.host;
   const user = new User({
     profile: {
       name: req.body.first_name + ' ' + req.body.last_name,
       status: req.body.status,
+      picture: base_url + '/images/person_placeholder.gif',
     },
     email: req.body.email,
     password: req.body.password
