@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(this).addClass('selected');
         
         current = $(this);
-        $('#wrapper').scrollTo($(this).attr('href'), 800);      
+        $('#wrapper').scrollTo($(this).attr('href'), 800);
         
         return false;
     });
