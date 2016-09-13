@@ -10,15 +10,21 @@ exports.index = (req, res) => {
 };
 
 exports.privacy = (req, res) => {
-  res.render('privacy');
+  res.render('privacy', {
+    title: 'Privacy Policy',
+  });
 };
 
 exports.about = (req, res) => {
-  res.render('about');
+  res.render('about', {
+    title: 'About',
+  });
 };
 
 exports.newabout = (req, res) => {
-  res.render('newabout');
+  res.render('newabout', {
+    title: 'About',
+  });
 };
 
 exports.splash = (req, res) => {

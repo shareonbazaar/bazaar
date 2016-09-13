@@ -131,6 +131,7 @@ exports.postSignup = (req, res, next) => {
     ], function (err) {
       if (err) return next(err);
         res.render('account/newaccount', {
+          title: 'Welcome',
           activities: activities.activityMap,
         });
     });
@@ -480,6 +481,7 @@ exports.findUsers = (req, res) => {
         }
     })
     res.render('users/showall', {
+        title: 'Community',
         users: results,
         current_user_interests: activities.populateLabels(my_interests),
         RequestType: Enums.RequestType,
@@ -564,6 +566,7 @@ exports.showProfile = function(req, res) {
     User.findById(req.params.id, function (err, user) {
         if (!user) {
             res.status(404).render('error/404', {
+                title: 'Error 404',
                 status: 404,
                 url: req.url,
             });
@@ -579,6 +582,7 @@ exports.showProfile = function(req, res) {
             var t_ids = transactions.map((t) => t._id);
             Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]}, (err, reviews) => {
                 res.render('users/profile', {
+                    title: user.profile.name,
                     spotlight_user: user,
                     reviews: reviews,
                     RequestType: Enums.RequestType,
@@ -643,6 +647,7 @@ exports.getBookmarks = (req, res) => {
             user.skills = activities.populateLabels(user.skills);
         });
         res.render('users/bookmarks', {
+            title: 'Bookmarks',
             users: users,
             current_user_interests: activities.populateLabels(my_interests),
         });

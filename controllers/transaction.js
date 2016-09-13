@@ -108,6 +108,7 @@ exports.showTransactions = function(req, res) {
         });
 
         res.render('users/transactions', {
+            title: 'My Transactions',
             transactions: data,
             moment: moment,
             StatusType: Enums.StatusType,
