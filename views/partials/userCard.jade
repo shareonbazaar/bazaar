@@ -1,6 +1,6 @@
 .grid-item.user-card
   - var image_uri = card_user.profile.picture || '/images/person_placeholder.gif'
-  - var bookmark_uri = curr_user.bookmarks.indexOf(card_user._id) >= 0 ? 'bookmark_active.svg' : 'bookmark_inactive.svg'
+  - var bookmark_uri = card_user.is_bookmarked ? 'bookmark_active.svg' : 'bookmark_inactive.svg'
   img.bookmark(src='/images/#{bookmark_uri}', data-user-id=card_user.id)
   .profile-info
     .profile-pic(onclick='window.location = "/profile/#{card_user.id}"' class="#{card_user.match}" data-long=card_user.loc.coordinates[0] data-lat=card_user.loc.coordinates[1] style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{card_user.profile.name}")

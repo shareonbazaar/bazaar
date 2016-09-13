@@ -490,43 +490,79 @@ exports.findUsers = (req, res) => {
 };
 
 const EARTH_RADIUS_KM = 6378.1;
-exports.search = (req, res) => {
-  // FIXME: switch on request type, json or HTML
-
+function performQuery (query, callback) {
   // Default match is an EXCHANGE match - that is, user is interested
   // in both receiving and providing the service.
-  var db_query = {
-      skills: {'$in': req.query.skills},
-      interests: {'$in': req.query.skills},
-      _id: {'$ne': req.user.id},
-  };
+  if (!(query.skills instanceof Array)) {
+      callback({
+        error: "'skills' parameter is required and must be an array of skills",
+      });
+      return;
+  }
 
-  if (req.query.request_type === Enums.RequestType.LEARN) {
+  var db_query = {
+      skills: {'$in': query.skills},
+      interests: {'$in': query.skills},
+      _id: {'$ne': query.user_id},
+  };
+  var error;
+
+  if (query.request_type === Enums.RequestType.LEARN) {
       delete db_query['interests'];
-  } else if (req.query.request_type === Enums.RequestType.SHARE) {
+  } else if (query.request_type === Enums.RequestType.SHARE) {
       delete db_query['skills'];
   }
 
-  if (req.query.distance && req.query.distance > 0) {
+  var distance = query.distance;
+  var longitude = query.longitude;
+  var latitude = query.latitude;
+
+  // undefined will always get pushed to the end of the array, so this checks
+  // that there is a defined value _and_ at least one undefined value.
+  if ([distance, longitude, latitude].sort().indexOf(undefined) > 0) {
+      error = {error: 'Distance, latitude, and longitude must all be specified together (or not at all).'};
+      callback(error);
+      return;
+  }
+
+  if (distance && longitude && latitude) {
+      if (isNaN(distance) || distance <= 0) {
+          error = {error: 'Distance must be a positive number'};
+      }
+      if (isNaN(longitude) || isNaN(latitude)) {
+          error = {error: 'Latitude and longitude must be numbers'};
+      }
+      if (error) {
+          callback(error);
+          return;
+      }
       db_query.loc = {
-          '$geoWithin': {'$centerSphere': [ req.user.loc.coordinates, req.query.distance / EARTH_RADIUS_KM ] },
+          '$geoWithin': {'$centerSphere': [ [Number(longitude), Number(latitude)], Number(distance) / EARTH_RADIUS_KM ] },
       }
   }
 
-  User.find(db_query, (err, results) => {
-    async.map(results, (item, cb) => {
-      item.skills = activities.populateLabels(item.skills);
-      if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
-          user.loc.coordinates = [null, null];
-      }
-      res.app.render('partials/userCard', {
-        layout: false,
-        curr_user: req.user,
-        card_user: item,
-      }, cb)
-    }, (err, response) => {
-      res.json(response);
-    });
+  User.find(db_query, callback);
+}
+
+exports.search = (req, res) => {
+  var query = req.query;
+  query.user_id = req.user.id;
+  query.longitude = req.user.loc.coordinates[0];
+  query.latitude = req.user.loc.coordinates[1];
+  return performQuery(query, (err, results) => {
+      async.map(results, (item, cb) => {
+        item.skills = activities.populateLabels(item.skills);
+        if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
+            user.loc.coordinates = [null, null];
+        }
+        item.is_bookmarked = req.user.bookmarks.indexOf(item._id) >= 0;
+        res.app.render('partials/userCard', {
+          layout: false,
+          card_user: item,
+        }, cb);
+      }, (err, response) => {
+        res.json(response);
+      });
   });
 }
 
@@ -687,7 +723,7 @@ function sendWelcomeEmail (user, req, callback) {
  */
 exports.sendWelcomeEmail = sendWelcomeEmail;
 
-function getPublicUserData(user) {
+function getPublicUserData (user) {
     return {
         name: user.profile.name,
         _id: user._id,
@@ -697,14 +733,25 @@ function getPublicUserData(user) {
         status: user.profile.status,
         gender: user.profile.gender,
         coins: user.coins,
-        skills: user.skills.map(activities.getActivityLabelForName),
-        interests: user.interests.map(activities.getActivityLabelForName),
+        skills: activities.populateLabels(user.skills),
+        interests: activities.populateLabels(user.interests),
         aboutMe: user.aboutMe,
     }
 };
 
-exports.apiAllUsers = function (req, res) {
-  User.find({}, function (err, results) {
-    res.json(results.map(getPublicUserData));
-  });
-}
+exports.apiSearchUsers = function (req, res) {
+  if (Object.keys(req.query).length === 0) {
+      User.find({}, (err, results) => {
+          res.json(results.map(getPublicUserData));
+      });
+  } else {
+      // FIXME: Use IP address to get long/lat?
+      performQuery(req.query, (err, results) => {
+          if (err) {
+            res.status(400).json(err);
+          } else {
+            res.json(results.map(getPublicUserData));
+          }
+      });
+  }
+};
