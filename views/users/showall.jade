@@ -6,9 +6,9 @@ block content
   include ../partials/newrequest
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .row.filter-options
-    .col-xs-4.service-type.selected(name=RequestType.LEARN) Learn
-    .col-xs-4.service-type(name=RequestType.SHARE) Share
-    .col-xs-4.service-type(name=RequestType.EXCHANGE) Exchange
+    .col-xs-4.service-type.selected(name=RequestType.LEARN) I want help with
+    .col-xs-4.service-type(name=RequestType.SHARE) I can offer
+    .col-xs-4.service-type(name=RequestType.EXCHANGE) I want to share
     .clearfix.visible-xs-block.visible-sm-block
     .col-md-6.category-filter
       .glyphicon.glyphicon-triangle-right
