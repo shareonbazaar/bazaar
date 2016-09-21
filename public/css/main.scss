@@ -1,0 +1,726 @@
+@import "themes/flatly/variables";
+
+@import "lib/bootstrap/bootstrap";
+@import "lib/bootstrap-social";
+@import "lib/font-awesome/font-awesome";
+@import "lib/bootstrap-slider.min.css";
+
+@import "themes/flatly/flatly";
+
+// Scaffolding
+// -------------------------
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  padding-top: 60px;
+  margin-bottom: 75px;
+  background-color: beige;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 45px;
+  line-height: 45px;
+
+  p, ul {
+    margin-bottom: 0;
+  }
+}
+
+// Input Fields
+// -------------------------
+
+textarea {
+  resize: vertical;
+}
+
+// Navbar
+// -------------------------
+
+.navbar-nav img {
+  width: 30px;
+  height: 30px;
+  margin: -15px 15px -15px;
+}
+
+.navbar {
+  .container-fluid {
+    text-align: center;
+  }
+}
+
+.navbar-brand {
+  padding: 6px 10px;
+  img {
+    display: initial;
+    margin-right: 5px;
+  }
+  .brand-title {
+    @media (max-width: $screen-sm) {
+      display: none;
+    }
+  }
+}
+
+// Alerts
+// -------------------------
+
+.alert {
+  margin-top: 20px;
+}
+
+// Thumbnails
+// -------------------------
+
+.thumbnail {
+  padding: 0;
+  border-radius: 0;
+  box-shadow: 0 0 5px #ccc, inset 0 0 0 #000;
+}
+
+// Font Icons
+// -------------------------
+
+.fa {
+  margin-right: 6px;
+}
+
+// Home
+
+
+
+// Community page
+
+.grid {
+  margin: 10px auto;
+}
+
+.grid-item {
+  width: 300px;
+  margin-bottom: 10px;
+  border: 1px solid black;
+  border-radius: 1%;
+  background-color: white;
+}
+
+.service-type {
+  text-align: center;
+  background-color: lightgray;
+  padding: 10px 0px;
+  border: 1px solid black;
+  &.selected {
+    background-color: lightblue;
+  }
+  &:nth-child(3) {
+    border-left: none;
+  }
+  &:nth-child(1) {
+    border-right: none;
+  }
+}
+
+.filter-options {
+  background-color: lightgray;
+  width: 100%;
+  z-index: 1;
+  position: fixed;
+  top: -350px;
+  -webkit-transition-duration: 0.5s;
+  -moz-transition-duration: 0.5s;
+  -o-transition-duration: 0.5s;
+  transition-duration: 0.5s;
+
+  &.open {
+    top: 60px;
+  }
+
+  .category-filter, .range-filter {
+    padding-top: 1%;
+    padding-bottom: 1%;
+  }
+
+  .range-filter {
+    text-align: center;
+    #distance-slider {
+      margin-left: 12px;
+    }
+    #distance-label.inactive {
+      color: gray;
+    }
+  }
+  padding-bottom: 1%;
+
+  .button-wrapper {
+    display: inline-block;
+    width: 50%;
+    padding: 0 10%;
+    button {
+      width: 100%;
+    }
+  }
+}
+
+.skill-label {
+  display: inline-block;
+  padding: 5px;
+  margin: 3px;
+  border: 1px solid black;
+  border-radius: 10px;
+}
+
+.skill-select {
+  .skill-label.selected {
+    color: white;
+    background-color: black;
+  }
+}
+
+.user-list {
+  margin-top: 20px;
+}
+
+.user-card {
+  padding: 4px 6px 4px 6px;
+
+  .bookmark {
+    width: 50px;
+    float: left;
+    margin: -2px 0px 0px -5px;
+  }
+
+  .profile-info {
+    padding: 20px;
+    background-color: white;
+
+    .profile-pic {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 2px black solid;
+      background-size: cover;
+      background-position: center;
+      margin: 0 auto;
+
+      &.both {
+        border-color: green;
+      }
+
+      &.one {
+        border-color: orange;
+      }
+
+      &.none {
+        border-color: black;
+      }
+    }
+
+    .name-location {
+      clear: both;
+      margin: 20px 0px;
+      padding: 2px 0;
+      text-align: center;
+      white-space: nowrap;
+      margin-top: 10px;
+
+      h3 {
+        font-weight: bold;
+        text-transform: uppercase;
+        letter-spacing: 4px;
+      }
+    }
+
+    .skill-icons {
+      overflow: hidden;
+      padding-top: 10px;
+    }
+
+    hr {
+      border-top: 1px dashed gray;
+      margin: 0px -20px;
+    }
+
+    seperator{
+      border: dashed;
+    }
+
+    p {
+      color: #18bc9c;
+      margin-top: 5px;
+    }
+
+    .popover {
+      width: 50%;
+    }
+  }
+
+  .about-me{
+    text-align: center;
+    font-weight:bold;
+  }
+
+  .about-me-note{
+    padding: 0px 6px 2px 6px;
+  }
+
+  .action-calls {
+    text-align: center;
+    width: 97%;
+    padding: 10px 0px;
+    margin: 4px;
+  }
+}
+
+.search-box {
+  margin: 15px auto 0px auto;
+  width: 50%;
+  padding: 5px;
+  background-color: #2C3E50;
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.white, .white a {
+  color: #fff;
+}
+
+::-webkit-input-placeholder {
+   color: white;
+}
+
+#requestModal {
+  .profile-request-form {
+    margin: 20px auto 0 auto;
+    width: 90%;
+  }
+
+  #submit-skill-request {
+    width: 80%;
+  }
+}
+
+.modal-footer {
+  text-align: center;
+}
+
+// Account page
+
+.account-page {
+  width: 75%;
+  margin: 0 auto;
+}
+
+input.activity-checkbox {
+  margin-right: 10px;
+}
+
+.user-activities {
+  padding-left: 15px;
+}
+
+.btn-social {
+  margin-bottom: 20px;
+}
+
+.account-profile-pic {
+  position: relative;
+  display: inline-block;
+
+  &:hover {
+    cursor: pointer;
+
+    .upload-message {
+      display: block;
+    }
+  }
+}
+
+.upload-message {
+  display: none;
+  position: absolute;
+  bottom: 10px;
+  left: 10%;
+  padding: 2px;
+  text-align: center;
+  width: 80%;
+  background-color: #203049;
+  color: white;
+  font-weight: 600;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+// Profile page
+
+.user-profile {
+
+  margin: 0 10%;
+  img.profile-pic {
+    width: 200px;
+    margin: 0 auto;
+  }
+
+  .row {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    &:nth-child(1) {
+      @media (min-width: $screen-md) {
+        display: flex;
+      }
+    }
+  }
+
+  h3 {
+    text-align: center;
+  }
+
+  .skills-box {
+    height: 50%;
+    &:nth-child(2) {
+      padding-top: 10px;
+    }
+    .box {
+      height: 100%;
+    }
+  }
+
+  .box {
+    background-color: lightgray;
+    border-radius: 5px;
+    border: 1px solid black;
+    padding: 5px;
+  }
+
+  .place {
+    display: inline-block;
+    text-align: center;
+    width: 50%;
+    color: white;
+    padding: 10px 0;
+    p {
+      margin: 0;
+    }
+    .info {
+      font-size: 10px;
+    }
+  }
+
+  button {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .review {
+    margin: 30px 0;
+  }
+}
+
+.review {
+  padding: 0 5px 10px 5px;
+  text-align: left;
+  .rating span {
+    color: gold;
+  }
+  .review-timestamp {
+    display: block;
+    font-size: 10px;
+    margin-bottom: 10px;
+  }
+}
+
+
+// Transaction page
+
+.transaction-page {
+
+  margin: 0 10%;
+
+  .options {
+    text-align: center;
+
+    .exchange-type {
+      padding: 10px 0px;
+      background-color: gray;
+      &:hover {
+        background-color: #E6E6E6;
+        cursor: pointer;
+      }
+      &.selected, &.selected:hover {
+        background-color: lightblue;
+        color: white;
+      }
+    }
+  }
+
+  .transaction-table {
+    &:nth-child(3), &:nth-child(4) {
+      display: none;
+    }
+    margin-top: 30px;
+    width: 100%;
+    text-align: center;
+    .request-info {
+      .content span {
+        margin: 0 7px;
+      }
+      text-align: left;
+      background-color: white;
+      margin: 10px auto;
+      width: 70%;
+      border-radius: 10px;
+      @media(max-width: 600px) {
+        width: 100%;
+      }
+      overflow: hidden;
+      .content {
+        float: left;
+      }
+      .timestamp {
+        float: right;
+        font-size: 10px;
+      }
+      .see-more {
+        padding: 20px 5px;
+        width: 100%;
+        display: inline-block;
+      }
+      .responses {
+        text-align: center;
+        padding: 1% 0;
+        button {
+          width: 35%;
+          margin: 0 7%;
+        }
+      }
+
+      .messaging {
+        margin: 0 15px;
+        textarea {
+          width: 100%;
+          resize: none;
+          border: 1px solid #ccc;
+        }
+      }
+
+      .notice {
+        text-align: center;
+        button {
+          width: 30%;
+          margin-bottom: 10px;
+        }
+      }
+
+      .responses, .messaging, .confirmation, .confirmation-pending, .reviews {
+        display: none;
+      }
+
+      &.proposed {
+        .responses {
+          display: block;
+        }
+      }
+
+      &.accepted {
+        .messaging {
+          display: block;
+        }
+      }
+
+      &.recipient_acknowledged.am-sender, &.sender_acknowledged.am-recipient {
+        .confirmation {
+          display: block;
+        }
+      }
+
+      &.recipient_acknowledged.am-recipient, &.sender_acknowledged.am-sender {
+        .confirmation-pending {
+          display: block;
+        }
+      }
+
+      &.complete {
+        .reviews {
+          display: block;
+        }
+      }
+
+    }
+  }
+}
+
+#acceptModal {
+  #check {
+    fill: none;
+    stroke: green;
+    stroke-width: 20;
+    stroke-dasharray: 180;
+    stroke-dashoffset: 180;
+    -webkit-animation: draw 2s ease forwards;
+    animation: draw 2s ease forwards;
+
+  }
+  @keyframes draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  .checkmark {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+}
+
+
+/* This is for when selecting rating for new review */
+.rating {
+  unicode-bidi: bidi-override;
+  direction: rtl;
+  text-align: left;
+}
+
+.rating > span {
+  display: inline-block;
+  position: relative;
+  width: 1.2em;
+  font-size: 24px;
+}
+
+.rating > span:hover:before,
+.rating > span:hover ~ span:before,
+.rating span.selected:before,
+.rating span.selected ~ span:before {
+   content: "\2605";
+   position: absolute;
+   color: gold;
+}
+
+
+// Messaging
+
+.message-snippet {
+  padding-bottom: 20px;
+
+  .profile-pic {
+    width: 60px;
+    height: 60px;
+    margin-left:2%;
+    float:left;
+    margin-right: 8px;
+  }
+
+  .snippet-text {
+    .timestamp {
+      float: right;
+      font-size: 11px;
+      margin-right: 5px;
+    }
+    .sender {
+      font-weight: bold;
+    }
+    .message-content {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+  }
+}
+
+.thread-list {
+  list-style-type: none;
+  padding: 0 0 0 0;
+
+  li {
+    border: 1px #e9eaed solid;
+    height: 75px;
+
+    &:hover {
+      background-color: #f5f7fa;
+    }
+
+    &.is-pending {
+      background-color: #e9eaed;
+    }
+
+    &.is-active, &.is-active:hover {
+      background-color: #6d84b4;
+      color: white;
+    }
+  }
+}
+
+.sidebar .search-box input {
+  width: 100%;
+}
+
+.conversation-container {
+  width: 100%;
+  float: left;
+
+  .header {
+    padding-bottom: 2px;
+    border-bottom: 2px grey solid;
+
+    h3 {
+      margin: 0 0 0 0;
+    }
+
+    .new-message-button {
+      float: right;
+      font-size: initial;
+    }
+  }
+}
+
+
+.conversation {
+  overflow-y: auto;
+  height: 400px;
+
+  .message-details {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    max-width: 50%;
+
+    &.myself {
+      float: right;
+      clear: both;
+      margin-right: 5px;
+      .comment {
+        background-color: #D1EEFC;
+      }
+    }
+
+    &.other-person {
+      float: left;
+      clear: both;
+      margin-left: 5px;
+      .comment {
+        background-color: #F2F2F2;
+      }
+    }
+
+    .comment {
+      padding: 8px;
+      border-radius: 5px;
+      box-shadow: 0 0 6px #B2B2B2;
+      margin-bottom: 3px;
+    }
+
+    .author {
+      font-size: 8px;
+    }
+  }
+}
+
+// Email users
+
+.email_form {
+  margin-top: 20px;
+}

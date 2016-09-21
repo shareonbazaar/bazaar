@@ -1,0 +1,149 @@
+doctype html
+//
+  Spectral by HTML5 UP
+  html5up.net | @n33co
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+html
+  head
+    title Bazaar
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    //if lte IE 8
+      script(src='js/ie/html5shiv.js')
+    link(rel='stylesheet', href='css/splash.css')
+    //if lte IE 8
+      link(rel='stylesheet', href='css/ie8.css')
+    //if lte IE 9
+      link(rel='stylesheet', href='css/ie9.css')
+  body.landing
+    // Page Wrapper
+    #page-wrapper
+      // Header
+      header#header.alt
+        h1
+          a(href='index.html') Bazaar
+        nav#nav
+          ul
+            li.special
+              a.menuToggle(href='#menu')
+                span Menu
+              #menu
+                ul
+                  li
+                    a(href='/') Home
+                  li
+                    a(href='/signup') Sign Up
+                  li
+                    a(href='/login') Log In
+      // Banner
+      section#banner
+        .inner
+          h2 Bazaar
+          p
+            | HALLO, SALAM,
+            br
+            |               HELLO, BONJOUR,
+            br
+            |               MARHABA, OLÁ!
+          ul.actions
+            li
+              a.button.special(href='/login') SIGN IN
+        a.more.scrolly(href='#zero') Learn More
+      // Zero
+      section#zero.wrapper.style0.special
+        .inner
+          header.major
+            h2
+              | Bazaar is a place for empowerment
+              br
+              |                 
+            p
+              | We believe, locals and refugees should share their skills and learn from each other.
+          video(width="100%" src='https://s3.eu-central-1.amazonaws.com/bazaar-intrst/bazaar_welcome_video.mp4' poster='images/video_poster.jpg' controls)
+      // One
+      section#one.wrapper.style1.special
+        .inner
+          header.major
+            h2
+              | What skills can you share here? 
+            p
+              | People offer cool things from leisure time activities to professional competences. Currently we have about thirty skills to choose from. 
+          img(width="75%" src='images/skills.png')
+      // Two
+      section#two.wrapper.alt.style2.special(style='padding: 40px 0px;')
+        .inner
+          header.major
+            h2
+              | Our vision
+            p
+              | Let‘s create a network where everyone can offer what they are good at.
+              br
+              |                 We see huge potential in all the people coming to new countries at the moment.  Bazaar wants to enable them and provide a tool to participate in their new society 
+          img(width="75%" src='images/network.png')
+      // Three
+      section#three.wrapper.style3
+        .inner
+          header.major
+            h2 How does it work?
+            p
+              | We use time banking to make skills exchange fair and flexible.
+              br
+              |                 Here is an example:
+          ol
+            li Mustafa helps Anna fixing her bike, which takes one hour
+            li Therefore, Anna pays Mustafa one Time-Coin.
+            li With this Time-Coin, Mustafa can receive one hour of German lessons from Luigi, who is a cook.
+            li That way, they not only exchange skills but learn about their backgrounds and cultural values. 
+          img(style="display:block; margin:0 auto;" width="75%" src='images/timebanking.png')
+      // CTA
+      section#cta.wrapper.style4(style='padding: 12em 0 10em 0;')
+        .inner
+          header
+            h2 Sound good?
+            p
+              | Let's get started! It's easy.
+          ul.actions.vertical
+            li
+              a.button.fit.special(href='/signup') Sign Up
+            li
+              a.button.fit(href='/login') Login
+      // Footer
+      footer#footer
+        h3 Our Team
+        .team
+          .person
+            img(src='/images/nina.png')
+            p Nina
+          .person
+            img(src='/images/thorben.png')
+            p Thorben
+          .person
+            img(src='/images/omer.png')
+            p Ömer
+          .person
+            img(src='/images/rory.png')
+            p Rory
+        ul.icons
+          li
+            a.icon.fa-twitter(href='#')
+              span.label Twitter
+          li
+            a.icon.fa-facebook(href='https://www.facebook.com/shareonbazaar')
+              span.label Facebook
+          li
+            a.icon.fa-instagram(href='https://www.instagram.com/shareonbazaar/')
+              span.label Instagram
+          li
+            a.icon.fa-envelope-o(href='/contact')
+              span.label Email
+        ul.copyright
+          li © Bazaar
+    // Scripts
+    script(src='/js/lib/jquery-2.2.0.min.js')
+    script(src='/js/lib/jquery.scrollex.min.js')
+    script(src='/js/lib/jquery.scrolly.min.js')
+    script(src='/js/skel.min.js')
+    script(src='/js/util.js')
+    //if lte IE 8
+      script(src='/js/ie/respond.min.js')
+    script(src='/js/splash.js')

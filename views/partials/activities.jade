@@ -1,0 +1,22 @@
+mixin activities(modal_title, user_activities)
+  button.btn.btn-primary(type="button", data-toggle="modal", data-target="##{modal_title}-modal") Select #{modal_title}
+
+  .modal.fade(id="#{modal_title}-modal" tabindex="-1", role="dialog", aria-labelledby="activitiesModalLabel")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-header
+          button.close(type="button", data-dismiss="modal", aria-label="Close")
+            span(aria-hidden="true") &#215;
+          h4#messageModalLabel.modal-title Select #{modal_title}
+        .modal-body
+          .container-fluid
+            .skill-select
+              each actions, title in activities
+                h4= title
+                .row
+                  each action, i in actions
+                    - var klass = user_activities.indexOf(action.name) >= 0 ? 'selected' : ''
+                    .skill-label(class=klass name="#{action.name}")= action.label
+        .modal-footer
+          button.btn.btn-default(type="button", data-dismiss="modal") Cancel
+          button.btn.btn-primary.submit-activities(id='submit-#{modal_title}' type="button") Save preferences

@@ -1,0 +1,110 @@
+body {
+    height:100%;
+    width:100%;
+    margin:0;padding:0;
+    overflow:hidden;
+}
+
+#wrapper {
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:0;left:0;
+    overflow:hidden;
+    background-color: #2c3e50;
+}
+
+#mask {
+    width:100%;
+    height:500%;
+    overflow:hidden;
+}
+
+.item {
+    width:100%;
+    height:20%;
+    display:block;
+}
+
+.content {
+    width: 80%;
+    height: 80%;
+    top: 10%;
+    margin: 0 auto;
+    background-color: white;
+    position: relative;
+}
+
+.navigation {
+    margin: 0 auto;
+    text-align: center;
+}
+
+.status:hover {
+    text-decoration: none;
+}
+
+#item2 .question, #item3 .question {
+    padding: 20px;
+}
+
+#item2 .question-content,
+#item3 .question-content {
+    overflow-y: auto;
+    height: 100%;
+}
+
+.question-content .question {
+    font-size: 20px;
+}
+
+.question-content .options {
+    padding-top: 60px;
+}
+
+#item1 .question-content {
+    text-align: center;
+}
+
+.activity-group {
+    padding: 10px;
+}
+
+.question, .activity-title {
+    color: #2c3e50;
+}
+
+.activity {
+    background-color: #CCCC99;
+    padding: 10px;
+    margin: 5px 8px 0px 8px;
+    color: #003366;
+    border-radius: 25px;
+    display: inline-block;
+}
+
+.activity:hover {
+    background-color: orange;
+}
+
+.activity.activity-selected {
+    background-color: green;
+}
+
+.progress-link {
+    padding-top: 8px;
+    font-size: 18px;
+}
+
+.status {
+    width: 150px;
+    height: 150px;
+    line-height: 120px;
+    border-radius: 50%;
+    color: white;
+    background-color: #2c3e50;
+    display: inline-block;
+    margin: 10px 10px 0px 10px;
+    text-decoration: none;
+    padding: 20px;
+}

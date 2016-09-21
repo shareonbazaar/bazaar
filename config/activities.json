@@ -1,0 +1,218 @@
+{
+    "Household work": [
+        {
+          "name": "gardening",
+          "label": "Gardening"
+        },
+        {
+          "name": "babysitting",
+          "label": "Babysitting"
+        },
+        {
+          "name": "cooking",
+          "label": "Cooking"
+        },
+        {
+          "name": "housekeeping",
+          "label": "House Keeping"
+        },
+        {
+          "name": "elderlycare",
+          "label": "Elderly Care"
+        },
+        {
+          "name": "dogsitting",
+          "label": "Dog Sitting"
+        }
+    ],
+    "Languages": [
+        {
+          "name": "arabic",
+          "label": "Arabic"
+        },
+        {
+          "name": "persian",
+          "label": "Persian"
+        },
+        {
+          "name": "french",
+          "label": "French"
+        },
+        {
+          "name": "spanish",
+          "label": "Spanish"
+        },
+        {
+          "name": "portuguese",
+          "label": "Portuguese"
+        },
+        {
+          "name": "turkish",
+          "label": "Turkish"
+        },
+        {
+          "name": "german",
+          "label": "German"
+        },
+        {
+          "name": "english",
+          "label": "English"
+        }
+    ],
+    "Computer Skills": [
+        {
+          "name": "programming",
+          "label": "Programming"
+        },
+        {
+          "name": "webdesign",
+          "label": "Web Design"
+        },
+        {
+          "name": "graphicdesign",
+          "label": "Graphic Design"
+        },
+        {
+          "name": "itsupport",
+          "label": "IT Support"
+        }
+    ],
+    "Music": [
+        {
+          "name": "singinglessons",
+          "label": "Singing Lessons"
+        },
+        {
+          "name": "musicalinstruments",
+          "label": "Other Musical Instruments"
+        },
+        {
+          "name": "guitar",
+          "label": "Guitar"
+        },
+        {
+          "name": "piano",
+          "label": "Piano"
+        },
+        {
+          "name": "drums",
+          "label": "Drums"
+        }
+    ],
+    "Arts and Crafts": [
+        {
+          "name": "photography",
+          "label": "Photography"
+        },
+        {
+          "name": "filming",
+          "label": "Filming"
+        },
+        {
+          "name": "textilework",
+          "label": "Textile Work"
+        },
+        {
+          "name": "crafting",
+          "label": "Crafting"
+        },
+        {
+          "name": "woodwork",
+          "label": "Woodwork"
+        },
+        {
+          "name": "jewelrydesign",
+          "label": "Jewelry Design"
+        },
+        {
+          "name": "painting",
+          "label": "Painting"
+        },
+        {
+          "name": "carpentry",
+          "label": "Carpentry"
+        }
+    ],
+    "Sports": [
+        {
+          "name": "dancing",
+          "label": "Dancing"
+        },
+        {
+          "name": "boxing",
+          "label": "Boxing"
+        },
+        {
+          "name": "martialarts",
+          "label": "Martial Arts"
+        },
+        {
+          "name": "football",
+          "label": "Football"
+        },
+        {
+          "name": "tennis",
+          "label": "Tennis"
+        },
+        {
+          "name": "tabletennis",
+          "label": "Table Tennis"
+        },
+        {
+          "name": "volleyball",
+          "label": "Volleyball"
+        },
+        {
+          "name": "golf",
+          "label": "Golf"
+        }
+    ],
+    "Board Games": [
+        {
+          "name": "chess",
+          "label": "Chess"
+        },
+        {
+          "name": "backgammon",
+          "label": "Backgammon"
+        },
+        {
+          "name": "bowling",
+          "label": "Bowling"
+        },
+        {
+          "name": "billard",
+          "label": "Billard"
+        },
+        {
+          "name": "boardgames",
+          "label": "Other Board Games"
+        }
+    ],
+    "Repair Services": [
+        {
+          "name": "fixingbikes",
+          "label": "Fixing Bikes"
+        },
+        {
+          "name": "fixingcars",
+          "label": "Fixing Cars"
+        },
+        {
+          "name": "fixingelectricdevices",
+          "label": "Fixing Electric Devices"
+        },
+        {
+          "name": "housepainting",
+          "label": "House Painting"
+        },
+        {
+          "name": "sewing",
+          "label": "Sewing"
+        },
+        {
+          "name": "fixingfurniture",
+          "label": "Fixing Furniture"
+        }
+    ]
+}

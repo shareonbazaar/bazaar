@@ -1,0 +1,24 @@
+// Sidebar
+#sidebar-wrapper
+  ul.sidebar-nav
+    li.sidebar-brand
+      a(href='/')
+        | Bazaar
+    if user
+      li
+        a(href='/transactions') Wallet
+      li
+        a(href='/profile/#{user.id}') Profile
+      li
+        a(href='/bookmarks') Bookmarks
+      li
+        a(href='/account') Settings
+    li
+      a(href='/contact') Contact
+    li
+      a(href='/about') About
+    if user
+      li
+        a(href='/logout') Logout
+
+link(rel='stylesheet', href='/css/sidebar.css')

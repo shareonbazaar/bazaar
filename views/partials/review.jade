@@ -1,0 +1,26 @@
+#reviewModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="reviewModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#reviewModalLabel.modal-title Please leave a review for this exchange
+      .modal-body
+        form.transaction-review-form
+          input#review-csrf_token(type='hidden', name='_csrf', value=_csrf)
+          input#review-activity(type='text', name='activity', value='', readonly)
+          input#transaction-id(type='hidden', transaction-id)
+          .form-group
+            label.control-label(for="rating") Rating:
+            .rating
+               span ☆
+               span ☆
+               span ☆
+               span ☆
+               span ☆
+          .form-group
+            label.control-label(for="message-text") Write a review:
+            textarea#review-text-input.form-control
+      .modal-footer
+        button.btn.btn-default#not-now(type="button" data-dismiss="modal", aria-label="Close") Not now
+        button.btn.btn-primary#submit-review(type="button") Submit Review

@@ -1,0 +1,39 @@
+.welcome {
+    margin: 0 auto;
+    text-align: center;
+    text-transform: uppercase;
+    font-family: sans-serif;
+    font-weight: 300;
+    font-size: 48px;
+    width: 50%;
+}
+
+.info {
+    margin: 0 auto;
+    text-align: center;
+    width: 70%;
+}
+
+.info ol {
+    text-align: initial;
+}
+
+.block-images {
+    width: 75%;
+    display: block;
+    margin: 0 auto;
+}
+
+.icon {
+    margin: 80px auto;
+    width: 70%;
+    text-align: center;
+}
+
+.icon img {
+    width: 140px;
+}
+
+.hey {
+    text-align: center;
+}

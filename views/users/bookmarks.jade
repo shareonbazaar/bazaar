@@ -1,0 +1,11 @@
+mixin userCard(curr_user, card_user)
+  include ../partials/userCard
+extends ../layout
+
+block content
+  include ../partials/newrequest
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  .grid.user-list
+    each person, i in users
+      mixin userCard(user, person)
+  script(src='/js/profile.js')

@@ -1,0 +1,32 @@
+mixin userCard(curr_user, card_user)
+  include ../partials/userCard
+extends ../layout
+
+block content
+  include ../partials/newrequest
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  .row.filter-options
+    .col-xs-4.service-type.selected(name=RequestType.LEARN) Learn
+    .col-xs-4.service-type(name=RequestType.SHARE) Share
+    .col-xs-4.service-type(name=RequestType.EXCHANGE) Exchange
+    .clearfix.visible-xs-block.visible-sm-block
+    .col-md-6.category-filter
+      .glyphicon.glyphicon-triangle-right
+      label Categories
+      .skill-select
+        each skill in current_user_interests
+          .skill-label(name="#{skill.name}") #{skill.label}
+    .col-md-6.range-filter
+      label#distance-label Distance
+      input#distance-slider(data-slider-id='distance-slider' type="text")
+    .col-md-12
+      .button-wrapper
+        button.btn.btn-primary.btn-large.filter-button(type='submit') Apply filter
+      .button-wrapper
+        button.btn.btn-primary.btn-large(onclick="location.href='/users/surprise';" type='submit') Surprise me!
+  .grid.user-list
+    each person, i in users
+      mixin userCard(user, person)
+
+  script(src='/js/showall.js')
+  script(src='/js/profile.js')

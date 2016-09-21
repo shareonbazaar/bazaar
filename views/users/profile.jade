@@ -1,0 +1,48 @@
+extends ../layout
+
+block content
+  include ../partials/newrequest
+  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+  .user-profile
+    .row
+      .col-md-6
+        .box
+          img.profile-pic.img-responsive.img-rounded(src=spotlight_user.profile.picture)
+          h3= spotlight_user.profile.name
+          .place
+            p.info From:
+            p #{spotlight_user.profile.hometown}
+          .place
+            p.info Lives in:
+            p #{spotlight_user.profile.location}
+          p= "About me: " + spotlight_user.aboutMe
+
+        button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user.skills) Request
+
+      .col-md-6
+        .skills-box
+          .box
+            h4 I can offer
+            each skill in spotlight_user.skills
+              .skill-label #{skill.label}
+
+        .skills-box
+          .box
+            h4 I am interested in
+            each interest in spotlight_user.interests
+              .skill-label #{interest.label}
+    .row
+      .col-md-12
+        .box
+          h3 Reviews
+          each review, i in reviews
+            .review
+              .rating
+                - var num = 0
+                while num < review.rating
+                  span ★
+                  - num++
+              quote= review.text
+            hr
+
+  script(src='/js/profile.js')
