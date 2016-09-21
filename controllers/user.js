@@ -451,9 +451,8 @@ function numElementsInCommon (arr1, arr2) {
 /**
  * GET /users
  * If user is a refugee, show native users and vice versa.
- * FIXME: change name of this func
  */
-exports.findUsers = (req, res) => {
+exports.getCommunity = (req, res) => {
   var my_interests = req.user.interests;
   var my_skills = req.user.skills;
   var my_status = req.user.profile.status || 'native';

@@ -110,7 +110,7 @@ messageController.initSockets(server, store, cookieParser);
  */
 app.get('/', function (req, res) {
     if (req.isAuthenticated()) {
-        userController.findUsers(req, res);
+        userController.getCommunity(req, res);
     } else {
         homeController.index(req, res);
     }
@@ -185,7 +185,7 @@ app.get('/bookmarks', passportConfig.isAuthenticated, userController.getBookmark
 /**
  * User routes
  */
-app.get('/users', passportConfig.isAuthenticated, userController.findUsers);
+app.get('/users', passportConfig.isAuthenticated, userController.getCommunity);
 app.get('/users/list', userController.list);
 app.get('/users/search', passportConfig.isAuthenticated, userController.search);
 app.get('/users/surprise', passportConfig.isAuthenticated, userController.surprise);
