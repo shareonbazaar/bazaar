@@ -79,11 +79,24 @@ exports.getSignup = (req, res) => {
   });
 };
 
+exports.postSignupWeb = (req, res, next) => {
+  doSignup(req, next, (errors) => {
+      req.flash('errors', errors);
+      return res.redirect('/signup');
+  });
+};
+
+exports.postSignupApi = (req, res, next) => {
+  doSignup(req, next, (errors) => {
+      return res.status(400).json(errors);
+  });
+};
+
 /**
  * POST /signup
  * Create a new local account.
  */
-exports.postSignup = (req, res, next) => {
+function doSignup (req, next, validation_callback) {
   req.assert('first_name', 'You need to provide a first name').notEmpty();
   req.assert('last_name', 'You need to provide a last name').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
@@ -94,8 +107,7 @@ exports.postSignup = (req, res, next) => {
   const errors = req.validationErrors();
 
   if (errors) {
-    req.flash('errors', errors);
-    return res.redirect('/signup');
+    return validation_callback(errors);
   }
 
   var protocol = req.secure ? 'https://' : 'http://';
@@ -111,10 +123,8 @@ exports.postSignup = (req, res, next) => {
 
   User.findOne({ email: req.body.email }, (err, existingUser) => {
     if (existingUser) {
-      req.flash('errors', { msg: 'Account with that email address already exists.' });
-      return res.redirect('/signup');
+      return validation_callback({ msg: 'Account with that email address already exists.' });
     }
-
     async.waterfall([
       function (callback) {
         user.save(function (err) {
@@ -128,13 +138,17 @@ exports.postSignup = (req, res, next) => {
         });
       }
     ], function (err) {
-      if (err) return next(err);
-        res.render('account/newaccount', {
-          title: 'Welcome',
-          activities: activities.activityMap,
-        });
+        if (err) return next(err);
+        next();
     });
   });
+};
+
+exports.getOnboarding = (req, res) => {
+    res.render('account/newaccount', {
+        title: 'Welcome',
+        activities: activities.activityMap,
+    });
 };
 
 /**
