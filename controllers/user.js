@@ -84,10 +84,10 @@ exports.getSignup = (req, res) => {
  * Create a new local account.
  */
 exports.postSignup = (req, res, next) => {
-  req.assert('first_name', 'You need to provide a first name').len(0);
-  req.assert('last_name', 'You need to provide a last name').len(0);
+  req.assert('first_name', 'You need to provide a first name').notEmpty();
+  req.assert('last_name', 'You need to provide a last name').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
+  req.assert('password', 'Password must be at least 4 characters long').notEmpty().len(4);
   req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
   req.sanitize('email').normalizeEmail({ remove_dots: false });
 
@@ -124,8 +124,8 @@ exports.postSignup = (req, res, next) => {
       },
       function (user, callback) {
         req.logIn(user, function (err) {
-          callback(err)
-        })
+          callback(err);
+        });
       }
     ], function (err) {
       if (err) return next(err);
