@@ -90,7 +90,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 app.use(upload.single('profilepic'));
 
-app.use(lusca({
+/* Remove protections for API routes, since API wont be used via a browser */
+app.use(/^\/(?!api).*/, lusca({
   csrf: true,
   xframe: 'SAMEORIGIN',
   xssProtection: true
@@ -205,7 +206,8 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
 /**
  * Bazaar API
  */
-app.get('/api/users', userController.apiSearchUsers);
+app.get('/api/users', passport.authenticate('jwt', { session: false }), userController.apiSearchUsers);
+app.post('/api/login', passportConfig.apiLogin);
 
 /**
  * Error Handler.

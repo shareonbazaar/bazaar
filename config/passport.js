@@ -1,6 +1,9 @@
 const _ = require('lodash');
 const async = require('async');
+const jwt = require('jsonwebtoken');
 const passport = require('passport');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
 const GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
@@ -20,6 +23,35 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
+
+exports.apiLogin = (req, res, next) => {
+  passport.authenticate('local', {session: false}, (err, user, info) => {
+    if (err) { return next(err); }
+    if (!user) {
+      return res.status(401).json({error: 'Unauthorized access'});
+    }
+    //user has authenticated correctly thus we create a JWT token
+    var token = jwt.sign({ email: user.email }, process.env.SESSION_SECRET);
+    res.json({ token : token });
+  })(req, res, next);
+};
+
+/**
+ * Sign in using Jwt token.
+ */
+passport.use(new JwtStrategy({secretOrKey: process.env.SESSION_SECRET, jwtFromRequest: ExtractJwt.fromHeader('token')}, (jwt_payload, done) => {
+    User.findOne({email: jwt_payload.email}, (err, user) => {
+        if (err) {
+            return done(err, false);
+        }
+        if (user) {
+            done(null, user);
+        } else {
+            done(null, false);
+        }
+    });
+}));
+
 
 /**
  * Sign in using Email and Password.
