@@ -103,7 +103,6 @@ exports.postSignup = (req, res, next) => {
   const user = new User({
     profile: {
       name: req.body.first_name + ' ' + req.body.last_name,
-      status: req.body.status,
       picture: base_url + '/images/person_placeholder.gif',
     },
     email: req.body.email,
