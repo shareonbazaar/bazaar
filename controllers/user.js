@@ -579,10 +579,19 @@ exports.search = (req, res) => {
 }
 
 exports.surprise = (req, res) => {
-    // FIXME: Match on one skill/interest overlap
-    User.find({}, (err, results) => {
-        var match = results[Math.floor(Math.random() * (results.length))];
-        res.redirect('/profile/' + match._id)
+    User.findOne({'$or': [
+      {skills: {'$in': req.user.interests}},
+      {interests: {'$in': req.user.skills}}
+      ]}, (err, ideal_match) => {
+        if (ideal_match) {
+            return res.redirect('/profile/' + ideal_match._id);
+        }
+        User.findOne({_id: {$ne: req.user.id}}, (err, any_match) => {
+            if (!any_match) {
+                return res.redirect('/');
+            }
+            return res.redirect('/profile/' + any_match._id);
+        });
     });
 }
 
