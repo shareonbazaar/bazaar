@@ -13,6 +13,7 @@ results
 tmp/
 
 .git/
+secrets/
 node_modules/
 .idea
 *.iml
