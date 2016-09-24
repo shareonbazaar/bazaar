@@ -502,7 +502,7 @@ exports.getCommunity = (req, res) => {
 };
 
 const EARTH_RADIUS_KM = 6378.1;
-function performQuery (query, callback) {
+function performQuery (req, query, callback) {
   // Default match is an EXCHANGE match - that is, user is interested
   // in both receiving and providing the service.
   if (!(query.skills instanceof Array)) {
@@ -515,7 +515,7 @@ function performQuery (query, callback) {
   var db_query = {
       skills: {'$in': query.skills},
       interests: {'$in': query.skills},
-      _id: {'$ne': query.user_id},
+      _id: {'$ne': req.user.id},
   };
   var error;
 
@@ -558,10 +558,9 @@ function performQuery (query, callback) {
 
 exports.search = (req, res) => {
   var query = req.query;
-  query.user_id = req.user.id;
   query.longitude = req.user.loc.coordinates[0];
   query.latitude = req.user.loc.coordinates[1];
-  return performQuery(query, (err, results) => {
+  return performQuery(req, query, (err, results) => {
       async.map(results, (item, cb) => {
         item.skills = activities.populateLabels(item.skills);
         if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
@@ -767,7 +766,7 @@ exports.apiSearchUsers = function (req, res) {
       });
   } else {
       // FIXME: Use IP address to get long/lat?
-      performQuery(req.query, (err, results) => {
+      performQuery(req, req.query, (err, results) => {
           if (err) {
             res.status(400).json(err);
           } else {
