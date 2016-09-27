@@ -103,8 +103,8 @@ textarea {
 .grid-item {
   width: 300px;
   margin-bottom: 10px;
-  border: 1px solid black;
   border-radius: 1%;
+  background-color: white;
 }
 
 .service-type {
@@ -169,6 +169,7 @@ textarea {
   padding: 5px;
   margin: 3px;
   border: 1px solid black;
+  background-color: #efefef;
   border-radius: 10px;
 }
 
@@ -184,6 +185,9 @@ textarea {
 }
 
 .user-card {
+  padding: 4px 6px 6px 6px;
+  box-shadow: 1px 1px 2px gray;
+
   .bookmark {
     width: 50px;
     float: left;
@@ -218,14 +222,10 @@ textarea {
 
     .name-location {
       clear: both;
-      margin: 20px 0px;
-      padding: 2px 0;
       text-align: center;
       white-space: nowrap;
-      margin-top: 10px;
 
       h3 {
-        font-weight: bold;
         text-transform: uppercase;
         letter-spacing: 4px;
       }
@@ -237,7 +237,7 @@ textarea {
     }
 
     hr {
-      border-top: 1px solid gray;
+      border-top: 1px dashed lightgray;
       margin: 0px -20px;
     }
 
@@ -251,10 +251,21 @@ textarea {
     }
   }
 
+  .about-me{
+    text-align: center;
+    font-weight:bold;
+  }
+
+  .about-me-note{
+    padding: 0px 6px 15px 6px;
+  }
+
   .action-calls {
     text-align: center;
     width: 100%;
     padding: 10px 0px;
+    text-transform: uppercase;
+    box-shadow: 1px 1px 2px gray;
   }
 }
 
