@@ -343,8 +343,17 @@ input.activity-checkbox {
 .user-profile {
   margin: 0 10%;
   img.profile-pic {
-    width: 200px;
-    margin: 0 auto;
+    width: 30%;
+    display: inline-block;
+  }
+
+  .bio {
+    display: inline-block;
+    margin-left: 10%;
+    vertical-align: middle;
+    .place {
+      font-size: 13px;
+    }
   }
 
   .row {
@@ -355,10 +364,6 @@ input.activity-checkbox {
         display: flex;
       }
     }
-  }
-
-  h3 {
-    text-align: center;
   }
 
   .skills-box {
@@ -372,33 +377,45 @@ input.activity-checkbox {
   }
 
   .box {
-    background-color: lightgray;
+    background-color: white;
     border-radius: 5px;
-    border: 1px solid black;
-    padding: 5px;
+    border: 1px solid lightgray;
+    padding: 10px 20px;
   }
 
-  .place {
-    display: inline-block;
-    text-align: center;
-    width: 50%;
-    color: white;
-    padding: 10px 0;
-    p {
-      margin: 0;
-    }
-    .info {
-      font-size: 10px;
-    }
-  }
 
   button {
     width: 100%;
     margin-top: 10px;
+    text-transform: uppercase;
+    @media (max-width: $screen-sm) {
+      margin-bottom: 10px;
+    }
   }
 
   .review {
     margin: 30px 0;
+    .profile-pic {
+      width: 50px;
+    }
+    .identity {
+      text-align: center;
+      display: inline-block;
+    }
+    .review-content {
+      display: inline-block;
+      vertical-align: top;
+      margin-left: 30px;
+      .rating {
+        display: inline-block;
+      }
+      quote {
+        display: block;
+      }
+      .breaker {
+        margin: 0 10px;
+      }
+    }
   }
 }
 

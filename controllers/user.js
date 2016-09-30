@@ -12,6 +12,7 @@ const activities = require('../config/activities');
 const fs = require('fs');
 const aws = require('aws-sdk');
 const helpers = require('./helpers');
+const moment = require('moment');
 const app = require('../app');
 
 /**
@@ -636,12 +637,20 @@ exports.showProfile = function(req, res) {
         // embedded document of transactions.
         Transaction.find({'_participants': user._id}, function (err, transactions) {
             var t_ids = transactions.map((t) => t._id);
-            Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]}, (err, reviews) => {
+            Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]})
+            .populate('_creator')
+            .populate('_transaction')
+            .exec((err, reviews) => {
+                reviews.map((r) => r._transaction)
+                       .filter((t, pos, self) => self.indexOf(t) == pos)
+                       .forEach((t) => t.service = activities.getActivityLabelForName(t.service));
+
                 res.render('users/profile', {
                     title: user.profile.name,
                     spotlight_user: user,
                     reviews: reviews,
                     RequestType: Enums.RequestType,
+                    moment: moment,
                 });
             });
         });

@@ -7,17 +7,17 @@ block content
     .row
       .col-md-6
         .box
-          img.profile-pic.img-responsive.img-rounded(src=spotlight_user.profile.picture)
-          h3= spotlight_user.profile.name
-          .place
-            p.info From:
-            p #{spotlight_user.profile.hometown}
-          .place
-            p.info Lives in:
-            p #{spotlight_user.profile.location}
-          p= "About me: " + spotlight_user.aboutMe
+          img.profile-pic.img-responsive.img-circle(src=spotlight_user.profile.picture)
+          .bio
+            h3= spotlight_user.profile.name
+            .place= spotlight_user.profile.hometown
+            .place= spotlight_user.profile.location
+            .place= "Member since " + moment(spotlight_user.createdAt).format('MMM YYYY')
+            .place= spotlight_user.skills.length + " skills to share with you"
+          h4= "About me"
+          p= spotlight_user.aboutMe
 
-        button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user.skills) Request
+        button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user.skills) Request Exchange
 
       .col-md-6
         .skills-box
@@ -37,12 +37,20 @@ block content
           h3 Reviews
           each review, i in reviews
             .review
-              .rating
-                - var num = 0
-                while num < review.rating
-                  span ★
-                  - num++
-              quote= review.text
+              .identity
+                img.profile-pic.img-responsive.img-circle(src="#{review._creator.profile.picture}")
+                .name= review._creator.profile.name.split(' ')[0]
+              .review-content
+                .rating
+                  - var num = 0
+                  while num < review.rating
+                    span ★
+                    - num++
+                span.breaker ●
+                span= review._transaction.service
+                span.breaker ●
+                time.timestamp #{moment(review.createdAt).format('L')}
+                quote= review.text
             hr
 
   script(src='/js/profile.js')
