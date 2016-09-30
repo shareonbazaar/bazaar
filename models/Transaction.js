@@ -8,7 +8,6 @@ var transactionSchema = new mongoose.Schema({
     type: String,
     enum: Object.keys(Enums.StatusType).map(function (key) { Enums.StatusType[key] }),
   },
-  timeSent: Date,
   service: String,
   request_type: {
     type: String,
@@ -16,6 +15,6 @@ var transactionSchema = new mongoose.Schema({
   },
   _participants:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-});
+}, { timestamps: true });
 
 module.exports = mongoose.model('Transaction', transactionSchema);
