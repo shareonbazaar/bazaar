@@ -402,7 +402,21 @@ input.activity-checkbox {
   .review {
     margin: 30px 0;
     .profile-pic {
+      position: relative;
       width: 50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50%;
+      img {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        height: 100%;
+        width: auto;
+        -webkit-transform: translate(-50%,-50%);
+            -ms-transform: translate(-50%,-50%);
+                transform: translate(-50%,-50%);
+      }
     }
     .identity {
       text-align: center;

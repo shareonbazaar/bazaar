@@ -38,7 +38,8 @@ block content
           each review, i in reviews
             .review
               .identity
-                img.profile-pic.img-responsive.img-circle(src="#{review._creator.profile.picture}")
+                .profile-pic
+                  img(src="#{review._creator.profile.picture}")
                 .name= review._creator.profile.name.split(' ')[0]
               .review-content
                 .rating
