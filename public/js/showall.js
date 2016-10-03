@@ -54,20 +54,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
-    $('.grid').on('click', '.bookmark', function () {
-        var image_uri = $(this).attr('src');
-        if (image_uri.endsWith('inactive.svg')) {
-            $(this).attr('src', '/images/bookmark_active.svg');
-        } else {
-            $(this).attr('src', '/images/bookmark_inactive.svg');
-        }
-        $.ajax({
-            url: '/bookmark/' + $(this).attr('data-user-id'),
-        }).done(function (response) {
-            console.log(response);
-        });
-    });
-
     $('.search-box').click(function () {
         $('.filter-options').addClass('open');
     });

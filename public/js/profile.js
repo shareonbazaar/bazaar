@@ -19,6 +19,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
         return false;
     });
 
+    $('.grid').on('click', '.bookmark', function () {
+        var image_uri = $(this).attr('src');
+        if (image_uri.endsWith('inactive.svg')) {
+            $(this).attr('src', '/images/bookmark_active.svg');
+        } else {
+            $(this).attr('src', '/images/bookmark_inactive.svg');
+        }
+        $.ajax({
+            url: '/bookmark/' + $(this).attr('data-user-id'),
+        }).done(function (response) {
+            console.log(response);
+        });
+    });
+
     $('#requestModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id');
