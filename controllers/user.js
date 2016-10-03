@@ -487,11 +487,7 @@ exports.getCommunity = (req, res) => {
             user.match = 'none';
         }
 
-        user.skills = activities.populateLabels(user.skills);
-
-        if (typeof user.loc.coordinates === 'undefined') {
-          user.loc.coordinates = [null, null];
-        }
+        postSearchProcessing(user, req);
     })
     res.render('users/showall', {
         title: 'Community',
@@ -557,17 +553,26 @@ function performQuery (req, query, callback) {
   User.find(db_query, callback);
 }
 
+function postSearchProcessing (user, req) {
+    // Populate skills to include human-readable label
+    user.skills = activities.populateLabels(user.skills);
+
+    // Give coordinates a default value if they don't exist
+    if (typeof user.loc.coordinates === 'undefined' || user.loc.coordinates.length < 2) {
+        user.loc.coordinates = [null, null];
+    }
+
+    // Add bookmark boolean so we can show when a user is bookmarked
+    user.is_bookmarked = req.user.bookmarks.indexOf(user._id) >= 0;
+}
+
 exports.search = (req, res) => {
   var query = req.query;
   query.longitude = req.user.loc.coordinates[0];
   query.latitude = req.user.loc.coordinates[1];
   return performQuery(req, query, (err, results) => {
       async.map(results, (item, cb) => {
-        item.skills = activities.populateLabels(item.skills);
-        if (typeof item.loc.coordinates === 'undefined' || item.loc.coordinates.length < 2) {
-            user.loc.coordinates = [null, null];
-        }
-        item.is_bookmarked = req.user.bookmarks.indexOf(item._id) >= 0;
+        postSearchProcessing(item, req);
         res.app.render('partials/userCard', {
           layout: false,
           card_user: item,
@@ -709,7 +714,7 @@ exports.getBookmarks = (req, res) => {
     var my_interests = req.user.interests;
     User.find({'_id': {'$in': req.user.bookmarks}}, (err, users) => {
         users.forEach((user) => {
-            user.skills = activities.populateLabels(user.skills);
+            postSearchProcessing(user, req);
         });
         res.render('users/bookmarks', {
             title: 'Bookmarks',
