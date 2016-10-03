@@ -363,11 +363,17 @@ input.activity-checkbox {
       @media (min-width: $screen-md) {
         display: flex;
       }
+      .first-box {
+        display: flex;
+        flex-direction: column;
+        > .box {
+          flex: 1;
+        }
+      }
     }
   }
 
   .skills-box {
-    height: 50%;
     &:nth-child(2) {
       padding-top: 10px;
     }
