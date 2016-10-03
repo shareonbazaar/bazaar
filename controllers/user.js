@@ -716,10 +716,11 @@ exports.getBookmarks = (req, res) => {
         users.forEach((user) => {
             postSearchProcessing(user, req);
         });
+
         res.render('users/bookmarks', {
             title: 'Bookmarks',
             users: users,
-            current_user_interests: activities.populateLabels(my_interests),
+            RequestType: Enums.RequestType,
         });
     });
 }
