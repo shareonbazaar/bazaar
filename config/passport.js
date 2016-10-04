@@ -28,11 +28,19 @@ exports.apiLogin = (req, res, next) => {
   passport.authenticate('local', {session: false}, (err, user, info) => {
     if (err) { return next(err); }
     if (!user) {
-      return res.status(401).json({error: 'Unauthorized access'});
+      return res.status(401).json({
+          error: 'Unauthorized access',
+          token: null,
+          status: 401,
+      });
     }
     //user has authenticated correctly thus we create a JWT token
     var token = jwt.sign({ email: user.email }, process.env.SESSION_SECRET);
-    res.json({ token : token });
+    res.json({
+        token: token,
+        error: null,
+        status: 200,
+    });
   })(req, res, next);
 };
 

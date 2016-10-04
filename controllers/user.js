@@ -89,7 +89,11 @@ exports.postSignupWeb = (req, res, next) => {
 
 exports.postSignupApi = (req, res, next) => {
   doSignup(req, next, (errors) => {
-      return res.status(400).json(errors);
+      return res.status(400).json({
+          error: errors,
+          token: null,
+          status: 400,
+      });
   });
 };
 
