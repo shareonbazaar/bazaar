@@ -561,13 +561,6 @@ function postSearchProcessing (user, req) {
     // Populate skills to include human-readable label
     user.skills = activities.populateLabels(user.skills);
 
-    // Give coordinates a default value if they don't exist
-    if (typeof user.loc.coordinates === 'undefined' || user.loc.coordinates.length < 2) {
-        user.loc.coordinates = [null, null];
-    }
-
-    // Add bookmark boolean so we can show when a user is bookmarked
-    user.is_bookmarked = req.user.bookmarks.indexOf(user._id) >= 0;
 }
 
 exports.search = (req, res) => {
