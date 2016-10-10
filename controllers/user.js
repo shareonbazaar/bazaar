@@ -773,7 +773,7 @@ function getPublicUserData (user) {
 
 exports.apiSearchUsers = function (req, res) {
   if (Object.keys(req.query).length === 0) {
-      User.find({}, (err, results) => {
+      User.find({_id: {'$ne': req.user.id}}, (err, results) => {
           res.json(results.map(getPublicUserData));
       });
   } else {
