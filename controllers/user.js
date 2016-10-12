@@ -475,7 +475,7 @@ exports.getCommunity = (req, res) => {
   var my_skills = req.user.skills;
   var my_status = req.user.profile.status || 'native';
 
-  User.find({ 'profile.status': {$ne: my_status }}, (err, results) => {
+  User.find({ 'profile.status': {$ne: my_status }, _id: {'$ne': req.user.id}}, (err, results) => {
     results.sort((a, b) => {
         var a_score = numElementsInCommon(a.interests, my_skills) + numElementsInCommon(a.skills, my_interests);
         var b_score = numElementsInCommon(b.interests, my_skills) + numElementsInCommon(b.skills, my_interests);
