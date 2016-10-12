@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             console.log(response);
         });
 
-        var users = $('.profile-info .profile-pic')
+        var users = $('.profile-info .distance')
 
         $.map(users, function (obj) {
             var user_long = Number($(obj).attr('data-long'));
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var dist = distance(position.coords.longitude, position.coords.latitude,
                 user_long, user_lat);
             if (!isNaN(dist)) {
-                $(obj).attr('data-content', Math.round(dist) + 'km away');
+                $(obj).html(Math.round(dist) + 'km');
             }
         });
     }
