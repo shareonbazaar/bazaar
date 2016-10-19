@@ -2,12 +2,19 @@ extends ../layout
 include ../partials/activities
 
 block content
-  .account-page
+  .edit-profile-page
     .page-header
       h3 Profile Information
 
     form.form-horizontal(action='/account/profile', method='POST' enctype="multipart/form-data")
       input(type='hidden', name='_csrf', value=_csrf)
+      .form-group
+        label.col-sm-3.control-label(for='profilepic') Profile picture
+        .col-sm-6
+          input(type='file', accept='image/*', name='profilepic', id='profile-pic-input' style='display: none;')
+          .account-profile-pic(onclick="$('#profile-pic-input').click();")
+            img(id='profile-img' width=200 src='#{user.profile.picture}')
+            .upload-message Update photo
       .form-group
         label.col-sm-3.control-label(for='email') Email
         .col-sm-7
@@ -28,13 +35,6 @@ block content
           label.radio.col-sm-3
             input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
             span Other
-      .form-group
-        label.col-sm-3.control-label(for='profilepic') Profile picture
-        .col-sm-6
-          input(type='file', accept='image/*', name='profilepic', id='profile-pic-input' style='display: none;')
-          .account-profile-pic(onclick="$('#profile-pic-input').click();")
-            img(id='profile-img' width=200 src='#{user.profile.picture}')
-            .upload-message Update photo
       .form-group
         label.col-sm-3.control-label(for='status') Status (refugees will be matched with natives and vice versa)
         .col-sm-6
@@ -57,25 +57,21 @@ block content
         .col-sm-4
           textarea.form-control(type='text', name='aboutme', id='aboutme', placeholder='Tell us about yourself...') #{user.aboutMe}
       .form-group#skills-section
-        input.activities-data(type='hidden', name='skills', value=JSON.stringify(user.skills))
+        input.activities-data(type='hidden', name='skills', value=JSON.stringify(user._skills))
         label.col-sm-3.control-label(for='skills') Skills (services you would like to offer to others)
         .col-sm-4
            ul.user-activities
-            each activity, i in my_skills
-              li= activity
-           mixin activities("skills", user.skills)
+            each activity, i in user._skills
+              .skill-label= activity.label.toObject()[locale]
+           mixin activities("skills", user._skills)
       .form-group#interests-section
-        input.activities-data(type='hidden', name='interests', value=JSON.stringify(user.interests))
+        input.activities-data(type='hidden', name='interests', value=JSON.stringify(user._interests))
         label.col-sm-3.control-label(for='interests') Interests (services you would like to receive from others)
         .col-sm-4
            ul.user-activities
-             each activity, i in my_interests
-              li= activity
-           mixin activities("interests", user.interests)
-      .form-group
-        label.col-sm-3.control-label(for='gravatar') Gravatar
-        .col-sm-4
-          img(src="#{user.gravatar()}", class='profile', width='100', height='100')
+             each activity, i in user._interests
+              .skill-label= activity.label.toObject()[locale]
+           mixin activities("interests", user._interests)
       hr
       .form-group
         .col-sm-offset-3.col-sm-4
@@ -83,49 +79,4 @@ block content
             i.fa.fa-pencil
             | Update Profile
 
-    .page-header
-      h3 Change Password
-
-    form.form-horizontal(action='/account/password', method='POST')
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group
-        label.col-sm-3.control-label(for='password') New Password
-        .col-sm-7
-          input.form-control(type='password', name='password', id='password')
-      .form-group
-        label.col-sm-3.control-label(for='confirmPassword') Confirm Password
-        .col-sm-7
-          input.form-control(type='password', name='confirmPassword', id='confirmPassword')
-      .form-group
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn-primary(type='submit')
-            i.fa.fa-lock
-            | Change Password
-
-    .page-header
-      h3 Delete Account
-
-    form.form-horizontal(action='/account/delete', method='POST')
-      .form-group
-        p.col-sm-offset-3.col-sm-4 You can delete your account, but keep in mind this action is irreversible.
-        input(type='hidden', name='_csrf', value=_csrf)
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn-danger(type='submit')
-            i.fa.fa-trash
-            | Delete my account
-
-    .page-header
-      h3 Linked Accounts
-    .form-horizontal
-      .form-group
-        .col-sm-offset-3.col-sm-4
-          if user.google
-            p: a.text-danger(href='/account/unlink/google') Unlink your Google account
-          else
-            p: a(href='/auth/google') Link your Google account
-        .col-sm-offset-3.col-sm-4
-          if user.facebook
-            p: a.text-danger(href='/account/unlink/facebook') Unlink your Facebook account
-          else
-            p: a(href='/auth/facebook') Link your Facebook account
   script(src='/js/profile.js')

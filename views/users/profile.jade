@@ -13,24 +13,27 @@ block content
             .place= spotlight_user.profile.hometown
             .place= spotlight_user.profile.location
             .place= "Member since " + moment(spotlight_user.createdAt).format('MMM YYYY')
-            .place= spotlight_user.skills.length + " skills to share with you"
+            .place= spotlight_user._skills.length + " skills to share with you"
           h4= "About me"
           p= spotlight_user.aboutMe
 
-        button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user.skills) Request Exchange
+        if user._id.toString() == spotlight_user._id.toString()
+          a.btn.btn-primary(href="/editprofile") Edit Profile
+        else
+          button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user._skills) Request Exchange
 
       .col-md-6
         .skills-box
           .box
             h4 I can offer
-            each skill in spotlight_user.skills
-              .skill-label #{skill.label}
+            each skill in spotlight_user._skills
+              .skill-label #{skill.label.toObject()[locale]}
 
         .skills-box
           .box
             h4 I am interested in
-            each interest in spotlight_user.interests
-              .skill-label #{interest.label}
+            each interest in spotlight_user._interests
+              .skill-label #{interest.label.toObject()[locale]}
     .row
       .col-md-12
         .box

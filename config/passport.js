@@ -19,7 +19,7 @@ passport.serializeUser((user, done) => {
 });
 
 passport.deserializeUser((id, done) => {
-  User.findById(id, (err, user) => {
+  User.findById(id).populate('_skills _interests').exec((err, user) => {
     done(err, user);
   });
 });

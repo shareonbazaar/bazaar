@@ -1,5 +1,5 @@
 mixin activities(modal_title, user_activities)
-  button.btn.btn-primary(type="button", data-toggle="modal", data-target="##{modal_title}-modal") Select #{modal_title}
+  button.btn.btn-primary(type="button", data-toggle="modal", data-target="##{modal_title}-modal") Edit #{modal_title}
 
   .modal.fade(id="#{modal_title}-modal" tabindex="-1", role="dialog", aria-labelledby="activitiesModalLabel")
     .modal-dialog(role="document")
@@ -11,12 +11,13 @@ mixin activities(modal_title, user_activities)
         .modal-body
           .container-fluid
             .skill-select
-              each actions, title in activities
-                h4= title
+              each category in activities
+                h4= category.label.toObject()[locale]
                 .row
-                  each action, i in actions
-                    - var klass = user_activities.indexOf(action.name) >= 0 ? 'selected' : ''
-                    .skill-label(class=klass name="#{action.name}")= action.label
+                  each action in category._skills
+                    - var ids = user._skills.map(function (skill) { return skill._id.toString()})
+                    - var klass = ids.indexOf(action._id.toString()) >= 0 ? 'selected' : ''
+                    .skill-label(class=klass name="#{action._id}")= action.label.toObject()[locale]
         .modal-footer
           button.btn.btn-default(type="button", data-dismiss="modal") Cancel
           button.btn.btn-primary.submit-activities(id='submit-#{modal_title}' type="button") Save preferences

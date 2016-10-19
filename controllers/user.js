@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const passport = require('passport');
 const User = require('../models/User');
+const Category = require('../models/Category');
 const Thread = require('../models/Thread');
 const Review = require('../models/Review');
 const Enums = require('../models/Enums');
@@ -150,9 +151,12 @@ function doSignup (req, next, validation_callback) {
 };
 
 exports.getOnboarding = (req, res) => {
-    res.render('account/newaccount', {
-        title: 'Welcome',
-        activities: activities.activityMap,
+    Category.find({}).populate('_skills').exec((err, results) => {
+        res.render('account/newaccount', {
+            title: 'Welcome',
+            categories: results,
+            locale: 'en',
+        });
     });
 };
 
@@ -161,14 +165,11 @@ exports.getOnboarding = (req, res) => {
  * Profile page.
  */
 exports.getAccount = (req, res) => {
-  var my_skills = req.user.skills.map(activities.getActivityLabelForName);
-  var my_interests = req.user.interests.map(activities.getActivityLabelForName);
-  res.render('account/profile', {
-    title: 'Account Management',
-    activities: activities.activityMap,
-    my_skills: my_skills,
-    my_interests: my_interests,
-  });
+  Category.find({}).populate('_skills').exec((err, results) => {
+      res.render('account/settings', {
+        title: 'Account Management',
+      });
+  })
 };
 
 function uploadPicture (filename, fileBuffer, mimetype, callback) {
@@ -207,8 +208,8 @@ exports.postUpdateProfile = (req, res, next) => {
     user.profile.location = req.body.location || '';
     user.profile.hometown = req.body.hometown || '';
     user.aboutMe = req.body.aboutme || '';
-    user.interests = JSON.parse(req.body.interests) || [];
-    user.skills = JSON.parse(req.body.skills) || [];
+    user._interests = JSON.parse(req.body.interests) || [];
+    user._skills = JSON.parse(req.body.skills) || [];
 
     async.waterfall([
       function (callback) {
@@ -234,7 +235,7 @@ exports.postUpdateProfile = (req, res, next) => {
           return next(err);
         }
         req.flash('success', { msg: 'Profile information has been updated.' });
-        res.redirect('/account');
+        res.redirect('/profile/' + req.user.id);
     });
   });
 };
@@ -471,18 +472,20 @@ function numElementsInCommon (arr1, arr2) {
  * If user is a refugee, show native users and vice versa.
  */
 exports.getCommunity = (req, res) => {
-  var my_interests = req.user.interests;
-  var my_skills = req.user.skills;
+  var my_interests = req.user._interests;
+  var my_skills = req.user._skills;
   var my_status = req.user.profile.status || 'native';
 
-  User.find({ 'profile.status': {$ne: my_status }, _id: {'$ne': req.user.id}}, (err, results) => {
+  User.find({})
+  .populate('_skills _interests')
+  .exec((err, results) => {
     results.sort((a, b) => {
-        var a_score = numElementsInCommon(a.interests, my_skills) + numElementsInCommon(a.skills, my_interests);
-        var b_score = numElementsInCommon(b.interests, my_skills) + numElementsInCommon(b.skills, my_interests);
+        var a_score = numElementsInCommon(a._interests, my_skills) + numElementsInCommon(a._skills, my_interests);
+        var b_score = numElementsInCommon(b._interests, my_skills) + numElementsInCommon(b._skills, my_interests);
         return b_score - a_score;
     }).forEach((user) => {
-        var interests_match = numElementsInCommon(user.skills, my_interests);
-        var skills_match = numElementsInCommon(user.interests, my_skills);
+        var interests_match = numElementsInCommon(user._skills, my_interests);
+        var skills_match = numElementsInCommon(user._interests, my_skills);
         if ((interests_match + skills_match) > 5) {
             user.match = 'both';
         } else if (interests_match > 0 || skills_match > 0) {
@@ -490,14 +493,12 @@ exports.getCommunity = (req, res) => {
         } else {
             user.match = 'none';
         }
-
-        postSearchProcessing(user, req);
     })
     res.render('users/showall', {
         title: 'Community',
         users: results,
-        current_user_interests: activities.populateLabels(my_interests),
         RequestType: Enums.RequestType,
+        locale: 'en',
     });
   });
 };
@@ -557,12 +558,6 @@ function performQuery (req, query, callback) {
   User.find(db_query, callback);
 }
 
-function postSearchProcessing (user, req) {
-    // Populate skills to include human-readable label
-    user.skills = activities.populateLabels(user.skills);
-
-}
-
 exports.search = (req, res) => {
   var query = req.query;
   query.longitude = req.user.loc.coordinates[0];
@@ -601,7 +596,7 @@ exports.surprise = (req, res) => {
  * GET /list
  * List all users whose name matches the query term. Used for searching
  */
-exports.list = function(req, res) {
+exports.list = (req, res) => {
   var regex = new RegExp(req.query.term.replace(/\\/g, ''), 'i');
   User.find({
     'profile.name': {$regex: regex},
@@ -621,31 +616,31 @@ exports.list = function(req, res) {
  * GET /profile/:id
  * Show profile for a given user, specified by :id
  */
-exports.showProfile = function(req, res) {
-    User.findById(req.params.id, function (err, user) {
+exports.showProfile = (req, res) => {
+    User.findById(req.params.id)
+    .populate('_skills _interests')
+    .exec((err, user) => {
         if (!user) {
             res.status(404).render('error/404', {
-                title: 'Error 404',
-                status: 404,
+                title: 'Profile not found',
                 url: req.url,
             });
             return;
         }
-        user.skills = activities.populateLabels(user.skills);
-        user.interests = activities.populateLabels(user.interests);
 
         // This is kind of gross, that we need two queries just to get reviews
         // for a user. Other option is to change schema to make reviews an
         // embedded document of transactions.
-        Transaction.find({'_participants': user._id}, function (err, transactions) {
+        Transaction.find({'_participants': user._id}, (err, transactions) => {
             var t_ids = transactions.map((t) => t._id);
             Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]})
             .populate('_creator')
             .populate('_transaction')
             .exec((err, reviews) => {
+
+                // FIXME: Deduplication? But do we need this?
                 reviews.map((r) => r._transaction)
-                       .filter((t, pos, self) => self.indexOf(t) == pos)
-                       .forEach((t) => t.service = activities.getActivityLabelForName(t.service));
+                       .filter((t, pos, self) => self.indexOf(t) == pos);
 
                 res.render('users/profile', {
                     title: user.profile.name,
@@ -653,6 +648,7 @@ exports.showProfile = function(req, res) {
                     reviews: reviews,
                     RequestType: Enums.RequestType,
                     moment: moment,
+                    locale: 'en',
                 });
             });
         });
@@ -660,13 +656,27 @@ exports.showProfile = function(req, res) {
 };
 
 /**
+ * GET /profile/edit
+ * Edit one's own profile
+ */
+exports.editProfile = (req, res) => {
+    Category.find({}).populate('_skills').exec((err, results) => {
+        res.render('users/edit', {
+            title: 'Edit Profile',
+            activities: results,
+            locale: 'en',
+        });
+    });
+}
+
+/**
  * POST /newaccount
  * Post data for a new user account
  */
 exports.newAccount = function (req, res) {
     User.findById(req.user.id, function (err, user) {
-        user.interests = JSON.parse(req.body.interests) || [];
-        user.skills = JSON.parse(req.body.skills) || [];
+        user._interests = JSON.parse(req.body.interests) || [];
+        user._skills = JSON.parse(req.body.skills) || [];
         user.profile.status = req.body.status;
         user.save(function (err) {
             res.redirect('/');
@@ -708,16 +718,14 @@ exports.postBookmark = (req, res) => {
  * Show all bookmarks for current user
  */
 exports.getBookmarks = (req, res) => {
-    var my_interests = req.user.interests;
-    User.find({'_id': {'$in': req.user.bookmarks}}, (err, users) => {
-        users.forEach((user) => {
-            postSearchProcessing(user, req);
-        });
-
+    User.find({'_id': {'$in': req.user.bookmarks}})
+    .populate('_skills _interests')
+    .exec((err, users) => {
         res.render('users/bookmarks', {
             title: 'Bookmarks',
             users: users,
             RequestType: Enums.RequestType,
+            locale: 'en',
         });
     });
 }

@@ -43,13 +43,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('#text-input').val('');
         $('#requestModal .skill-select').empty();
         skills.forEach(function (skill) {
-            var option = '<div class="skill-label" name=' + skill.name + '>' + skill.label + '</div>';
+            var option = '<div class="skill-label" name=' + skill._id + '>' + skill.label.en + '</div>';
             $('#requestModal .skill-select').append(option);
         });
     });
 
 
-    // For account page
+    // For edit profile page
     $('.submit-activities').click(function () {
         var id = $(this).attr('id');
         var section_name = '#' + id.slice('submit-'.length) + '-section';
@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $(section_name + ' .user-activities').empty()
         $.map(selected, function (obj) {
             var label = $(obj).html();
-            $(section_name + ' .user-activities').append('<li>' + label + '</li>');
+            $(section_name + ' .user-activities').append('<div class="skill-label">' + label + '</li>');
         });
     });
 

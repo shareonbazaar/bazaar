@@ -8,7 +8,7 @@ var transactionSchema = new mongoose.Schema({
     type: String,
     enum: Object.keys(Enums.StatusType).map(function (key) { Enums.StatusType[key] }),
   },
-  service: String,
+  service: { type: mongoose.Schema.Types.ObjectId, ref: 'Skill' },
   request_type: {
     type: String,
     enum: Object.keys(Enums.RequestType).map(function (key) { Enums.RequestType[key] }),

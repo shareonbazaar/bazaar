@@ -10,8 +10,8 @@
       .distance(data-long=card_user.loc.coordinates[0] data-lat=card_user.loc.coordinates[1]) &nbsp;
     hr.separator
     .skill-icons
-      each skill in card_user.skills.slice(0, 5)
-        .skill-label #{skill.label}
+      each skill in card_user._skills.slice(0, 5)
+        .skill-label #{skill.label.toObject()[locale]}
 
   if card_user.aboutMe
     .about-me
@@ -19,4 +19,4 @@
     .about-me-note=card_user.aboutMe
 
 
-  button.btn.btn-success.action-calls(data-toggle="modal", data-target="#requestModal", data-name="#{card_user.profile.name}" data-id="#{card_user.id}" data-skills=card_user.skills) Request
+  button.btn.btn-success.action-calls(data-toggle="modal", data-target="#requestModal", data-name="#{card_user.profile.name}" data-id="#{card_user.id}" data-skills=card_user._skills) Request

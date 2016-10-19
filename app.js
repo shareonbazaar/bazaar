@@ -117,13 +117,7 @@ app.get('/', function (req, res) {
     }
 });
 app.get('/privacy', homeController.privacy);
-app.get('/newaccount', passportConfig.isAuthenticated, function (req, res) {
-  res.render('account/newaccount', {
-    my_skills: [],
-    my_interests: [],
-    activities: activities.activityMap,
-  })
-});
+app.get('/newaccount', passportConfig.isAuthenticated, userController.getOnboarding);
 app.post('/newaccount', userController.newAccount);
 app.get('/about', homeController.about);
 app.get('/newabout', homeController.newabout);
@@ -170,6 +164,7 @@ app.get('/_ackThread/:id', passportConfig.isAuthenticated, function (req, res) {
 });
 
 app.get('/profile/:id', passportConfig.isAuthenticated, userController.showProfile);
+app.get('/editprofile', passportConfig.isAuthenticated, userController.editProfile);
 
 app.get('/transactions', passportConfig.isAuthenticated, transactionController.showTransactions);
 app.post('/transactions', passportConfig.isAuthenticated, transactionController.postTransaction);

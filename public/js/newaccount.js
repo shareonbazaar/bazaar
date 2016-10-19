@@ -27,18 +27,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
     $('#finished').click(function (event) {
-        var skill_names = $.map($('#item2 .activity-selected'), function (obj) {
+        var skill_ids = $.map($('#item2 .activity-selected'), function (obj) {
             return $(obj).attr('name');
         });
 
-        var interest_names = $.map($('#item3 .activity-selected'), function (obj) {
+        var interest_ids = $.map($('#item3 .activity-selected'), function (obj) {
             return $(obj).attr('name');
         });
 
         var status = $('.status-selected').attr('name');
 
-        $('#hidden-form #skills').val(JSON.stringify(skill_names));
-        $('#hidden-form #interests').val(JSON.stringify(interest_names));
+        $('#hidden-form #skills').val(JSON.stringify(skill_ids));
+        $('#hidden-form #interests').val(JSON.stringify(interest_ids));
         $('#hidden-form #status').val(status);
         $('#hidden-form').submit();
         return false;

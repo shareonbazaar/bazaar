@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema({
   passwordResetToken: String,
   passwordResetExpires: Date,
   aboutMe: { type: String, default: '' },
-  skills: {type: Array, default: []},
-  interests: {type: Array, default: []},
+  _skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
+  _interests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
+
   coins: { type: Number, default: 5 },
   loc : {
     type: {type: String},

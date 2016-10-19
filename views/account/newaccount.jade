@@ -23,11 +23,11 @@ block content
               a.nav-link.progress-link(href="#item1") Back
             .question= "Select some skills you have that you'd like to share!"
             .activity-group
-              each actions, title in activities
-                .activity-title= title
+              each category in categories
+                .activity-title= category['label'].toObject()[locale]
                 .activities
-                  each action, i in actions
-                    .activity(name="#{action.name}")= action.label 
+                  each action, i in category._skills
+                    .activity(name="#{action._id}")= action['label'].toObject()[locale]
             .navigation
               a.nav-link.progress-link(href="#item3") Next
       .item#item3
@@ -37,11 +37,11 @@ block content
               a.nav-link.progress-link(href="#item2") Back
             .question= "Select some services you'd be interested in receiving"
             .activity-group
-              each actions, title in activities
-                .activity-title= title
+              each category in categories
+                .activity-title= category['label'].toObject()[locale]
                 .activities
-                  each action, i in actions
-                    .activity(name="#{action.name}")= action.label 
+                  each action, i in category._skills
+                    .activity(name="#{action._id}")= action['label'].toObject()[locale]
             .navigation
               a#finished.progress-link(href="#item1") Finished
 

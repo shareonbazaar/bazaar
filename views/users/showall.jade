@@ -14,8 +14,8 @@ block content
       .glyphicon.glyphicon-triangle-right
       label Categories
       .skill-select
-        each skill in current_user_interests
-          .skill-label(name="#{skill.name}") #{skill.label}
+        each skill in user._interests
+          .skill-label(name="#{skill._id}") #{skill.label.toObject()[locale]}
     .col-md-6.range-filter
       label#distance-label Distance
       input#distance-slider(data-slider-id='distance-slider' type="text")
