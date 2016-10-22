@@ -212,18 +212,6 @@ textarea {
       background-size: cover;
       background-position: center;
       margin: 0 auto;
-
-      &.both {
-        border-color: green;
-      }
-
-      &.one {
-        border-color: orange;
-      }
-
-      &.none {
-        border-color: black;
-      }
     }
 
     .name-location {
@@ -250,6 +238,11 @@ textarea {
     .skill-icons {
       overflow: hidden;
       padding-top: 10px;
+      .skill-label {
+        &.highlight {
+          box-shadow: 0px 0px 5px 5px rgba(255, 255, 190, 1);
+        }
+      }
     }
 
     hr {

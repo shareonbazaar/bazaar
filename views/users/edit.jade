@@ -59,7 +59,7 @@ block content
         .col-sm-4
            ul.user-activities
             each activity, i in user._skills
-              .skill-label= activity.label.toObject()[locale]
+              .skill-label= activity.label[locale]
            mixin activities("skills", user._skills)
       .form-group#interests-section
         input.activities-data(type='hidden', name='interests', value=JSON.stringify(user._interests))
@@ -67,7 +67,7 @@ block content
         .col-sm-4
            ul.user-activities
              each activity, i in user._interests
-              .skill-label= activity.label.toObject()[locale]
+              .skill-label= activity.label[locale]
            mixin activities("interests", user._interests)
       hr
       .form-group

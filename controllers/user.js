@@ -472,34 +472,93 @@ function numElementsInCommon (arr1, arr2) {
  * If user is a refugee, show native users and vice versa.
  */
 exports.getCommunity = (req, res) => {
-  var my_interests = req.user._interests;
-  var my_skills = req.user._skills;
+  var my_interests_ids = req.user._interests.map((x) => x._id);
+  var my_skills_ids = req.user._skills.map((x) => x._id);
   var my_status = req.user.profile.status || 'native';
 
-  User.find({})
-  .populate('_skills _interests')
+  // add a match for not me and not status
+  User.aggregate([
+    {
+      '$match': {
+        '_id': {'$ne': helpers.toObjectId(req.user._id)},
+        'profile.status': {'$ne': my_status},
+      },
+    },
+    {
+      '$unwind': '$_skills',
+    },
+    {
+      '$lookup': {
+          'from': 'skills',
+          'localField': '_skills',
+          'foreignField': '_id',
+          'as': '_skills',
+      }
+    },
+    { "$unwind": "$_skills" },
+    {
+      '$project': {
+        'profile': '$profile',
+        '_interests': '$_interests',
+        'loc': { '$ifNull': [ "$loc", {'$literal': {type: 'Point', coordinates: [null, null]}}] },
+        '_skills': {
+          '_id': '$_skills._id',
+          'label': '$_skills.label',
+          'skill_score': {'$cond': { 'if': { '$setIsSubset': [['$_skills._id'], my_interests_ids] }, 'then': 1, 'else': 0} },
+        },
+        '_skills_ids': '$_skills._id',
+      }
+    },
+    {
+      '$sort': {
+          '_skills.skill_score': -1,
+      }
+    },
+    {
+      '$group': {
+          '_id': '$_id',
+          '_skills': {'$push': '$_skills'},
+          '_skills_ids': {'$push': '$_skills_ids'},
+          '_interests': {'$first': '$_interests'},
+          'profile': {'$first': '$profile'},
+          'loc': {'$first': '$loc'},
+      }
+    },
+    {
+      '$project': {
+          '_skills': '$_skills',
+          '_interests': '$_interests',
+          'profile': '$profile',
+          'loc': '$loc',
+          'score': {
+              '$sum': [
+                  {
+                      '$size': {
+                          '$setIntersection': ['$_skills_ids', my_interests_ids],
+                      },
+                  },
+                  {
+                      '$size': {
+                          '$setIntersection': ['$_interests', my_skills_ids],
+                      },
+                  },
+              ],
+          }
+      }
+    },
+    {
+      '$sort': {
+          'score': -1,
+      },
+    },
+  ])
   .exec((err, results) => {
-    results.sort((a, b) => {
-        var a_score = numElementsInCommon(a._interests, my_skills) + numElementsInCommon(a._skills, my_interests);
-        var b_score = numElementsInCommon(b._interests, my_skills) + numElementsInCommon(b._skills, my_interests);
-        return b_score - a_score;
-    }).forEach((user) => {
-        var interests_match = numElementsInCommon(user._skills, my_interests);
-        var skills_match = numElementsInCommon(user._interests, my_skills);
-        if ((interests_match + skills_match) > 5) {
-            user.match = 'both';
-        } else if (interests_match > 0 || skills_match > 0) {
-            user.match = 'one';
-        } else {
-            user.match = 'none';
-        }
-    })
-    res.render('users/showall', {
-        title: 'Community',
-        users: results,
-        RequestType: Enums.RequestType,
-        locale: 'en',
-    });
+      res.render('users/showall', {
+          title: 'Community',
+          users: results,
+          RequestType: Enums.RequestType,
+          locale: 'en',
+      });
   });
 };
 
@@ -515,16 +574,16 @@ function performQuery (req, query, callback) {
   }
 
   var db_query = {
-      skills: {'$in': query.skills},
-      interests: {'$in': query.skills},
-      _id: {'$ne': req.user.id},
+      _skills: {'$in': query.skills.map(helpers.toObjectId)},
+      _interests: {'$in': query.skills.map(helpers.toObjectId)},
+      _id: {'$ne': helpers.toObjectId(req.user._id)},
   };
   var error;
 
   if (query.request_type === Enums.RequestType.LEARN) {
-      delete db_query['interests'];
+      delete db_query['_interests'];
   } else if (query.request_type === Enums.RequestType.SHARE) {
-      delete db_query['skills'];
+      delete db_query['_skills'];
   }
 
   var distance = query.distance;
@@ -554,8 +613,7 @@ function performQuery (req, query, callback) {
           '$geoWithin': {'$centerSphere': [ [Number(longitude), Number(latitude)], Number(distance) / EARTH_RADIUS_KM ] },
       }
   }
-
-  User.find(db_query, callback);
+  User.find(db_query).populate('_skills _interests').exec(callback);
 }
 
 exports.search = (req, res) => {
@@ -563,13 +621,18 @@ exports.search = (req, res) => {
   query.longitude = req.user.loc.coordinates[0];
   query.latitude = req.user.loc.coordinates[1];
   return performQuery(req, query, (err, results) => {
+      if (err)
+        return res.json(err);
       async.map(results, (item, cb) => {
-        postSearchProcessing(item, req);
         res.app.render('partials/userCard', {
           layout: false,
           card_user: item,
+          curr_user: req.user,
+          locale: 'en',
         }, cb);
       }, (err, response) => {
+        if (err)
+          return res.json(err)
         res.json(response);
       });
   });
@@ -704,13 +767,15 @@ exports.postLocation = (req, res) => {
  * unbookmark if it is already bookmarked.
  */
 exports.postBookmark = (req, res) => {
-    var index = req.user.bookmarks.indexOf(req.params.id);
-    if (index < 0) {
-        req.user.bookmarks.push(req.params.id);
-    } else {
-        req.user.bookmarks.splice(index, 1);
-    }
-    req.user.save(helpers.respondToAjax(res));
+    User.findById(req.user._id, function (err, user) {
+        var index = user.bookmarks.map((x) => x.toString()).indexOf(req.params.id);
+        if (index < 0) {
+            user.bookmarks.push(req.params.id);
+        } else {
+            user.bookmarks.splice(index, 1);
+        }
+        user.save(helpers.respondToAjax(res));
+    });
 }
 
 /**

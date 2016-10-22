@@ -12,12 +12,12 @@ mixin activities(modal_title, user_activities)
           .container-fluid
             .skill-select
               each category in activities
-                h4= category.label.toObject()[locale]
+                h4= category.label[locale]
                 .row
                   each action in category._skills
-                    - var ids = user._skills.map(function (skill) { return skill._id.toString()})
+                    - var ids = user_activities.map(function (skill) { return skill._id.toString()})
                     - var klass = ids.indexOf(action._id.toString()) >= 0 ? 'selected' : ''
-                    .skill-label(class=klass name="#{action._id}")= action.label.toObject()[locale]
+                    .skill-label(class=klass name="#{action._id}")= action.label[locale]
         .modal-footer
           button.btn.btn-default(type="button", data-dismiss="modal") Cancel
           button.btn.btn-primary.submit-activities(id='submit-#{modal_title}' type="button") Save preferences
