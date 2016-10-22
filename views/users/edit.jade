@@ -4,7 +4,7 @@ include ../partials/activities
 block content
   .edit-profile-page
     .page-header
-      h3 Profile Information
+      h3 Edit your profile
 
     form.form-horizontal(action='/account/profile', method='POST' enctype="multipart/form-data")
       input(type='hidden', name='_csrf', value=_csrf)
@@ -26,39 +26,36 @@ block content
       .form-group
         label.col-sm-3.control-label(for='gender') Gender
         .col-sm-6
-          label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='male', name='gender', value='male', data-toggle='radio')
+          input.gender(type='hidden', name='gender', value=user.profile.gender)
+          .col-sm-3.radio(class='#{user.profile.gender == "male" ? "selected" : ""}' name='gender', value='male')
             span Male
-          label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='female', name='gender', value='female', data-toggle='radio')
+          .col-sm-3.radio(class='#{user.profile.gender == "female" ? "selected" : ""}' name='gender', value='female')
             span Female
-          label.radio.col-sm-3
-            input(type='radio', checked=user.profile.gender=='other', name='gender', value='other', data-toggle='radio')
+          .col-sm-3.radio(class='#{user.profile.gender == "other" ? "selected" : ""}' name='gender', value='other')
             span Other
       .form-group
-        label.col-sm-3.control-label(for='status') Status (refugees will be matched with natives and vice versa)
-        .col-sm-6
-          label.radio.col-sm-4
-            input(type='radio', checked=user.profile.status=='refugee', name='status', value='refugee', data-toggle='radio')
-            span Refugee
-          label.radio.col-sm-4
-            input(type='radio', checked=user.profile.status=='native', name='status', value='native', data-toggle='radio')
-            span Native
+        label.col-sm-3.control-label(for='hometown') Hometown
+        .col-sm-4
+          input.form-control(type='text', name='hometown', id='hometown', value='#{user.profile.hometown}')
       .form-group
         label.col-sm-3.control-label(for='location') Location
         .col-sm-4
           input.form-control(type='text', name='location', id='location', value='#{user.profile.location}')
       .form-group
-        label.col-sm-3.control-label(for='hometown') Hometown
-        .col-sm-4
-          input.form-control(type='text', name='hometown', id='hometown', value='#{user.profile.hometown}')
+        label.col-sm-3.control-label(for='status') Status (newcomers will be matched with locals and vice versa)
+        .col-sm-6
+          input.status(type='hidden', name='status', value=user.profile.status)
+          .radio.col-sm-4(class='#{user.profile.status == "refugee" ? "selected" : ""}', name='status', value='refugee')
+            span Newcomer
+          .radio.col-sm-4(class='#{user.profile.status == "native" ? "selected" : ""}', name='status', value='native')
+            span Local
       .form-group
         label.col-sm-3.control-label(for='aboutme') About me
         .col-sm-4
           textarea.form-control(type='text', name='aboutme', id='aboutme', placeholder='Tell us about yourself...') #{user.aboutMe}
       .form-group#skills-section
         input.activities-data(type='hidden', name='skills', value=JSON.stringify(user._skills))
-        label.col-sm-3.control-label(for='skills') Skills (services you would like to offer to others)
+        label.col-sm-3.control-label(for='skills') Skills (services you would like to offer)
         .col-sm-4
            ul.user-activities
             each activity, i in user._skills
@@ -66,7 +63,7 @@ block content
            mixin activities("skills", user._skills)
       .form-group#interests-section
         input.activities-data(type='hidden', name='interests', value=JSON.stringify(user._interests))
-        label.col-sm-3.control-label(for='interests') Interests (services you would like to receive from others)
+        label.col-sm-3.control-label(for='interests') Interests (services you would like to receive)
         .col-sm-4
            ul.user-activities
              each activity, i in user._interests
@@ -77,6 +74,6 @@ block content
         .col-sm-offset-3.col-sm-4
           button.btn.btn.btn-primary(type='submit')
             i.fa.fa-pencil
-            | Update Profile
+            | Save changes
 
   script(src='/js/profile.js')

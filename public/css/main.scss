@@ -321,45 +321,59 @@ textarea {
   margin: 0 auto;
 }
 
-input.activity-checkbox {
-  margin-right: 10px;
-}
+.edit-profile-page {
 
-.user-activities {
-  padding-left: 0px;
-}
-
-.btn-social {
-  margin-bottom: 20px;
-}
-
-.account-profile-pic {
-  position: relative;
-  display: inline-block;
-
-  &:hover {
-    cursor: pointer;
-
-    .upload-message {
-      display: block;
+  .form-group .radio {
+    padding: 11px 0;
+    background-color: white;
+    text-align: center;
+    border: 1px solid gray;
+    &.selected {
+      background-color: gray;
     }
+  }
+
+  input.activity-checkbox {
+    margin-right: 10px;
+  }
+
+  .user-activities {
+    padding-left: 0px;
+  }
+
+  .btn-social {
+    margin-bottom: 20px;
+  }
+
+  .account-profile-pic {
+    position: relative;
+    display: inline-block;
+
+    &:hover {
+      cursor: pointer;
+
+      .upload-message {
+        display: block;
+      }
+    }
+  }
+
+  .upload-message {
+    display: none;
+    position: absolute;
+    bottom: 10px;
+    left: 10%;
+    padding: 2px;
+    text-align: center;
+    width: 80%;
+    background-color: #203049;
+    color: white;
+    font-weight: 600;
+    border: 1px solid black;
+    border-radius: 4px;
   }
 }
 
-.upload-message {
-  display: none;
-  position: absolute;
-  bottom: 10px;
-  left: 10%;
-  padding: 2px;
-  text-align: center;
-  width: 80%;
-  background-color: #203049;
-  color: white;
-  font-weight: 600;
-  border: 1px solid black;
-  border-radius: 4px;
-}
 
 // Profile page
 

@@ -99,6 +99,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.rating span').removeClass('selected');
         $(this).addClass('selected');
     });
+
+    $('.form-group .radio').click(function () {
+        $(this).siblings().removeClass('selected');
+        $(this).addClass('selected');
+        var name = $(this).attr('name');
+        $('.' + name).val($(this).attr('value'));
+    });
 });
 
 
