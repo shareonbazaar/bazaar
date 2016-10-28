@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $.ajax({
             url: '/users/search',
             data: {
-                distance: slider_value == MAX_SLIDER_VALUE ? -1 : slider_value, // Distance in km in which to search
+                distance: slider_value == MAX_SLIDER_VALUE ? null : slider_value, // Distance in km in which to search
                 request_type: $('.filter-options .service-type.selected').attr('name'),
                 skills: skill_names,
             },
