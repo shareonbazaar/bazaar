@@ -33,6 +33,11 @@ footer {
   }
 }
 
+.content-page {
+  width: 75%;
+  margin: 0 auto;
+}
+
 // Input Fields
 // -------------------------
 
@@ -316,11 +321,6 @@ textarea {
 
 // Account page
 
-.account-page, .edit-profile-page {
-  width: 75%;
-  margin: 0 auto;
-}
-
 .edit-profile-page {
 
   .form-group .radio {
@@ -493,9 +493,6 @@ textarea {
 // Transaction page
 
 .transaction-page {
-
-  margin: 0 10%;
-
   .options {
     text-align: center;
 
