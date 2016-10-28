@@ -37,6 +37,7 @@ var server = require('http').Server(app);
  */
 const homeController = require('./controllers/home');
 const userController = require('./controllers/user');
+const skillController = require('./controllers/skill');
 const adminController = require('./controllers/admin');
 const transactionController = require('./controllers/transaction');
 const messageController = require('./controllers/message');
@@ -185,6 +186,12 @@ app.get('/users', passportConfig.isAuthenticated, userController.getCommunity);
 app.get('/users/list', userController.list);
 app.get('/users/search', passportConfig.isAuthenticated, userController.search);
 app.get('/users/surprise', passportConfig.isAuthenticated, userController.surprise);
+
+/**
+ * Skill routes
+ */
+app.get('/skills/list', skillController.list);
+
 
 /**
  * OAuth authentication routes. (Sign in)

@@ -89,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         if (skill_names.length == 0) {
             var free_search_text = $('.search-box').val();
             skill_names = [free_search_text];
+            return // FIXME: replace this with drop down menu
         }
         var slider_value = distance_slider.bootstrapSlider('getValue');
         $.ajax({
@@ -110,6 +111,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('.grid').masonry('layout');
         });
     });
+
+    function autocompleteSelected (event, ui) {
+        var skill_id = ui.item.value;
+        var skill_name = ui.item.label;
+        console.log(skill_id)
+        console.log(skill_name)
+    }
+
+    // FIXME: uncomment this to do dropdown menu
+    // $("#skill-name-input").autocomplete({
+    //     source: '/skills/list',
+    //     select: autocompleteSelected,
+    //     focus: function (event, ui) {event.preventDefault();}
+    // });
 
     var previousScroll = 0;
     $(window).scroll(function(event){
