@@ -54,9 +54,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
     }
 
-    $('.search-box').click(function () {
-        $('.filter-options').addClass('open');
-    });
 
     $('body > .container-fluid').click(function () {
         $('.filter-options').removeClass('open');
@@ -83,14 +80,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
     $('.filter-button').click(function () {
         $('.filter-options').removeClass('open');
-        var skill_names = $.map($('.category-filter .skill-select .selected'), function (obj) {
+
+        var skill_names = $.map($.merge($('.category-filter .skill-select .selected'), $('.select2 .selected-skill')), function (obj) {
             return $(obj).attr('name');
+        }).filter(function (item, pos, self) {
+            return self.indexOf(item) == pos;
         });
-        if (skill_names.length == 0) {
-            var free_search_text = $('.search-box').val();
-            skill_names = [free_search_text];
-            return // FIXME: replace this with drop down menu
-        }
+
         var slider_value = distance_slider.bootstrapSlider('getValue');
         $.ajax({
             url: '/users/search',
@@ -115,16 +111,39 @@ document.addEventListener("DOMContentLoaded", function(event) {
     function autocompleteSelected (event, ui) {
         var skill_id = ui.item.value;
         var skill_name = ui.item.label;
-        console.log(skill_id)
-        console.log(skill_name)
+        $('#skill-name-input').html('<div class="skill-label">Arabic</div>')
     }
 
-    // FIXME: uncomment this to do dropdown menu
-    // $("#skill-name-input").autocomplete({
-    //     source: '/skills/list',
-    //     select: autocompleteSelected,
-    //     focus: function (event, ui) {event.preventDefault();}
-    // });
+    $("#skill-name-input").autocomplete({
+        source: '/skills/list',
+        select: autocompleteSelected,
+        focus: function (event, ui) {event.preventDefault();}
+    });
+
+    $(".search-box").select2({
+        placeholder: "Search for skills",
+        minimumInputLength: 1,
+        ajax: {
+            url: '/skills/list',
+            dataType: 'json',
+            processResults: function (data, params) {
+                return {
+                    results: data
+                }
+            },
+        },
+        escapeMarkup: function (markup) { return markup; },
+        templateResult: function (item) {
+            return item.name;
+        },
+        templateSelection: function (item) {
+            return '<span class="selected-skill" name=' + item.id + '>' + item.name + '</span>'
+        },
+    });
+
+    $('.select2-selection').click(function () {
+        $('.filter-options').addClass('open');
+    });
 
     var previousScroll = 0;
     $(window).scroll(function(event){

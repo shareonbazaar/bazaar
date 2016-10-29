@@ -4,6 +4,7 @@
 @import "lib/bootstrap-social";
 @import "lib/font-awesome/font-awesome";
 @import "lib/bootstrap-slider.min.css";
+@import "lib/select2.min.css";
 
 @import "themes/flatly/flatly";
 
@@ -279,23 +280,26 @@ textarea {
   }
 }
 
-.search-box {
-  margin: 15px auto 0px auto;
-  width: 50%;
-  padding: 5px;
-  background-color: #2C3E50;
-  border: none;
-  outline: none;
-  color: white;
+.navbar {
+  .select2-container {
+    margin: 13px 0 0 0;
+  }
+
+  .search-box {
+    background-color: #2C3E50;
+    border: none;
+    outline: none;
+    color: white;
+  }
+  .navbar-toggle {
+    margin-right: 0px;
+  }
 }
 
 .white, .white a {
   color: #fff;
 }
 
-::-webkit-input-placeholder {
-   color: white;
-}
 
 #requestModal {
   .profile-request-form {

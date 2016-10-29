@@ -11,8 +11,7 @@ block content
     .col-xs-4.service-type(name=RequestType.EXCHANGE) I want to share
     .clearfix.visible-xs-block.visible-sm-block
     .col-md-6.category-filter
-      .glyphicon.glyphicon-triangle-right
-      label Categories
+      label Select your interests
       .skill-select
         each skill in user._interests
           .skill-label(name="#{skill._id}") #{skill.label[locale]}

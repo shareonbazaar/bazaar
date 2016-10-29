@@ -12,13 +12,13 @@ exports.list = (req, res) => {
         });
     }
     var regex = new RegExp(req.query.term.replace(/\\/g, ''), 'i');
-    Skill.find({
-        'label.en': {$regex: regex},
-    }, (err, results) => {
+    Skill.find({'label.en': {$regex: regex}})
+    .sort('label.en')
+    .exec((err, results) => {
         res.json(results.map((skill) => {
             return {
-                label: skill.label['en'],
-                value: skill._id,
+                name: skill.label['en'],
+                id: skill._id,
             };
         }));
     });
