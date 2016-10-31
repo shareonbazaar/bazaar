@@ -838,15 +838,17 @@ function getPublicUserData (user) {
         status: user.profile.status,
         gender: user.profile.gender,
         coins: user.coins,
-        skills: activities.populateLabels(user.skills),
-        interests: activities.populateLabels(user.interests),
+        skills: user._skills,
+        interests: user._interests,
         aboutMe: user.aboutMe,
     }
 };
 
 exports.apiSearchUsers = function (req, res) {
   if (Object.keys(req.query).length === 0) {
-      User.find({_id: {'$ne': req.user.id}}, (err, results) => {
+      User.find({_id: {'$ne': req.user.id}})
+      .populate('_skills _interests')
+      .exec((err, results) => {
           res.json(results.map(getPublicUserData));
       });
   } else {
