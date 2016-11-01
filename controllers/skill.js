@@ -1,4 +1,3 @@
-const helpers = require('./helpers');
 const Skill = require('../models/Skill');
 
 /**
@@ -6,13 +5,16 @@ const Skill = require('../models/Skill');
  * List all skills
  */
 exports.list = (req, res) => {
-    if (!req.query.term) {
-        return res.json({
-            error: "No term specified",
-        });
+    var query = {};
+    if (typeof req.query.term === 'string') {
+        try {
+            var regex = new RegExp(req.query.term, 'i');
+            query = {'label.en': {$regex: regex}};
+        } catch (err) {
+            // invalid regex - just list all users
+        }
     }
-    var regex = new RegExp(req.query.term.replace(/\\/g, ''), 'i');
-    Skill.find({'label.en': {$regex: regex}})
+    Skill.find(query)
     .sort('label.en')
     .exec((err, results) => {
         res.json(results.map((skill) => {
