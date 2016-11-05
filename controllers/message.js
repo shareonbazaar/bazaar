@@ -81,8 +81,8 @@ function addMessageToTransaction (sender_id, message_text, transaction_id, req, 
                     async.waterfall([
                         function (callback) {
                             // Increment unread message count
-                            if (user.unreadThreads.indexOf(transaction.id) < 0) {
-                                user.unreadThreads.push(transaction.id);
+                            if (user.unreadTransactions.indexOf(transaction.id) < 0) {
+                                user.unreadTransactions.push(transaction.id);
                             }
                             user.save(callback);
                         },

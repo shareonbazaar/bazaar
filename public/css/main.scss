@@ -290,6 +290,7 @@ textarea {
     border: none;
     outline: none;
     color: white;
+    display: none;
   }
   .navbar-toggle {
     margin-right: 0px;
@@ -535,6 +536,9 @@ textarea {
       overflow: hidden;
       .content {
         float: left;
+        .direction {
+          margin: 0 5px;
+        }
       }
       .timestamp {
         float: right;
@@ -545,12 +549,21 @@ textarea {
         width: 100%;
         display: inline-block;
       }
+      .intro {
+        width: 50%;
+        margin: 0 auto;
+        height: 100px;
+        background-color: lightgray;
+        padding: 5px;
+        border-radius: 5px;
+        border: 1px solid gray;
+      }
       .responses {
         text-align: center;
         padding: 1% 0;
         button {
-          width: 35%;
-          margin: 0 7%;
+          width: 20%;
+          margin: 0 6%;
         }
       }
 
@@ -560,6 +573,9 @@ textarea {
           width: 100%;
           resize: none;
           border: 1px solid #ccc;
+        }
+        .send-button {
+          float: right;
         }
       }
 
@@ -576,7 +592,7 @@ textarea {
       }
 
       &.proposed {
-        .responses {
+        .responses, .intro {
           display: block;
         }
       }

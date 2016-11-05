@@ -5,31 +5,39 @@ mixin showTransactions(t_list)
     each t, i in t_list
       if t._creator._id == user.id
         - var owner_class = 'am-sender'
+        - var icon_uri = '/images/arrow_right_up.png'
       else
         - var owner_class = 'am-recipient'
+        - var icon_uri = '/images/arrow_left_down.png'
       .request-info(data-id="#{t._id}", class="#{t.status} #{owner_class}" data-status="#{t.status}")
         .panel-container
           a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
             .content
-              img.img-circle(width=30 src="#{t._creator.profile.picture}")
-              span= t._creator.profile.name
-              em= t.service_label
-            time.timestamp #{moment(t.timeSent).fromNow()}
+              img.direction(src=icon_uri)
+              img.img-circle(width=30 src="#{t.other_person.profile.picture}")
+              span= t.other_person.profile.name
+              .skill-label #{t.service.label[locale]}
+            time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
+          .intro #{t._messages[0].message}
           .responses
             if t._creator._id == user.id
               button.btn.btn-danger.cancel Cancel
             else
               button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
+              button.btn.btn-primary.chat Chat
               button.btn.btn-danger.reject Reject
           .messaging
             .conversation
+              each message in t._messages
+                .message-details(class='#{message._sender == user.id ? "myself" : "other-person"}')
+                  .comment #{message.message}
+                  .author #{message._sender == user.id ? user.profile.name : t.other_person.profile.name}
 
             form.message-form
-              .form-group
-                textarea.text-input(placeholder="Write message" rows=4)
-              .form-group
-                button.btn.btn-primary.btn-md.send-button(type="submit") Send message
+              textarea.text-input(placeholder="Write message" rows=4)
+              button.btn.btn-secondary.btn-md.back-button Back
+              button.btn.btn-primary.btn-md.send-button(type="submit") Send message
             hr
             .notice
               button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete

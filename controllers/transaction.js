@@ -82,15 +82,79 @@ exports.getReviews = function (req, res) {
  * Show transactions for current user
  */
 exports.showTransactions = function(req, res) {
-  Transaction.find({$or: [{_creator: req.user.id}, {_participants: req.user.id}]})
-    .sort('-timeSent')
-    .populate('_creator')
-    .populate('_participants')
-    .exec(function (err, transactions) {
-        transactions.forEach(function (t) {
-            t.service_label = activities.getActivityLabelForName(t.service);
-        });
+
+    Transaction.aggregate([
+        {
+            '$match': {
+                '_participants': helpers.toObjectId(req.user._id),
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'messages',
+                'localField': '_id',
+                'foreignField': '_transaction',
+                'as': '_messages',
+            }
+        },
+        {
+            '$sort': {
+                'updatedAt': -1,
+            }
+        },
+        {
+            '$lookup': {
+                'from': 'users',
+                'localField': '_creator',
+                'foreignField': '_id',
+                'as': '_creator',
+            }
+        },
+        {
+            "$unwind": "$_creator",
+        },
+        {
+            '$lookup': {
+                'from': 'skills',
+                'localField': 'service',
+                'foreignField': '_id',
+                'as': 'service',
+            }
+        },
+        {
+            "$unwind": "$service",
+        },
+        {
+            '$unwind': '$_participants',
+        },
+        {
+            '$lookup': {
+                'from': 'users',
+                'localField': '_participants',
+                'foreignField': '_id',
+                'as': '_participants',
+            }
+        },
+        {
+            '$unwind': '$_participants',
+        },
+        {
+            '$group': {
+                '_id': '$_id',
+                'service': {'$first': '$service'},
+                '_creator': {'$first': '$_creator'},
+                '_messages': {'$first': '$_messages'},
+                'status': {'$first': '$status'},
+                '_participants': {'$push': '$_participants'},
+                'createdAt': {'$first': '$createdAt'}
+            }
+        }
+    ])
+    .exec((err, transactions) => {
         var data = transactions.reduce(function (map, t) {
+            t.other_person = t._participants.filter((user) => {
+                return user._id !== req.user._id
+            })[0];
             if (t.status === Enums.StatusType.PROPOSED) {
                 map.proposed.push(t);
             } else if (t.status === Enums.StatusType.ACCEPTED) {
@@ -112,8 +176,9 @@ exports.showTransactions = function(req, res) {
             transactions: data,
             moment: moment,
             StatusType: Enums.StatusType,
+            locale: 'en',
         });
-  });
+    });
 };
 
 /**

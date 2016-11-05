@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   aboutMe: { type: String, default: '' },
   _skills: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
   _interests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Skill' }],
+  unreadTransactions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Transaction' }],
 
   coins: { type: Number, default: 5 },
   loc : {

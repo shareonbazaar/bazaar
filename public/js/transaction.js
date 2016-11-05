@@ -31,6 +31,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return false;
     });
 
+    $('.chat').click( function () {
+        $('.messaging').show();
+        $('.intro').hide();
+        $('.responses').hide();
+    });
+
+    $('.back-button').click( function () {
+        $('.messaging').hide();
+        $('.intro').show();
+        $('.responses').show();
+    });
+
     $('.reject').click( function () {
         $(this).closest('.request-info').hide('slide',{direction:'right'},1000);
         $.ajax({
@@ -168,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $('#acceptModal').on('show.bs.modal', function (event) {
         var button = $(event.relatedTarget); // Button that triggered the modal
         var id = button.closest('.request-info').data('id');
-        var skill_label = button.closest('.request-info').find('.content em').html();
+        var skill_label = button.closest('.request-info').find('.content .skill-label').html();
         var modal = $(this);
         modal.find('.modal-body #request-id').attr('request-id', id);
         modal.find('.modal-body .statement').html('Get ready for ' + skill_label);
