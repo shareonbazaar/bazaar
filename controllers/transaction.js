@@ -241,7 +241,6 @@ exports.postTransaction = function (req, res) {
     async.waterfall([
         function (callback) {
             var trans = new Transaction({
-                timeSent: new Date(),
                 service: req.body.service,
                 request_type: req.body.request_type,
                 _participants: [req.body.recipient, req.user.id],
