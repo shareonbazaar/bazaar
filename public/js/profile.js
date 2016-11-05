@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var skills = button.data('skills');
         var modal = $(this);
         modal.find('.modal-body #request-recipient').attr('recipient', id);
-        modal.find('.modal-title').text('Request for ' + button.data('name'));
+        modal.find('.modal-title').text('Request from ' + button.data('name'));
         $('#text-input').val('');
         $('#requestModal .skill-select').empty();
         skills.forEach(function (skill) {
