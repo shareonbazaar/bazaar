@@ -587,7 +587,17 @@ textarea {
         }
       }
 
-      .responses, .messaging, .confirmation, .confirmation-pending, .reviews {
+      .scheduling {
+        padding: 15px;
+        .choice {
+          margin: 5px 0;
+          label {
+            margin-left: 5px;
+          }
+        }
+      }
+
+      .responses, .messaging, .confirmation, .confirmation-pending, .reviews, .intro, .scheduling {
         display: none;
       }
 
@@ -598,7 +608,7 @@ textarea {
       }
 
       &.accepted {
-        .messaging {
+        .scheduling {
           display: block;
         }
       }

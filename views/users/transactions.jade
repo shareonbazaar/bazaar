@@ -41,6 +41,18 @@ mixin showTransactions(t_list)
             hr
             .notice
               button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete
+          .scheduling
+            h4.title Location
+            .choice
+              input(type='radio', name='location', value='alexanderplatz')
+              label Alexanderplatz
+            .choice
+              input(type='radio', name='location', value='gendarmenmarkt')
+              label Gendarmenmarkt
+            .choice
+              input(type='radio', name='location', value='tiergarten')
+              label Tiergarten
+
           .confirmation.notice
             .notice-message Your partner has marked this exchange as complete. Please confirm completion
             button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Confirm exchange
