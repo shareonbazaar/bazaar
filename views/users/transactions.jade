@@ -52,6 +52,11 @@ mixin showTransactions(t_list)
             .choice
               input(type='radio', name='location', value='tiergarten')
               label Tiergarten
+            h4.title Date
+            .input-group.date.datetimepicker
+              input.form-control(type='text')
+              span.input-group-addon
+                span.glyphicon.glyphicon-calendar
 
           .confirmation.notice
             .notice-message Your partner has marked this exchange as complete. Please confirm completion

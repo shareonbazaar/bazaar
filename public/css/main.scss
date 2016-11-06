@@ -4,6 +4,7 @@
 @import "lib/bootstrap-social";
 @import "lib/font-awesome/font-awesome";
 @import "lib/bootstrap-slider.min.css";
+@import "lib/bootstrap-datetimepicker.css";
 @import "lib/select2.min.css";
 
 @import "themes/flatly/flatly";
@@ -533,7 +534,6 @@ textarea {
       @media(max-width: 600px) {
         width: 100%;
       }
-      overflow: hidden;
       .content {
         float: left;
         .direction {

@@ -265,4 +265,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('.transaction-table').hide();
         $('.transaction-table').eq(index).fadeIn();
     });
+
+    $('.datetimepicker').datetimepicker();
 });
