@@ -19,28 +19,19 @@ mixin showTransactions(t_list)
               .skill-label #{t.service.label[locale]}
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
-          .intro #{t._messages[0].message}
-          .responses
-            if t._creator._id == user.id
-              button.btn.btn-danger.cancel Cancel
-            else
-              button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
-              button.btn.btn-primary.chat Chat
-              button.btn.btn-danger.reject Reject
-          .messaging
-            .conversation
-              each message in t._messages
-                .message-details(class='#{message._sender == user.id ? "myself" : "other-person"}')
-                  .comment #{message.message}
-                  .author #{message._sender == user.id ? user.profile.name : t.other_person.profile.name}
+          .proposal
+            .intro #{t._messages[0].message}
+            .responses.row
+              if t._creator._id == user.id
+                button.btn.btn-danger.cancel Cancel
+              else
+                .col-xs-4
+                  button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
+                .col-xs-4
+                  button.btn.btn-primary.chat Chat
+                .col-xs-4
+                  button.btn.btn-danger.reject Reject
 
-            form.message-form
-              textarea.text-input(placeholder="Write message" rows=4)
-              button.btn.btn-secondary.btn-md.back-button Back
-              button.btn.btn-primary.btn-md.send-button(type="submit") Send message
-            hr
-            .notice
-              button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark as complete
           .scheduling
             h4.title Location
             .choice
@@ -57,6 +48,23 @@ mixin showTransactions(t_list)
               input.form-control(type='text')
               span.input-group-addon
                 span.glyphicon.glyphicon-calendar
+            .responses.row
+              .col-xs-6
+                button.btn.btn-primary.chat Chat
+              .col-xs-6
+                button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark complete
+
+          .messaging
+            .conversation
+              each message in t._messages
+                .message-details(class='#{message._sender == user.id ? "myself" : "other-person"}')
+                  .comment #{message.message}
+                  .author #{message._sender == user.id ? user.profile.name : t.other_person.profile.name}
+
+            form.message-form
+              textarea.text-input(placeholder="Write message" rows=4)
+              button.btn.btn-secondary.btn-md.back-button Back
+              button.btn.btn-primary.btn-md.send-button(type="submit") Send message
 
           .confirmation.notice
             .notice-message Your partner has marked this exchange as complete. Please confirm completion

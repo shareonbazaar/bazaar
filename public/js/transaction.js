@@ -32,15 +32,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
 
     $('.chat').click( function () {
-        $('.messaging').show();
-        $('.intro').hide();
-        $('.responses').hide();
+        var request_info = $(this).closest('.request-info');
+        $(request_info).addClass('message-mode');
     });
 
     $('.back-button').click( function () {
-        $('.messaging').hide();
-        $('.intro').show();
-        $('.responses').show();
+        var request_info = $(this).closest('.request-info');
+        $(request_info).removeClass('message-mode');
     });
 
     $('.reject').click( function () {

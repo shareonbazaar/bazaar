@@ -559,16 +559,19 @@ textarea {
         border: 1px solid gray;
       }
       .responses {
+        margin: 10px 0;
         text-align: center;
-        padding: 1% 0;
-        button {
-          width: 20%;
-          margin: 0 6%;
+        div button {
+          width: 100%;
+        }
+        button.cancel {
+          min-width: 25%;
         }
       }
 
       .messaging {
         margin: 0 15px;
+        padding: 15px;
         textarea {
           width: 100%;
           resize: none;
@@ -597,17 +600,22 @@ textarea {
         }
       }
 
-      .responses, .messaging, .confirmation, .confirmation-pending, .reviews, .intro, .scheduling {
+      .proposal, .scheduling, .messaging, .confirmation, .confirmation-pending, .reviews {
         display: none;
       }
 
-      &.proposed {
-        .responses, .intro {
+      &.message-mode {
+        .messaging {
+          display: block;
+        }
+      }
+      &.proposed:not(.message-mode) {
+        .proposal {
           display: block;
         }
       }
 
-      &.accepted {
+      &.accepted:not(.message-mode) {
         .scheduling {
           display: block;
         }
