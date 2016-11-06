@@ -1,24 +1,35 @@
 // Sidebar
 #sidebar-wrapper
   ul.sidebar-nav
-    li.sidebar-brand
-      a(href='/')
-        | Bazaar
     if user
       li
-        a(href='/transactions') Wallet
+        a(href='/transactions')
+          img(src='/images/chat.png')
+          | Wallet
       li
-        a(href='/profile/#{user.id}') Profile
+        a(href='/profile/#{user.id}')
+          img(src='/images/profile.png')
+          | Profile
       li
-        a(href='/bookmarks') Bookmarks
+        a(href='/bookmarks')
+          img(src='/images/bookmark_icon.png')
+          | Bookmarks
       li
-        a(href='/account') Settings
+        a(href='/account')
+          img(src='/images/settings.png')
+          | Settings
     li
-      a(href='/contact') Contact
+      a(href='/contact')
+        img(src='/images/help.png')
+        | Contact
     li
-      a(href='/about') About
+      a(href='/about')
+        img(src='/images/info.png')
+        | About
     if user
       li
-        a(href='/logout') Logout
+        a(href='/logout')
+          img(src='/images/logout.png')
+          | Logout
 
 link(rel='stylesheet', href='/css/sidebar.css')

@@ -1,11 +1,12 @@
 #sidebar-wrapper {
     z-index: 1000;
     position: fixed;
-    right: 250px;
-    width: 0;
+    right: 20px;
+    width: 52px;
     height: 100%;
-    margin-right: -250px;
+    margin-right: -20px;
     overflow-y: auto;
+    overflow-x: hidden;
     background: gray;
     -webkit-transition: all 0.5s ease;
     -moz-transition: all 0.5s ease;
@@ -41,13 +42,17 @@
 
 .sidebar-nav li {
     text-indent: 20px;
-    line-height: 40px;
+    line-height: 50px;
 }
 
 .sidebar-nav li a {
     display: block;
     text-decoration: none;
     color: black;
+}
+
+.sidebar-nav li a img {
+    margin-right: 20px;
 }
 
 .sidebar-nav li a:hover {
