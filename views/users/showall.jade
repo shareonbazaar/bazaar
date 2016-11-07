@@ -18,10 +18,8 @@ block content
     .col-md-6.range-filter
       label#distance-label Distance
       input#distance-slider(data-slider-id='distance-slider' type="text")
-    .col-md-12
-      .button-wrapper
+    .col-md-12.button-wrapper
         button.btn.btn-primary.btn-large.filter-button(type='submit') Apply filter
-      .button-wrapper
         button.btn.btn-primary.btn-large(onclick="location.href='/users/surprise';" type='submit') Surprise me!
   .grid.user-list
     each person, i in users
