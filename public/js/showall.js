@@ -141,7 +141,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         },
     });
 
-    $('.select2-selection').click(function () {
+    $('select').on('select2:open', function () {
         $('.filter-options').addClass('open');
     });
 
