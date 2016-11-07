@@ -57,21 +57,33 @@ textarea {
 }
 
 .navbar {
-  .container-fluid {
-    text-align: center;
+  text-align: center;
+  padding: 0 10px;
+  .select2-container {
+    margin: 13px 0 0 0;
   }
-}
 
-.navbar-brand {
-  padding: 6px 10px;
-  img {
-    display: initial;
-    margin-right: 5px;
+  .search-box {
+    width: 60%;
+    background-color: #2C3E50;
+    display: none;
   }
-  .brand-title {
-    @media (max-width: $screen-sm) {
-      display: none;
+
+  .navbar-brand {
+    padding: 6px 0px;
+    img {
+      display: initial;
+      margin-right: 5px;
     }
+    .brand-title {
+      @media (max-width: $screen-sm) {
+        display: none;
+      }
+    }
+  }
+
+  .navbar-toggle {
+    margin-right: 0px;
   }
 }
 
@@ -281,22 +293,6 @@ textarea {
   }
 }
 
-.navbar {
-  .select2-container {
-    margin: 13px 0 0 0;
-  }
-
-  .search-box {
-    background-color: #2C3E50;
-    border: none;
-    outline: none;
-    color: white;
-    display: none;
-  }
-  .navbar-toggle {
-    margin-right: 0px;
-  }
-}
 
 .white, .white a {
   color: #fff;
