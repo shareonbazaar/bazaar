@@ -145,14 +145,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $('.filter-options').addClass('open');
     });
 
-    var previousScroll = 0;
-    $(window).scroll(function(event){
-       var scroll = $(this).scrollTop();
-       if (scroll > previousScroll){
-           $('.filter-options').removeClass('open');
-       }
-       previousScroll = scroll;
-    });
+    // FIXME: For some reason, only on mobile, this prevents filter from showing
+    // when you click the search box. Possibly solution is to be more conservative
+    // about how much a scroll is desired to tripper the open.
+    // var previousScroll = 0;
+    // $(window).scroll(function(event){
+    //    var scroll = $(this).scrollTop();
+    //    if ((scroll - previousScroll) > 20){
+    //        $('.filter-options').removeClass('open');
+    //    }
+    //    previousScroll = scroll;
+    // });
 
     getLocation();
 });
