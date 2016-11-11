@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             confirmExchange(id);
         }
 
-        var skill_label = button.closest('.request-info').find('.content em').html();
+        var skill_label = button.closest('.request-info').find('.content .skill-label').html();
         var modal = $(this);
         modal.find('.modal-body #transaction-id').attr('transaction-id', id);
         modal.find('.modal-body #review-activity').val(skill_label);
