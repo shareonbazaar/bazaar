@@ -94,6 +94,9 @@ textarea {
   position: fixed;
   right: 20px;
   width: 52px;
+  @media (max-width: $screen-sm) {
+    width: 0px;
+  }
   height: 100%;
   margin-right: -20px;
   overflow-y: auto;
