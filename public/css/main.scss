@@ -38,6 +38,9 @@ footer {
 .content-page {
   width: 75%;
   margin: 0 auto;
+  @media (max-width: $screen-sm) {
+    width: 100%;
+  }
 }
 
 // Input Fields
