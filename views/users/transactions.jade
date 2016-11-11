@@ -44,10 +44,12 @@ mixin showTransactions(t_list)
               input(type='radio', name='location', value='tiergarten')
               label Tiergarten
             h4.title Date
-            .input-group.date.datetimepicker
-              input.form-control(type='text')
-              span.input-group-addon
-                span.glyphicon.glyphicon-calendar
+            .date-wrapper
+              .input-group.date.datetimepicker
+                input.form-control(type='text')
+                span.input-group-addon
+                  span.glyphicon.glyphicon-calendar
+            button.btn.btn-secondary.suggest Suggest
             .responses.row
               .col-xs-6
                 button.btn.btn-primary.chat Chat

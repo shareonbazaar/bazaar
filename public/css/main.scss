@@ -625,8 +625,20 @@ textarea {
         border-radius: 5px;
         border: 1px solid gray;
       }
+
+      .date-wrapper {
+        width: 68%;
+        display: inline-block;
+      }
+
+      .suggest {
+        width: 30%;
+        float: right;
+      }
+
       .responses {
-        margin: 10px 0;
+        margin-top: 10px;
+        margin-bottom: 10px;
         text-align: center;
         div button {
           width: 100%;

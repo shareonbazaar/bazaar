@@ -264,5 +264,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('.transaction-table').eq(index).fadeIn();
     });
 
+    $('.suggest').click(function () {
+        var request = $(this).closest('.request-info');
+        var location = $(request).find('input[name=location]:checked').val();
+        var foo = $(request).find('.datetimepicker');
+        var date = $(foo).data("DateTimePicker").date();
+        console.log(date.valueOf())
+    });
+
     $('.datetimepicker').datetimepicker();
 });
