@@ -99,7 +99,7 @@ exports.showTransactions = function(req, res) {
         },
         {
             '$sort': {
-                'updatedAt': -1,
+                'updatedAt': 1,
             }
         },
         {
