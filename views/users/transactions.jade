@@ -34,15 +34,8 @@ mixin showTransactions(t_list)
 
           .scheduling
             h4.title Location
-            .choice
-              input(type='radio', name='location', value='alexanderplatz')
-              label Alexanderplatz
-            .choice
-              input(type='radio', name='location', value='gendarmenmarkt')
-              label Gendarmenmarkt
-            .choice
-              input(type='radio', name='location', value='tiergarten')
-              label Tiergarten
+            input.pac-input.controls(type="text", placeholder="Search for a place...")
+            .map-canvas
             h4.title Date
             .date-wrapper
               .input-group.date.datetimepicker

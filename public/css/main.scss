@@ -671,11 +671,13 @@ textarea {
 
       .scheduling {
         padding: 15px;
-        .choice {
-          margin: 5px 0;
-          label {
-            margin-left: 5px;
-          }
+        .pac-input {
+          min-width: 60%;
+          margin-bottom: 10px;
+        }
+        .map-canvas {
+          height: 400px;
+          width: 100%;
         }
       }
 

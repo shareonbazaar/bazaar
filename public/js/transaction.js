@@ -142,11 +142,44 @@ document.addEventListener("DOMContentLoaded", function (event) {
         return review;
     }
 
+    var maps_loaded = {};
+
     $('.see-more').click(function () {
         var type = $(this).attr('href');
         var request_info = $(this).closest('.request-info');
         if ($(request_info).attr('data-status').indexOf('accepted') >= 0) {
-            get_messages(request_info);
+            var request_id = $(request_info).attr('data-id');
+            if (maps_loaded[request_id]) {
+                return;
+            }
+            var input = $(request_info).find('.pac-input')[0];
+            let berlin = {lat: 52.5200, lng: 13.4050};
+            let map = new google.maps.Map($(request_info).find('.map-canvas')[0], {
+                zoom: 10,
+                center: berlin,
+                mapTypeControl: false,
+                panControl: true,
+                zoomControl: true,
+                streetViewControl: false,
+            });
+
+            var autocomplete = new google.maps.places.Autocomplete(input, {
+                componentRestrictions: {'country': 'de'},
+            });
+            autocomplete.addListener('place_changed', function () {
+                var place = autocomplete.getPlace();
+                if (place.geometry) {
+                    map.panTo(place.geometry.location);
+                    map.setZoom(15);
+                    let marker = new google.maps.Marker({
+                        position: place.geometry.location,
+                        animation: google.maps.Animation.DROP,
+                    });
+                    marker.setMap(map);
+                }
+            });
+            maps_loaded[request_id] = true;
+
             // FIgure out how to know if curr user hasn't confirmed it
         } else if ($(request_info).attr('data-status').indexOf('complete') >= 0) {
             $.ajax({
