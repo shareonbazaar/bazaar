@@ -3,7 +3,7 @@
   - var bookmark_uri = curr_user.bookmarks.map((x) => x.toString()).indexOf(card_user._id.toString()) >= 0 ? 'bookmark_active.svg' : 'bookmark_inactive.svg'
   img.bookmark(src='/images/#{bookmark_uri}', data-user-id="#{card_user._id}")
   .profile-info
-    .profile-pic(onclick='window.location = "/profile/#{card_user.id}"' class="#{card_user.match}" style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{card_user.profile.name}")
+    .profile-pic(onclick='window.location = "/profile/#{card_user._id}"' class="#{card_user.match}" style="background-image:url('#{image_uri}')", data-toggle="popover" data-trigger="hover" title="#{card_user.profile.name}")
     .name-location
       h3=card_user.profile.name.split(' ')[0]
       h4=card_user.profile.location
