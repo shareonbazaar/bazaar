@@ -454,7 +454,6 @@ textarea {
 // Profile page
 
 .user-profile {
-  margin: 0 10%;
   img.profile-pic {
     width: 30%;
     display: inline-block;
@@ -514,6 +513,7 @@ textarea {
 
   .review {
     margin: 30px 0;
+    font-size: 12px;
     .profile-pic {
       position: relative;
       width: 50px;
@@ -544,9 +544,16 @@ textarea {
       }
       quote {
         display: block;
+        font-size: 15px;
       }
       .breaker {
         margin: 0 10px;
+      }
+    }
+    @media (max-width: $screen-sm) {
+      text-align: center;
+      .review-content {
+        margin: 0;
       }
     }
   }
