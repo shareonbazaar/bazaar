@@ -1,3 +1,5 @@
+$brand-success: #98D9B5;
+$brand-primary: #000000;
 @import "themes/flatly/variables";
 
 @import "lib/bootstrap/bootstrap";
@@ -20,7 +22,7 @@ html {
 body {
   padding-top: 60px;
   margin-bottom: 75px;
-  background-color: beige;
+  background-color: #f4f4f4;
 }
 
 footer {
@@ -104,7 +106,7 @@ textarea {
   margin-right: -20px;
   overflow-y: auto;
   overflow-x: hidden;
-  background: gray;
+  background: #d2d2d2;
   -webkit-transition: all 0.5s ease;
   -moz-transition: all 0.5s ease;
   -o-transition: all 0.5s ease;
@@ -405,7 +407,7 @@ textarea {
     text-align: center;
     border: 1px solid gray;
     &.selected {
-      background-color: gray;
+      background-color: #98d9b5;
     }
   }
 
