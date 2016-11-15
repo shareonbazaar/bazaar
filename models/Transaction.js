@@ -20,6 +20,7 @@ var transactionSchema = new mongoose.Schema({
     type: {type: String},
     coordinates: { type: [], index: '2dsphere', get: helpers.NullInitialization }
   },
+  placeName: String,
   happenedAt: Date,
 }, { timestamps: true });
 

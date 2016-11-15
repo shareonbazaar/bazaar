@@ -143,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     var maps_loaded = {};
+    var chosen_places = {};
 
     $('.see-more').click(function () {
         var type = $(this).attr('href');
@@ -169,6 +170,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
             autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
                 if (place.geometry) {
+                    chosen_places[request_id] = {
+                        latitude: place.geometry.location.lat(),
+                        longitude: place.geometry.location.lng(),
+                        name: place.name,
+                    }
                     map.panTo(place.geometry.location);
                     map.setZoom(15);
                     let marker = new google.maps.Marker({
@@ -299,10 +305,25 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('.suggest').click(function () {
         var request = $(this).closest('.request-info');
-        var location = $(request).find('input[name=location]:checked').val();
-        var foo = $(request).find('.datetimepicker');
-        var date = $(foo).data("DateTimePicker").date();
-        console.log(date.valueOf())
+        var request_id = $(request).attr('data-id');
+
+        var location = chosen_places[request_id];
+        var picker = $(request).find('.datetimepicker');
+        var date = $(picker).data("DateTimePicker").date();
+
+        var data = {
+            id: request_id,
+            _csrf: $('#csrf_token').val(),
+            location: location,
+            date: date.valueOf(),
+        };
+        $.ajax({
+            url: '/schedule',
+            method: 'POST',
+            data: data,
+        }).done(function (data) {
+            console.log(data)
+        });
     });
 
     $('.datetimepicker').datetimepicker();

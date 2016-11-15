@@ -326,3 +326,24 @@ exports.postTransaction = function (req, res) {
         },
     ], helpers.respondToAjax(res));
 };
+
+/**
+ * POST /schedule
+ * Update the schedule (time and location) for a given transaction
+ */
+exports.postSchedule = function (req, res) {
+    Transaction.findOneAndUpdate(
+        {_id: req.body.id,
+        _participants: req.user.id},
+        {
+            happenedAt: new Date(Number(req.body.date)),
+            loc: {
+                type: 'Point',
+                coordinates: [Number(req.body.location.longitude), Number(req.body.location.latitude)],
+            },
+            placeName: req.body.location.name,
+        },
+        {new: true},
+        helpers.respondToAjax(res)
+    );
+};

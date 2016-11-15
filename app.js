@@ -174,6 +174,7 @@ app.get('/rejectRequest/:id', passportConfig.isAuthenticated, transactionControl
 app.get('/cancelRequest/:id', passportConfig.isAuthenticated, transactionController.cancelRequest);
 app.post('/submitReview', passportConfig.isAuthenticated, transactionController.submitReview);
 app.get('/confirmExchange/:id', passportConfig.isAuthenticated, transactionController.confirmExchange);
+app.post('/schedule', passportConfig.isAuthenticated, transactionController.postSchedule);
 
 app.post('/location', passportConfig.isAuthenticated, userController.postLocation);
 app.get('/bookmark/:id', passportConfig.isAuthenticated, userController.postBookmark);
