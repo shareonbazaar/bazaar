@@ -51,7 +51,7 @@ block content
                     span ★
                     - num++
                 span.breaker ●
-                span= review._transaction.service
+                span= review._transaction.service.label[locale]
                 span.breaker ●
                 time.timestamp #{moment(review.createdAt).format('L')}
                 quote= review.text

@@ -698,7 +698,12 @@ exports.showProfile = (req, res) => {
             var t_ids = transactions.map((t) => t._id);
             Review.find({'$and': [{'_transaction': {'$in': t_ids}}, { '_creator': {'$ne': req.user.id} }]})
             .populate('_creator')
-            .populate('_transaction')
+            .populate({
+              path: '_transaction',
+              populate: {
+                path: 'service',
+              }
+            })
             .exec((err, reviews) => {
 
                 // FIXME: Deduplication? But do we need this?
