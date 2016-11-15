@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt-nodejs');
 const crypto = require('crypto');
 const mongoose = require('mongoose');
+const helpers = require('../controllers/helpers');
 
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true },
@@ -15,7 +16,7 @@ const userSchema = new mongoose.Schema({
   coins: { type: Number, default: 5 },
   loc : {
     type: {type: String},
-    coordinates: { type: [], index: '2dsphere', get: NullInitialization }
+    coordinates: { type: [], index: '2dsphere', get: helpers.NullInitialization }
   },
 
   bookmarks:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -37,13 +38,6 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({loc: '2dsphere'});
 
-// Give coordinates a default value if they don't exist
-function NullInitialization (coordinates) {
-    if (typeof coordinates === 'undefined' || coordinates.length < 2) {
-        return [null, null];
-    }
-    return coordinates;
-}
 
 /**
  * Password hash middleware.

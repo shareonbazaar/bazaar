@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var User = require('../models/User');
 var Enums = require('../models/Enums');
+const helpers = require('../controllers/helpers');
 
 var transactionSchema = new mongoose.Schema({
   amount: Number,
@@ -15,6 +16,13 @@ var transactionSchema = new mongoose.Schema({
   },
   _participants:  [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   _creator: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  loc : {
+    type: {type: String},
+    coordinates: { type: [], index: '2dsphere', get: helpers.NullInitialization }
+  },
+  happenedAt: Date,
 }, { timestamps: true });
+
+transactionSchema.index({loc: '2dsphere'});
 
 module.exports = mongoose.model('Transaction', transactionSchema);
