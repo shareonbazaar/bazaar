@@ -9,7 +9,7 @@ mixin showTransactions(t_list)
       else
         - var owner_class = 'am-recipient'
         - var icon_uri = '/images/arrow_left_down.png'
-      .request-info(data-id="#{t._id}", class="#{t.status} #{owner_class}" data-status="#{t.status}")
+      .request-info(data-id="#{t._id}", class="#{t.status} #{owner_class}" data-status="#{t.status}", data-lng=t.loc.coordinates[0], data-lat=t.loc.coordinates[1])
         .panel-container
           a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
             .content
@@ -34,7 +34,7 @@ mixin showTransactions(t_list)
 
           .scheduling
             h4.title Location
-            input.pac-input.controls(type="text", placeholder="Search for a place...")
+            input.pac-input.controls(value=t.placeName, type="text", placeholder="Search for a place...")
             .map-canvas
             h4.title Date
             .date-wrapper

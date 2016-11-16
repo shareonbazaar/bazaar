@@ -144,7 +144,9 @@ exports.showTransactions = function(req, res) {
                 'service': {'$first': '$service'},
                 '_creator': {'$first': '$_creator'},
                 '_messages': {'$first': '$_messages'},
+                'loc': {'$first': { '$ifNull': [ "$loc", {'$literal': {type: 'Point', coordinates: [null, null]}}] }},
                 'status': {'$first': '$status'},
+                'placeName': {'$first': '$placeName'},
                 '_participants': {'$push': '$_participants'},
                 'createdAt': {'$first': '$createdAt'}
             }

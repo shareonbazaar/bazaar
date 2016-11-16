@@ -153,17 +153,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
             if (maps_loaded[request_id]) {
                 return;
             }
-            var input = $(request_info).find('.pac-input')[0];
-            let berlin = {lat: 52.5200, lng: 13.4050};
-            let map = new google.maps.Map($(request_info).find('.map-canvas')[0], {
-                zoom: 10,
-                center: berlin,
+
+            var map = new google.maps.Map($(request_info).find('.map-canvas')[0], {
                 mapTypeControl: false,
                 panControl: true,
                 zoomControl: true,
                 streetViewControl: false,
             });
 
+            var center = {lat: 52.5200, lng: 13.4050}; // Berlin
+            var zoom = 10;
+            var lat = Number($(request_info).attr('data-lat'));
+            var lng = Number($(request_info).attr('data-lng'));
+
+            if (lat && lng) {
+                center = {lat: lat, lng: lng};
+                zoom = 15;
+                let pin = new google.maps.Marker({
+                    position: center,
+                    map: map,
+                });
+            }
+            map.setCenter(center);
+            map.setZoom(zoom);
+
+            var input = $(request_info).find('.pac-input')[0];
             var autocomplete = new google.maps.places.Autocomplete(input, {
                 componentRestrictions: {'country': 'de'},
             });
