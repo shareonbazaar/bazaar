@@ -38,7 +38,7 @@ mixin showTransactions(t_list)
             .map-canvas
             h4.title Date
             .date-wrapper
-              .input-group.date.datetimepicker
+              .input-group.date.datetimepicker(data-value="#{t.happenedAt ? t.happenedAt.getTime() : ''}")
                 input.form-control(type='text')
                 span.input-group-addon
                   span.glyphicon.glyphicon-calendar

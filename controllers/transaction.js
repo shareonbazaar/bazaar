@@ -146,6 +146,7 @@ exports.showTransactions = function(req, res) {
                 '_messages': {'$first': '$_messages'},
                 'loc': {'$first': { '$ifNull': [ "$loc", {'$literal': {type: 'Point', coordinates: [null, null]}}] }},
                 'status': {'$first': '$status'},
+                'happenedAt': {'$first': '$happenedAt'},
                 'placeName': {'$first': '$placeName'},
                 '_participants': {'$push': '$_participants'},
                 'createdAt': {'$first': '$createdAt'}
@@ -334,17 +335,23 @@ exports.postTransaction = function (req, res) {
  * Update the schedule (time and location) for a given transaction
  */
 exports.postSchedule = function (req, res) {
+    var update = {};
+    if (req.body.date) {
+        update.happenedAt = new Date(Number(req.body.date));
+    }
+
+    if (req.body.location) {
+        update.loc = {
+            type: 'Point',
+            coordinates: [Number(req.body.location.longitude), Number(req.body.location.latitude)],
+        }
+        update.placeName = req.body.location.name;
+    }
+
     Transaction.findOneAndUpdate(
         {_id: req.body.id,
         _participants: req.user.id},
-        {
-            happenedAt: new Date(Number(req.body.date)),
-            loc: {
-                type: 'Point',
-                coordinates: [Number(req.body.location.longitude), Number(req.body.location.latitude)],
-            },
-            placeName: req.body.location.name,
-        },
+        update,
         {new: true},
         helpers.respondToAjax(res)
     );

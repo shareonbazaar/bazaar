@@ -150,6 +150,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var request_info = $(this).closest('.request-info');
         if ($(request_info).attr('data-status').indexOf('accepted') >= 0) {
             var request_id = $(request_info).attr('data-id');
+            $(request_info).find('.datetimepicker').datetimepicker();
+
+            var moment_date = moment($(request_info).find('.datetimepicker').attr('data-value'), 'x');
+            $(request_info).find('.datetimepicker').data("DateTimePicker").date(moment_date);
+
             if (maps_loaded[request_id]) {
                 return;
             }
@@ -339,6 +344,4 @@ document.addEventListener("DOMContentLoaded", function (event) {
             console.log(data)
         });
     });
-
-    $('.datetimepicker').datetimepicker();
 });
