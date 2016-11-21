@@ -205,6 +205,7 @@ textarea {
 }
 
 .service-type {
+  font-size: 12px;
   text-align: center;
   background-color: lightgray;
   padding: 10px 0px;
@@ -685,7 +686,7 @@ textarea {
       .scheduling {
         padding: 15px;
         .pac-input {
-          min-width: 60%;
+          min-width: 80%;
           margin-bottom: 10px;
         }
         .map-canvas {

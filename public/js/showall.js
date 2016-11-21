@@ -122,7 +122,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     $(".search-box").select2({
         placeholder: "Search for skills",
-        minimumInputLength: 1,
         ajax: {
             url: '/skills/list',
             dataType: 'json',
