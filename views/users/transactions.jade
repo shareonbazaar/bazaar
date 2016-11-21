@@ -20,7 +20,8 @@ mixin showTransactions(t_list)
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
           .proposal
-            .intro #{t._messages[0].message}
+            if t._messages.length > 0
+              .intro #{t._messages[0].message}
             .responses.row
               if t._creator._id == user.id
                 button.btn.btn-danger.cancel Cancel
