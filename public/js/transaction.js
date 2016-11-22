@@ -21,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 $(request_info).attr('data-status', data.status);
                 $($('.transaction-table')[1]).append(request_info);
                 $($('.transaction-table')[1]).find('.request-info').show();
-                get_messages(request_info);
                 // Force a click to go to the 'Upcoming' tab
                 ($('.exchange-type')[1]).click();
             });
@@ -109,19 +108,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             console.log("Couldn't find transaction with id " + data.transaction._id);
         }
     });
-
-    function get_messages (request_info) {
-        $.ajax({
-            url: '/_transactionMessages/' + $(request_info).data('id'),
-        }).done(function (response) {
-            $(request_info).find('.conversation').empty();
-            response.data.map(function (message) {
-                var chat = newChatBubble(message);
-                $(request_info).find('.conversation').append(chat);
-            });
-            $(request_info).find('.conversation').scrollTop($(request_info).find('.conversation')[0].scrollHeight);
-        });
-    }
 
     function createReview (data) {
         var rating = '';
