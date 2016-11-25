@@ -43,7 +43,13 @@ mixin showTransactions(t_list)
                 input.form-control(type='text')
                 span.input-group-addon
                   span.glyphicon.glyphicon-calendar
-            button.btn.btn-secondary.suggest Suggest
+            #suggestModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="acceptModalLabel")
+              .modal-dialog(role="document")
+                .modal-content
+                  .modal-body
+                    .message Your edits have been submitted
+
+            button.btn.btn-secondary.suggest(data-toggle='modal' data-target='#suggestModal') Suggest
             .responses.row
               .col-sm-6
                 button.btn.btn-primary.chat Chat
