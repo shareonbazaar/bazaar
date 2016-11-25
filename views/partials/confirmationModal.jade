@@ -1,0 +1,10 @@
+#confirmationModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="confirmationModalLabel")
+  .modal-dialog(role="document")
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal", aria-label="Close")
+          span(aria-hidden="true") &#215;
+        h4#confirmationModalLabel.modal-title Did this exchange take place?
+      .modal-footer
+        button.btn.btn-default#not-now(type="button" data-dismiss="modal", aria-label="Close") Cancel
+        button.btn.btn-primary#submit-confirmation(type="button") Yes

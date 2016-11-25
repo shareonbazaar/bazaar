@@ -307,14 +307,26 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var id = request.data('id');
         var status = request.attr('data-status');
 
-        if (status != 'complete') {
-            confirmExchange(id);
-        }
-
         var skill_label = button.closest('.request-info').find('.content .skill-label').html();
         var modal = $(this);
         modal.find('.modal-body #transaction-id').attr('transaction-id', id);
         modal.find('.modal-body #review-activity').val(skill_label);
+    });
+
+    $('#confirmationModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var request = button.closest('.request-info');
+        var id = request.data('id');
+
+        $('#submit-confirmation').click(function () {
+            confirmExchange(id);
+            $('#confirmationModal').modal('hide');
+
+            var skill_label = $(request).find('.content .skill-label').html();
+            $('#reviewModal').find('.modal-body #transaction-id').attr('transaction-id', id);
+            $('#reviewModal').modal('show');
+            $('#reviewModal').find('.modal-body #review-activity').val(skill_label);
+        });
     });
 
     $('.exchange-type').click(function () {

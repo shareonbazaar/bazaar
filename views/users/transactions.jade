@@ -48,7 +48,7 @@ mixin showTransactions(t_list)
               .col-sm-6
                 button.btn.btn-primary.chat Chat
               .col-sm-6
-                button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Mark complete
+                button.btn.btn-success(data-toggle="modal", data-target="#confirmationModal") Mark complete
 
           .messaging
             .conversation
@@ -64,7 +64,7 @@ mixin showTransactions(t_list)
 
           .confirmation.notice
             .notice-message Your partner has marked this exchange as complete. Please confirm completion
-            button.btn.btn-success(data-toggle="modal", data-target="#reviewModal") Confirm exchange
+            button.btn.btn-success(data-toggle="modal", data-target="#confirmationModal") Confirm exchange
           .confirmation-pending.notice
             .notice-message This exchange is pending confirmation from the other person that it has been completed
           .reviews.notice
@@ -72,6 +72,7 @@ mixin showTransactions(t_list)
 
 block content
   include ../partials/acceptModal
+  include ../partials/confirmationModal
   include ../partials/review
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   
