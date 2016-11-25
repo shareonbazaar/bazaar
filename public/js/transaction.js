@@ -200,35 +200,39 @@ document.addEventListener("DOMContentLoaded", function (event) {
         maps_loaded[request_id] = true;
     }
 
+    function load_review_section (request_info) {
+        $.ajax({
+            url: '/_transactionReviews/' + $(request_info).data('id'),
+        }).done(function (response) {
+            var notice = '';
+            if (response.curr_user_has_review == false) {
+                var review_button = '<button class="btn btn-success" data-toggle="modal" data-target="#reviewModal">' +
+                                        'Write Review' +
+                                    '</button>';
+                notice = '<div>' +
+                                'Please write a review for this exchange. ' +
+                                'You won\'t be able to see your partner\'s review until you write one' +
+                             '</div>';
+                $(request_info).find('.notice').html(notice + review_button);
+            } else if (response.partner_has_review == false) {
+                notice = '<div>' +
+                            'Thank you for submitting a review. ' +
+                            'As soon as your partner submits one, you\'ll be able to see it!' +
+                         '</div>';
+                $(request_info).find('.notice').html(notice);
+            } else {
+                $(request_info).find('.reviews').html(createReview(response.review));
+            }
+        });
+    }
+
     $('.action-section').on('shown.bs.collapse', function () {
         var request_info = $(this).closest('.request-info');
         if ($(request_info).attr('data-status').indexOf('accepted') >= 0) {
             load_scheduling_section(request_info);
             // FIgure out how to know if curr user hasn't confirmed it
         } else if ($(request_info).attr('data-status').indexOf('complete') >= 0) {
-            $.ajax({
-                url: '/_transactionReviews/' + $(request_info).data('id'),
-            }).done(function (response) {
-                var notice = '';
-                if (response.curr_user_has_review == false) {
-                    var review_button = '<button class="btn btn-success" data-toggle="modal" data-target="#reviewModal">' +
-                                            'Write Review' +
-                                        '</button>';
-                    notice = '<div>' +
-                                    'Please write a review for this exchange. ' +
-                                    'You won\'t be able to see your partner\'s review until you write one' +
-                                 '</div>';
-                    $(request_info).find('.notice').html(notice + review_button);
-                } else if (response.partner_has_review == false) {
-                    notice = '<div>' +
-                                'Thank you for submitting a review. ' +
-                                'As soon as your partner submits one, you\'ll be able to see it!' +
-                             '</div>';
-                    $(request_info).find('.notice').html(notice);
-                } else {
-                    $(request_info).find('.reviews').html(createReview(response.review));
-                }
-            });
+            load_review_section(request_info);
         }
     });
 
