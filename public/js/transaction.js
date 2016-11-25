@@ -134,6 +134,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var chosen_places = {};
 
     function load_map (request_info) {
+        var request_id = $(request_info).attr('data-id');
+
         var map = new google.maps.Map($(request_info).find('.map-canvas')[0], {
             mapTypeControl: false,
             panControl: true,
