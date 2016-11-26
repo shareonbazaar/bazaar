@@ -645,14 +645,9 @@ textarea {
         display: inline-block;
       }
 
-      .suggest {
-        width: 30%;
-        float: right;
-      }
-
       .responses {
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 8px;
+        margin-bottom: 8px;
         text-align: center;
         div button {
           width: 100%;
@@ -694,8 +689,10 @@ textarea {
           width: 100%;
         }
 
-        .responses div:first-child {
-          margin-bottom: 8px;
+        @media (max-width: $screen-sm) {
+          .responses div:not(:last-child) {
+            margin-bottom: 8px;
+          }
         }
       }
 
