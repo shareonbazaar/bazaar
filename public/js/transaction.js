@@ -354,7 +354,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             id: request_id,
             _csrf: $('#csrf_token').val(),
             location: location,
-            date: date.valueOf(),
+            date: date ? date.valueOf() : null,
         };
         $.ajax({
             url: '/schedule',
