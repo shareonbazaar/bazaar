@@ -187,7 +187,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function load_scheduling_section (request_info) {
         var request_id = $(request_info).attr('data-id');
-        $(request_info).find('.datetimepicker').datetimepicker();
+        $(request_info).find('.datetimepicker').datetimepicker({
+            ignoreReadonly: true,
+            widgetPositioning: {
+                horizontal: 'right',
+            }
+        });
 
         var moment_date = moment($(request_info).find('.datetimepicker').attr('data-value'), 'x');
         $(request_info).find('.datetimepicker').data("DateTimePicker").date(moment_date);

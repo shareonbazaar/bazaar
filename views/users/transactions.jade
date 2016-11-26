@@ -22,16 +22,17 @@ mixin showTransactions(t_list)
           .proposal
             if t._messages.length > 0
               .intro #{t._messages[0].message}
-            .responses.row
-              if t._creator._id == user.id
-                button.btn.btn-danger.cancel Cancel
-              else
-                .col-xs-4
-                  button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
-                .col-xs-4
-                  button.btn.btn-primary.chat Chat
-                .col-xs-4
-                  button.btn.btn-danger.reject Reject
+            .container-fluid
+              .responses.row
+                if t._creator._id == user.id
+                  button.btn.btn-danger.cancel Cancel
+                else
+                  .col-xs-4
+                    button.btn.btn-success.accept(data-toggle="modal", data-target="#acceptModal") Accept
+                  .col-xs-4
+                    button.btn.btn-primary.chat Chat
+                  .col-xs-4
+                    button.btn.btn-danger.reject Reject
 
           .scheduling
             h4.title Location
@@ -40,7 +41,7 @@ mixin showTransactions(t_list)
             h4.title Date
             .date-wrapper
               .input-group.date.datetimepicker(data-value="#{t.happenedAt ? t.happenedAt.getTime() : ''}")
-                input.form-control(type='text')
+                input.form-control(type='text', readonly="readonly")
                 span.input-group-addon
                   span.glyphicon.glyphicon-calendar
             #suggestModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="acceptModalLabel")
@@ -48,13 +49,14 @@ mixin showTransactions(t_list)
                 .modal-content
                   .modal-body
                     .message Your edits have been submitted
-
-            button.btn.btn-secondary.suggest(data-toggle='modal' data-target='#suggestModal') Suggest
-            .responses.row
-              .col-sm-6
-                button.btn.btn-primary.chat Chat
-              .col-sm-6
-                button.btn.btn-success(data-toggle="modal", data-target="#confirmationModal") Mark complete
+            .container-fluid
+              .responses.row
+                .col-sm-4
+                  button.btn.btn-secondary.suggest(data-toggle='modal' data-target='#suggestModal') Suggest
+                .col-sm-4
+                  button.btn.btn-primary.chat Chat
+                .col-sm-4
+                  button.btn.btn-success(data-toggle="modal", data-target="#confirmationModal") Mark complete
 
           .messaging
             .conversation

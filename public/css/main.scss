@@ -642,7 +642,6 @@ textarea {
       }
 
       .date-wrapper {
-        width: 68%;
         display: inline-block;
       }
 
@@ -693,6 +692,10 @@ textarea {
         .map-canvas {
           height: 400px;
           width: 100%;
+        }
+
+        .responses div:first-child {
+          margin-bottom: 8px;
         }
       }
 
