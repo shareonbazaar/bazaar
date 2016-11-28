@@ -479,10 +479,10 @@ textarea {
       @media (min-width: $screen-md) {
         display: flex;
       }
-      .first-box {
+      .info-box {
         display: flex;
         flex-direction: column;
-        > .box {
+        > div {
           flex: 1;
         }
       }

@@ -5,7 +5,7 @@ block content
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   .user-profile.content-page
     .row
-      .col-md-6.first-box
+      .col-md-6.info-box
         .box
           img.profile-pic.img-responsive.img-circle(src=spotlight_user.profile.picture)
           .bio
@@ -22,7 +22,7 @@ block content
         else
           button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user._skills) Request Exchange
 
-      .col-md-6
+      .col-md-6.info-box
         .skills-box
           .box
             h4 I can offer
