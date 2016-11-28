@@ -510,7 +510,7 @@ textarea {
     width: 100%;
     margin-top: 10px;
     text-transform: uppercase;
-    @media (max-width: $screen-sm) {
+    @media (max-width: $screen-md) {
       margin-bottom: 10px;
     }
   }
