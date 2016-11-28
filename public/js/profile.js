@@ -83,10 +83,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     $('.skill-select').on('click', '.skill-label', function () {
-        if ($(this).hasClass('selected')) {
-            $(this).removeClass('selected');
-        } else {
+        if ($(this).parent().hasClass('unique')) {
+            $(this).parent().find('.skill-label').removeClass('selected');
             $(this).addClass('selected');
+        } else {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            } else {
+                $(this).addClass('selected');
+            }
         }
     });
 
