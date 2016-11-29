@@ -1,0 +1,25 @@
+div(style='padding:5px')
+  img(style='float:left; padding-right: 4px;', width='40', src='#{base_url}/favicon.ico')
+  h3 Bazaar
+  div
+    h4 Dear #{recipient.profile.name},
+    p
+      | Your Bazaar exchange with 
+      strong #{sender.profile.name} 
+      | has been updated:
+    div(style='font-family: Georgia, serif; font-size: 18px;\
+    line-height: 1.45;\
+    position: relative;\
+    color: #383838;')
+      | Location: 
+      a(href="http://www.google.com/maps/place/#{transaction.loc.coordinates[1]},#{transaction.loc.coordinates[0]}") #{transaction.placeName}
+    div(style='font-family: Georgia, serif; font-size: 18px;\
+    line-height: 1.45;\
+    margin-bottom: 10px; \
+    position: relative;\
+    color: #383838;')
+      | Date: #{moment(transaction.happenedAt).format('llll')}
+    a(href='#{base_url}/transactions', style='display: inline-block; padding:5px; background-color: #2469a0; color: white; font-weight: bold; border-radius: 3px; text-decoration: none;') View my exchanges
+
+    p Regards,
+    p The Bazaar Team

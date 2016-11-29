@@ -9,6 +9,8 @@ var Enums = require('../models/Enums');
 var messageController = require('../controllers/message');
 var helpers = require('./helpers');
 var moment = require('moment');
+var app = require('../app');
+var nodemailer = require('nodemailer');
 
 
 function dateString (date) {
@@ -330,6 +332,37 @@ exports.postTransaction = function (req, res) {
     ], helpers.respondToAjax(res));
 };
 
+function sendUpdateScheduleEmail (sender, recipient, transaction, req, callback) {
+    var transporter = nodemailer.createTransport({
+      service: 'Mailgun',
+      auth: {
+        user: process.env.MAILGUN_USER,
+        pass: process.env.MAILGUN_PASSWORD,
+      },
+    });
+
+    app.render('emailTemplates/updateSchedule', {
+        layout: false,
+        moment: moment,
+        sender: sender,
+        recipient: recipient,
+        transaction: transaction,
+        base_url: (req.secure ? 'https://' : 'http://') + req.headers.host,
+    }, (err, html_content) => {
+        var mailOptions = {
+            to: recipient.email,
+            from: 'Bazaar Team <team@shareonbazaar.eu>',
+            subject: 'Update on your exchange with ' + sender.profile.name,
+            html: html_content,
+            text: 'Hi ' + recipient.profile.name + ',\n\n' +
+              'Your exchange with ' + sender.profile.name + ' has been updated! Please log on to Bazaar to review it.\n',
+        };
+        transporter.sendMail(mailOptions, (err) => {
+            callback(err);
+        });
+    });
+}
+
 /**
  * POST /schedule
  * Update the schedule (time and location) for a given transaction
@@ -352,7 +385,15 @@ exports.postSchedule = function (req, res) {
         {_id: req.body.id,
         _participants: req.user.id},
         update,
-        {new: true},
-        helpers.respondToAjax(res)
+        {new: true})
+    .populate('_participants')
+    .exec((err, t) => {
+            t._participants
+            .filter((u) => u.id !== req.user.id)
+            .forEach((u) => {
+                sendUpdateScheduleEmail(req.user, u, t, req, ()=>{});
+            });
+            helpers.respondToAjax(res);
+        }
     );
 };
