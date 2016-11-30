@@ -15,7 +15,7 @@ mixin showTransactions(t_list)
             .content
               img.direction(src=icon_uri)
               img.img-circle(width=30 src="#{t.other_person.profile.picture}")
-              span= t.other_person.profile.name
+              span= t.other_person.profile.name.split(' ')[0]
               .skill-label #{t.service.label[locale]}
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
