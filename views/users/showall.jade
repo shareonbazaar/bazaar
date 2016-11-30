@@ -13,7 +13,7 @@ block content
     .col-md-6.category-filter
       label Select your interests
       .skill-select
-        each skill in user._interests
+        each skill in user._interests.slice(0, 5)
           .skill-label(name="#{skill._id}") #{skill.label[locale]}
     .col-md-6.range-filter
       label#distance-label Distance
