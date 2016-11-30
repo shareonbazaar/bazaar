@@ -7,7 +7,8 @@ block content
     .row
       .col-md-6.info-box
         .box
-          img.profile-pic.img-responsive.img-circle(src=spotlight_user.profile.picture)
+          .circular-img.profile-pic
+            img(src=spotlight_user.profile.picture)
           .bio
             h3= spotlight_user.profile.name
             .place= spotlight_user.profile.hometown
@@ -41,7 +42,7 @@ block content
           each review, i in reviews
             .review
               .identity
-                .profile-pic
+                .circular-img.profile-pic
                   img(src="#{review._creator.profile.picture}")
                 .name= review._creator.profile.name.split(' ')[0]
               .review-content
