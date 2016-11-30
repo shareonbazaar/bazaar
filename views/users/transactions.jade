@@ -44,11 +44,6 @@ mixin showTransactions(t_list)
                 input.form-control(type='text', readonly="readonly")
                 span.input-group-addon
                   span.glyphicon.glyphicon-calendar
-            #suggestModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="acceptModalLabel")
-              .modal-dialog(role="document")
-                .modal-content
-                  .modal-body
-                    .message Your edits have been submitted
             .container-fluid
               .responses.row
                 .col-sm-4
@@ -82,6 +77,11 @@ block content
   include ../partials/acceptModal
   include ../partials/confirmationModal
   include ../partials/review
+  #suggestModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="acceptModalLabel")
+    .modal-dialog(role="document")
+      .modal-content
+        .modal-body
+          .message Your edits have been submitted
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   
   .transaction-page.content-page
