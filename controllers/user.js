@@ -485,7 +485,7 @@ exports.getCommunity = (req, res) => {
       },
     },
     {
-      '$unwind': '$_skills',
+      '$unwind': {'path': '$_skills', 'preserveNullAndEmptyArrays': true},
     },
     {
       '$lookup': {
@@ -495,7 +495,9 @@ exports.getCommunity = (req, res) => {
           'as': '_skills',
       }
     },
-    { "$unwind": "$_skills" },
+    {
+      '$unwind': {'path': '$_skills', 'preserveNullAndEmptyArrays': true},
+    },
     {
       '$project': {
         'profile': '$profile',
@@ -504,7 +506,20 @@ exports.getCommunity = (req, res) => {
         '_skills': {
           '_id': '$_skills._id',
           'label': '$_skills.label',
-          'skill_score': {'$cond': { 'if': { '$setIsSubset': [['$_skills._id'], my_interests_ids] }, 'then': 1, 'else': 0} },
+
+          'skill_score': {
+            '$cond': {
+              'if': { '$eq': [{'$ifNull': ['$_skills', null]}, null] },
+              'then': -1,
+              'else': {
+                '$cond': {
+                  'if': { '$setIsSubset': [['$_skills._id'], my_interests_ids] },
+                  'then': 1,
+                  'else': 0,
+                }
+              }
+            }
+          },
         },
         '_skills_ids': '$_skills._id',
       }
@@ -512,6 +527,17 @@ exports.getCommunity = (req, res) => {
     {
       '$sort': {
           '_skills.skill_score': -1,
+      }
+    },
+    {
+      '$redact': {
+        $cond: {
+          if: {
+              '$eq': ['$skill_score', -1]
+          },
+          then: '$$PRUNE',
+          else: '$$DESCEND'
+        }
       }
     },
     {
