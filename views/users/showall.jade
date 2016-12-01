@@ -3,27 +3,28 @@ mixin userCard(curr_user, card_user)
 extends ../layout
 
 block content
-  include ../partials/newrequest
-  input#csrf_token(type='hidden', name='_csrf', value=_csrf)
-  .row.filter-options
-    .col-xs-4.service-type.selected(name=RequestType.LEARN) I want help with
-    .col-xs-4.service-type(name=RequestType.SHARE) I can offer
-    .col-xs-4.service-type(name=RequestType.EXCHANGE) I want to share
-    .clearfix.visible-xs-block.visible-sm-block
-    .col-md-6.category-filter
-      label Select your interests
-      .skill-select
-        each skill in user._interests.slice(0, 5)
-          .skill-label(name="#{skill._id}") #{skill.label[locale]}
-    .col-md-6.range-filter
-      label#distance-label Distance
-      input#distance-slider(data-slider-id='distance-slider' type="text")
-    .col-md-12.button-wrapper
-        button.btn.btn-primary.btn-large.filter-button(type='submit') Apply filter
-        button.btn.btn-primary.btn-large(onclick="location.href='/users/surprise';" type='submit') Surprise me!
-  .grid.user-list
-    each person, i in users
-      mixin userCard(user, person)
+  .community-page
+    include ../partials/newrequest
+    input#csrf_token(type='hidden', name='_csrf', value=_csrf)
+    .row.filter-options
+      .col-xs-4.service-type.selected(name=RequestType.LEARN) I want help with
+      .col-xs-4.service-type(name=RequestType.SHARE) I can offer
+      .col-xs-4.service-type(name=RequestType.EXCHANGE) I want to share
+      .clearfix.visible-xs-block.visible-sm-block
+      .col-md-6.category-filter
+        label Select your interests
+        .skill-select
+          each skill in user._interests.slice(0, 5)
+            .skill-label(name="#{skill._id}") #{skill.label[locale]}
+      .col-md-6.range-filter
+        label#distance-label Distance
+        input#distance-slider(data-slider-id='distance-slider' type="text")
+      .col-md-12.button-wrapper
+          button.btn.btn-primary.btn-large.filter-button(type='submit') Apply filter
+          button.btn.btn-primary.btn-large(onclick="location.href='/users/surprise';" type='submit') Surprise me!
+    .grid.user-list
+      each person, i in users
+        mixin userCard(user, person)
 
   script(src='/js/showall.js')
   script(src='/js/profile.js')
