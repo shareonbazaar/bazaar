@@ -19,6 +19,9 @@ mixin showTransactions(t_list)
               .skill-label #{t.service.label[locale]}
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
+          .loading
+            | Loading &nbsp;
+            img(src='/images/spinner.svg')
           .proposal
             if t._messages.length > 0
               .intro #{t._messages[0].message}

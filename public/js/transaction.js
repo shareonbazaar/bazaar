@@ -205,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         maps_loaded[request_id] = true;
     }
 
-    function load_review_section (request_info) {
+    function load_review_section (request_info, cb) {
         $.ajax({
             url: '/_transactionReviews/' + $(request_info).data('id'),
         }).done(function (response) {
@@ -228,6 +228,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             } else {
                 $(request_info).find('.reviews').html(createReview(response.review));
             }
+            cb();
         });
     }
 
@@ -237,7 +238,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
             load_scheduling_section(request_info);
             // FIgure out how to know if curr user hasn't confirmed it
         } else if ($(request_info).attr('data-status').indexOf('complete') >= 0) {
-            load_review_section(request_info);
+            $(request_info).find('.loading').show();
+            load_review_section(request_info, function () {
+                $(request_info).find('.loading').hide();
+            });
         }
     });
 

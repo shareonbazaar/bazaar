@@ -684,6 +684,11 @@ textarea {
         }
       }
 
+      .loading {
+        text-align: center;
+        display: none;
+      }
+
       .scheduling {
         padding: 15px;
         .pac-input {
