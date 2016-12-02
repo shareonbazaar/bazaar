@@ -150,6 +150,7 @@ exports.showTransactions = function(req, res) {
                 'status': {'$first': '$status'},
                 'happenedAt': {'$first': '$happenedAt'},
                 'placeName': {'$first': '$placeName'},
+                'request_type': {'$first': '$request_type'},
                 '_participants': {'$push': '$_participants'},
                 'createdAt': {'$first': '$createdAt'}
             }

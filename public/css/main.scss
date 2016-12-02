@@ -623,9 +623,17 @@ textarea {
         width: 100%;
       }
       .content {
+        display: flex;
         float: left;
         .direction {
           margin: 0 5px;
+        }
+        .identity {
+          text-align: center;
+          margin: 0 8px;
+        }
+        .exchange-type {
+          font-style: italic;
         }
       }
       .timestamp {

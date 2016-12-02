@@ -13,10 +13,14 @@ mixin showTransactions(t_list)
         .panel-container
           a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
             .content
-              img.direction(src=icon_uri)
-              img.img-circle(width=30 src="#{t.other_person.profile.picture}")
-              span= t.other_person.profile.name.split(' ')[0]
-              .skill-label #{t.service.label[locale]}
+              div
+                img.direction(src=icon_uri)
+              .identity
+                img.img-circle(width=30 src="#{t.other_person.profile.picture}")
+                div= t.other_person.profile.name.split(' ')[0]
+              span= t.service.label[locale]
+              | -
+              span.exchange-type= t.request_type
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
           .loading
