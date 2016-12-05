@@ -628,12 +628,17 @@ textarea {
         .direction {
           margin: 0 5px;
         }
-        .identity {
+        .partner {
           text-align: center;
+          min-width: 60px;
           margin: 0 8px;
         }
-        .exchange-type {
-          font-style: italic;
+        .exchange {
+          padding-left: 8px;
+          border-left: 1px dotted grey;
+          .request-type {
+            font-style: italic;
+          }
         }
       }
       .timestamp {

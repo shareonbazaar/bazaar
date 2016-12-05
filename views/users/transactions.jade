@@ -15,12 +15,12 @@ mixin showTransactions(t_list)
             .content
               div
                 img.direction(src=icon_uri)
-              .identity
+              .partner
                 img.img-circle(width=30 src="#{t.other_person.profile.picture}")
                 div= t.other_person.profile.name.split(' ')[0]
-              span= t.service.label[locale]
-              | -
-              span.exchange-type= t.request_type
+              .exchange
+                .request-type= "You would like to " + t.request_type
+                div= t.service.label[locale]
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
           .loading
