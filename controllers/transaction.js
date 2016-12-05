@@ -399,7 +399,7 @@ exports.postSchedule = function (req, res) {
             .forEach((u) => {
                 sendUpdateScheduleEmail(req.user, u, t, req, ()=>{});
             });
-            helpers.respondToAjax(res);
+            helpers.respondToAjax(res)();
         }
     );
 };
