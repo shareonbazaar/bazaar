@@ -107,11 +107,6 @@ exports.showTransactions = function(req, res) {
             }
         },
         {
-            '$sort': {
-                'updatedAt': 1,
-            }
-        },
-        {
             '$lookup': {
                 'from': 'users',
                 'localField': '_creator',
@@ -161,7 +156,12 @@ exports.showTransactions = function(req, res) {
                 '_participants': {'$push': '$_participants'},
                 'createdAt': {'$first': '$createdAt'}
             }
-        }
+        },
+        {
+            '$sort': {
+                'createdAt': -1,
+            }
+        },
     ])
     .exec((err, transactions) => {
         var data = transactions.reduce(function (map, t) {
