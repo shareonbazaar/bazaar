@@ -89,6 +89,13 @@ exports.showTransactions = function(req, res) {
         {
             '$match': {
                 '_participants': helpers.toObjectId(req.user._id),
+                'status': {
+                    '$in': [Enums.StatusType.PROPOSED,
+                            Enums.StatusType.ACCEPTED,
+                            Enums.StatusType.RECIPIENT_ACK,
+                            Enums.StatusType.SENDER_ACK,
+                            Enums.StatusType.COMPLETE]
+                    }
             }
         },
         {
@@ -165,8 +172,6 @@ exports.showTransactions = function(req, res) {
                 map.proposed.push(t);
             } else if (t.status === Enums.StatusType.ACCEPTED) {
                 map.upcoming.push(t);
-            } else if (t.status === Enums.StatusType.REJECTED) {
-              // Don't show rejected exchanges
             } else {
                 map.complete.push(t);
             }
