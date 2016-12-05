@@ -9,7 +9,7 @@ exports.StatusType = {
 };
 
 exports.RequestType = {
-    LEARN: 'learn', // Requester is receiving service
-    SHARE: 'share', // Requester is giving service
+    LEARN: 'receive', // Requester is receiving service
+    SHARE: 'give', // Requester is giving service
     EXCHANGE: 'exchange', // Requester is both giving and receiving service
 };
