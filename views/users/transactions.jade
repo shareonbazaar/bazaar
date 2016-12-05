@@ -42,19 +42,34 @@ mixin showTransactions(t_list)
                     button.btn.btn-danger.reject Reject
 
           .scheduling
-            h4.title Location
-            input.pac-input.controls(value=t.placeName, type="text", placeholder="Search for a place...")
-            .map-canvas
-            h4.title Date
-            .date-wrapper
-              .input-group.date.datetimepicker(data-value="#{t.happenedAt ? t.happenedAt.getTime() : ''}")
-                input.form-control(type='text', readonly="readonly")
-                span.input-group-addon
-                  span.glyphicon.glyphicon-calendar
             .container-fluid
+              .row
+                .col-sm-6
+                  .map-canvas
+                .col-sm-6
+                  .location
+                    h4.title Location
+                    .saved
+                      if t.placeName
+                        | #{t.placeName}
+                      else
+                        em= "Suggest a place to meet by clicking the edit button"
+                    input.editing.pac-input.controls(value=t.placeName, type="text", placeholder="Search for a place...")
+                  .date
+                    h4.title Date
+                    .saved
+                      if t.happenedAt
+                        | #{moment(t.happenedAt).format('llll')}
+                      else
+                        em= "Suggest a time to meet by clicking the edit button"
+                    .date-wrapper.editing
+                      .input-group.date.datetimepicker(data-value="#{t.happenedAt ? t.happenedAt.getTime() : ''}")
+                        input.form-control(type='text', readonly="readonly")
+                        span.input-group-addon
+                          span.glyphicon.glyphicon-calendar
               .responses.row
                 .col-sm-4
-                  button.btn.btn-secondary.suggest(data-toggle='modal' data-target='#suggestModal') Suggest
+                  button.btn.btn-secondary.suggest Edit
                 .col-sm-4
                   button.btn.btn-primary.chat Chat
                 .col-sm-4
@@ -88,7 +103,7 @@ block content
     .modal-dialog(role="document")
       .modal-content
         .modal-body
-          .message Your edits have been submitted
+          .message Your exchange has been updated. We will notify the other participants.
   input#csrf_token(type='hidden', name='_csrf', value=_csrf)
   
   .transaction-page.content-page

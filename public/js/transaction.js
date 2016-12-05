@@ -171,6 +171,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     longitude: place.geometry.location.lng(),
                     name: place.name,
                 }
+                $('.location .saved').html(place.name);
                 map.panTo(place.geometry.location);
                 map.setZoom(15);
                 let marker = new google.maps.Marker({
@@ -196,6 +197,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
         var moment_date = moment($(request_info).find('.datetimepicker').attr('data-value'), 'x');
         $(request_info).find('.datetimepicker').data("DateTimePicker").date(moment_date);
+
+        $(request_info).find('.datetimepicker').on('dp.change', function () {
+            var d = $(request_info).find('.datetimepicker').data('DateTimePicker').date();
+            $('.date .saved').html(d.format('llll'));
+        })
 
         if (maps_loaded[request_id]) {
             return;
@@ -346,26 +352,37 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $('.transaction-table').eq(index).fadeIn();
     });
 
+    var edit_mode = false;
     $('.suggest').click(function () {
-        var request = $(this).closest('.request-info');
-        var request_id = $(request).attr('data-id');
+        $('.editing').toggle();
+        $('.saved').toggle();
+        edit_mode = !edit_mode;
 
-        var location = chosen_places[request_id];
-        var picker = $(request).find('.datetimepicker');
-        var date = $(picker).data("DateTimePicker").date();
+        if (edit_mode) {
+            $(this).html('Update');
+        } else {
+            $(this).html('Edit');
+            var request = $(this).closest('.request-info');
+            var request_id = $(request).attr('data-id');
 
-        var data = {
-            id: request_id,
-            _csrf: $('#csrf_token').val(),
-            location: location,
-            date: date ? date.valueOf() : null,
-        };
-        $.ajax({
-            url: '/schedule',
-            method: 'POST',
-            data: data,
-        }).done(function (data) {
-            console.log(data)
-        });
+            var location = chosen_places[request_id];
+            var picker = $(request).find('.datetimepicker');
+            var date = $(picker).data("DateTimePicker").date();
+
+            var data = {
+                id: request_id,
+                _csrf: $('#csrf_token').val(),
+                location: location,
+                date: date ? date.valueOf() : null,
+            };
+            $.ajax({
+                url: '/schedule',
+                method: 'POST',
+                data: data,
+            }).done(function (data) {
+                console.log(data)
+                $('#suggestModal').modal('show');
+            });
+        }
     });
 });
