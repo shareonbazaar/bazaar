@@ -108,6 +108,11 @@ textarea {
       display: initial;
       margin-right: 5px;
     }
+    .brand-title {
+      @media (max-width: $screen-sm) {
+        display: none;
+      }
+    }
   }
 
   .navbar-toggle {
@@ -641,6 +646,7 @@ textarea {
       .content span {
         margin: 0 7px;
       }
+      border: 1px solid lightgray;
       text-align: left;
       background-color: white;
       width: 95%;
@@ -674,7 +680,6 @@ textarea {
       }
       .see-more {
         padding: 7px 5px;
-        border: 1px solid lightgray;
         width: 100%;
         display: inline-block;
       }
@@ -1334,7 +1339,7 @@ footer .container {
 
 // Wallet
 
-.action-section.collapse.in {
+.action-section {
   background: #e6e6e6;
 }
 
