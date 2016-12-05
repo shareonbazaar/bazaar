@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     var maps_loaded = {};
     var chosen_places = {};
+    var marker;
 
     function load_map (request_info) {
         var request_id = $(request_info).attr('data-id');
@@ -151,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (lat && lng) {
             center = {lat: lat, lng: lng};
             zoom = 15;
-            let pin = new google.maps.Marker({
+            marker = new google.maps.Marker({
                 position: center,
                 map: map,
             });
@@ -174,7 +175,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 $('.location .saved').html(place.name);
                 map.panTo(place.geometry.location);
                 map.setZoom(15);
-                let marker = new google.maps.Marker({
+                if (marker)
+                    marker.setMap(null);
+                marker = new google.maps.Marker({
                     position: place.geometry.location,
                     animation: google.maps.Animation.DROP,
                 });
