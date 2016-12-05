@@ -37,15 +37,37 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var button = $(event.relatedTarget) // Button that triggered the modal
         var id = button.data('id');
         var skills = button.data('skills');
+        var interests = button.data('interests');
         var modal = $(this);
         modal.find('.modal-body #request-recipient').attr('recipient', id);
         modal.find('.modal-title').text('Request from ' + button.data('name'));
         $('#text-input').val('');
-        $('#requestModal .skill-select').empty();
-        skills.forEach(function (skill) {
-            var option = '<div class="skill-label" name=' + skill._id + '>' + skill.label.en + '</div>';
-            $('#requestModal .skill-select').append(option);
+        $('#requestModal .service-type').off('click').click(function () {
+            $('#requestModal .service-type').removeClass('selected');
+            $(this).addClass('selected');
+
+            $('#requestModal .skill-select').empty();
+            var tags;
+            if ($(this).attr('name') === 'receive') {
+                tags = skills;
+            } else if ($(this).attr('name') === 'give') {
+                tags = interests;
+            } else {
+                var curr_user_skills = modal.find('.modal-body .my-skills').data('skills');
+                var curr_user_interests = modal.find('.modal-body .my-skills').data('interests');
+                tags = curr_user_skills.concat(curr_user_interests).filter(function (a) {
+                    return skills.concat(interests).some(function (b) {
+                        return a._id === b._id;
+                    });
+                });
+            }
+
+            tags.forEach(function (skill) {
+                var option = '<div class="skill-label" name=' + skill._id + '>' + skill.label.en + '</div>';
+                $('#requestModal .skill-select').append(option);
+            });
         });
+        ($('#requestModal .service-type')[0]).click();
     });
 
 

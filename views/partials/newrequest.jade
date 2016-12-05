@@ -6,6 +6,7 @@
           span(aria-hidden="true") &#215;
         h4#requestModalLabel.modal-title
       .modal-body
+        .my-skills(data-skills=user._skills, data-interests=user._interests)
         .container-fluid
           .row
             .col-xs-4.service-type.selected(name=RequestType.LEARN) Receive

@@ -21,7 +21,7 @@ block content
         if user._id.toString() == spotlight_user._id.toString()
           a.btn.btn-primary(href="/editprofile") Edit Profile
         else
-          button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user._skills) Request Exchange
+          button.btn.btn-primary(type="button", data-toggle="modal", data-target="#requestModal", data-name="#{spotlight_user.profile.name}", data-id="#{spotlight_user.id}", data-skills=spotlight_user._skills, data-interests=spotlight_user._interests) Request Exchange
 
       .col-md-6.info-box
         .skills-box

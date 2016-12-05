@@ -573,6 +573,30 @@ exports.getCommunity = (req, res) => {
       }
     },
     {
+      '$unwind': {'path': '$_interests', 'preserveNullAndEmptyArrays': true},
+    },
+    {
+      '$lookup': {
+          'from': 'skills',
+          'localField': '_interests',
+          'foreignField': '_id',
+          'as': '_interests',
+      }
+    },
+    {
+      '$unwind': {'path': '$_interests', 'preserveNullAndEmptyArrays': true},
+    },
+    {
+      '$group': {
+          '_id': '$_id',
+          '_skills': {'$first': '$_skills'},
+          '_interests': {'$push': '$_interests'},
+          'profile': {'$first': '$profile'},
+          'loc': {'$first': '$loc'},
+          'score': {'$first': '$score'},
+      }
+    },
+    {
       '$sort': {
           'score': -1,
       },
