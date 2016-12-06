@@ -166,7 +166,7 @@ exports.showTransactions = function(req, res) {
     .exec((err, transactions) => {
         var data = transactions.reduce(function (map, t) {
             t.other_person = t._participants.filter((user) => {
-                return user._id !== req.user._id
+                return user._id.toString() !== req.user._id.toString();
             })[0];
             if (t.status === Enums.StatusType.PROPOSED) {
                 map.proposed.push(t);
