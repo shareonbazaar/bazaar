@@ -1,38 +1,48 @@
 extends layout
 
 block content
-  .container
-    .row
-      .col-md-12
-        h3= "A skills exchange"
-        p Imagine it like a bazaar. Everyone has supply and demand. Everyone has skills and interests.
-        ul
-          li On your profile you can show other people what you are looking for and what you are able to provide. You can edit your profile on #[a(href="/account") profile creation].
-          li By clicking on #[a(href="/") Bazaar] you can browse through other users in your vicinity and see how much overlap your skills and interests have. The people are sorted by the number of matching attributes.
-          li #[span(style="color:orange;") Orange] circle means one or more matches.
-          li #[span(style="color:green;") Green] circle means five or more matches. That could be interesting!
-          li By clicking on their #[strong names] you open the profile. Here you get some more information.
-          li On the profile you also find a send message button. Kind of self-explanatory. If you are looking for older messages, check out the #[a(href="/messages") messages] tab on the top bar.
-          li If you think your skills or interests actually fit together, you can meet up and share them. If someone helps you, you can transfer a time coin to his or her bank account and vice versa. To make a transaction, click on coins tab in the top bar or on transfer at the other person’s profile. You can find more information about the concept of time banking below!
-    .row
-      .col-md-12
-        h3= "Bazaar uses Time Banking"
-        p Time banking is a neat idea. Basically you receive one coin for one hour of work. You can exchange that coin for an hour of service from another person. It's super flexible and you can always measure how much help you gave!
-        p But there’s other people
-          a(href='http://ssir.org/articles/entry/the_time_bank_solution')  who have written much more sophisticated things about it
-    .row
-      .col-md-12
-        h3= "Integration through Interaction"
-        p This platform aims to connect Germans and refugees. By sharing their skills native germans and refugees might become friends, pick up the other person’s language, or explore other skills they could share. So, see it as a social service. See it as your way to contribute – and also to get back a lot from that.
-
-    .row
-      .col-md-12
-        h3= "We are in beta"
-        p At the moment our service is in beta. Please #[a(href="/contact") give us as much feedback as possible]. We want to develop the service together with you and always improve it.
-    .row
-      .col-md-12
-        h3= "About us"
-        p Rory and Thorben met in Rio about a year ago and became pretty good friends.  When discussing the refugee crisis, they decided to make a change. 
-        p Rory is still living in the cidade maravilhosa and when he’s not coding for a Bay Area Start-up, you find can him dancing Samba in Copacabana.
-        p Thorben just got back from his semester abroad in Rio. At the moment he is pondering his bachelor’s thesis in Berlin. In his free time you find can him yodeling or doing other things Germans do.
+  .about-page
+    .container
+      .row
+        .col-md-12
+          h3= "A Place for Empowerement"
+          p Our starting point: Both locals and newcomers have skills worth sharing. But they don’t always do so. We wanted to create an easy-to-use platform that enables its users to actively share their capabilities and talents. We support this with our own intelligent matching system and detailed filtering criteria that bring people together and help create a more inclusive society.
+      .row
+        .col-md-12
+          h3= "What drives us"
+          h4 There are many stereotypes. 
+          p People are sceptical of the unknown: A significant number of Europeans are afraid of newcomers - however only a few of them have actually been talking to the new members of our society. We want to create a clearer image and understanding of the people often labeled with the abstract term “refugees”.
+          h4 There is no interaction.
+          p It is difficult for newcomers and locals to get in touch even though they live so close to each other. Then, if there is interaction, it is one-directional help which is not enough in the long term. We want interaction that is easy, natural and on a level where both parties benefit.
+          h4 There are no activities
+          p Newcomers often are not able to demonstrate their capabilities both professionally and academically. That means they can neither train them nor feel valued through contributing. At the same time, they do not have any leisure-time activities to do. We want to change that.
+      .row
+        .col-md-12
+          h3= "Our mission"
+          h4 Eye-to-eye exchange
+          p Through giving newcomers the opportunity to not just receive help but actively support others we believe we can create a truly inclusive society.
+          h4 Inclusive communities
+          p By enabling communication between locals and newcomers we aim to enhance the livelihood of both groups, foster their wellbeing, and create new friendships.
+          h4 Personal enablement
+          p Newcomers are able to continue the work and hobbies they have been carrying out all their life. Because exchanges on Bazaar are measurable and rated, Bazaar is opening doors for their future career.
+      .row
+        .col-md-12
+          h3= "Our team"
+          p Khaled talks to people.
+          p Nina understands the user.
+          p Rory develops the tech.
+          p Thorben has the numbers.
+      .row
+        .col-md-12
+          h3= "Get in touch"
+          a(href='mailto:team@shareonbazaar.eu') team@shareonbazaar.eu
+      .row
+        .col-md-12
+          h3= "How it works"
+          p In three easy steps
+          ol
+            li Sign up and create a profile with your skills and interests.
+            li Browse the community page (by clicking Bazaar) to see your best matches in your vicinity.
+            li Request a 'skillshare' with the person that caught your eye and arrange a time and location in your inbox.
+          p Now all you have to do is to meet up and have a great time!
 
