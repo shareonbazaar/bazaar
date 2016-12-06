@@ -697,6 +697,13 @@ textarea {
         display: inline-block;
       }
 
+      .proposal .responses {
+        .btn {
+          margin: 0;
+          border: none;
+        }
+      }
+
       .responses {
         margin-top: 8px;
         margin-bottom: 8px;
@@ -1112,7 +1119,7 @@ textarea {
   text-decoration: none;
 }
 
-.btn-danger {
+.transaction-page .transaction-table .request-info .responses .btn.cancel {
   display: block;
   margin: 15px auto 0 auto;
 }
