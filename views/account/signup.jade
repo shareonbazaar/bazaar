@@ -6,7 +6,7 @@ block content
       h3 Sign up
     .container-fluid
       .row
-        .col-md-8
+        .col-md-7
           form.form-horizontal(id='signup-form', method='POST')
             input(type='hidden', name='_csrf', value=_csrf)
             .form-group
@@ -38,7 +38,7 @@ block content
               .col-sm-offset-3.col-sm-7
                 | Already have an account?
                 a.sign-up(href='/login') Login
-        .col-md-4
+        .col-md-5
           a.btn.btn-block.btn-facebook.btn-social(href='/auth/facebook')
             i.fa.fa-facebook
             | Sign in with Facebook
