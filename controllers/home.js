@@ -21,12 +21,6 @@ exports.about = (req, res) => {
   });
 };
 
-exports.newabout = (req, res) => {
-  res.render('newabout', {
-    title: 'About',
-  });
-};
-
 exports.splash = (req, res) => {
   res.render('splash');
 };
