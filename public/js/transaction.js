@@ -193,6 +193,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var request_id = $(request_info).attr('data-id');
         $(request_info).find('.datetimepicker').datetimepicker({
             ignoreReadonly: true,
+            'stepping': 15,
             widgetPositioning: {
                 horizontal: 'right',
             }
