@@ -6,9 +6,11 @@ mixin showTransactions(t_list)
       if t._creator._id == user.id
         - var owner_class = 'am-sender'
         - var icon_uri = '/images/arrow_right_up.png'
+        - var subject = 'You'
       else
         - var owner_class = 'am-recipient'
         - var icon_uri = '/images/arrow_left_down.png'
+        - var subject = t.other_person.profile.name.split(' ')[0]
       .request-info(data-id="#{t._id}", class="#{t.status} #{owner_class}" data-status="#{t.status}", data-lng=t.loc.coordinates[0], data-lat=t.loc.coordinates[1])
         .panel-container
           a.see-more(data-toggle="collapse", href="#request-collapse-#{t.status}-#{i}", aria-expanded="false", aria-controls="request-collapse")
@@ -20,7 +22,7 @@ mixin showTransactions(t_list)
                   img(src="#{t.other_person.profile.picture}")
                 div= t.other_person.profile.name.split(' ')[0]
               .exchange
-                .request-type= "You would like to " + t.request_type
+                .request-type= subject + " would like to " + t.request_type
                 .service= t.service.label[locale]
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
