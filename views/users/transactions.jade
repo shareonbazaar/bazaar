@@ -16,7 +16,8 @@ mixin showTransactions(t_list)
               div
                 img.direction(src=icon_uri)
               .partner
-                img.img-circle(width=30 src="#{t.other_person.profile.picture}")
+                .circular-img
+                  img(src="#{t.other_person.profile.picture}")
                 div= t.other_person.profile.name.split(' ')[0]
               .exchange
                 .request-type= "You would like to " + t.request_type

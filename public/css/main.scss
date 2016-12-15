@@ -646,24 +646,27 @@ textarea {
     &:nth-child(3), &:nth-child(4) {
       display: none;
     }
-    margin-top: 30px;
+    margin-top: 0px;
     width: 100%;
     text-align: center;
+    a {
+      color: #000;
+    }
     .request-info {
-      .content span {
-        margin: 0 7px;
-      }
       border: 1px solid lightgray;
       text-align: left;
       background-color: white;
       width: 95%;
-      border-radius: 10px;
+      margin: 0 auto;
       @media(max-width: 600px) {
         width: 100%;
       }
       .content {
         display: flex;
         float: left;
+        span {
+          margin: 0 7px;
+        }
         .direction {
           margin: 0 5px;
         }
@@ -671,6 +674,11 @@ textarea {
           text-align: center;
           min-width: 60px;
           margin: 0 8px;
+          .circular-img {
+            height: 30px;
+            width: 30px;
+            margin: 0 auto;
+          }
         }
         .exchange {
           padding-left: 8px;
@@ -1241,21 +1249,8 @@ footer .container {
 
 // Transactions
 
-.transaction-page .transaction-table a {
-  color: #000;
-}
-
 .transaction-page .transaction-table .content {
   background-color: #fff!important;
-}
-
-.transaction-page .transaction-table {
-  margin-top: 0px;
-}
-
-.transaction-page .transaction-table .request-info {
-
-  border-radius: 0px;
 }
 
 // Else
