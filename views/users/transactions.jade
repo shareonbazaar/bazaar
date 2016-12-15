@@ -21,7 +21,7 @@ mixin showTransactions(t_list)
                 div= t.other_person.profile.name.split(' ')[0]
               .exchange
                 .request-type= "You would like to " + t.request_type
-                div= t.service.label[locale]
+                .service= t.service.label[locale]
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")
           .loading
