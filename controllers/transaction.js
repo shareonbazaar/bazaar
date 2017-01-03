@@ -1,16 +1,15 @@
-// FIXME: make these const variables
-var async = require('async');
+const async = require('async');
 
-var Transaction = require('../models/Transaction');
-var Message = require('../models/Message');
-var Review = require('../models/Review');
-var activities = require('../config/activities');
-var Enums = require('../models/Enums');
-var messageController = require('../controllers/message');
-var helpers = require('./helpers');
-var moment = require('moment');
-var app = require('../app');
-var nodemailer = require('nodemailer');
+const Transaction = require('../models/Transaction');
+const Message = require('../models/Message');
+const Review = require('../models/Review');
+const activities = require('../config/activities');
+const Enums = require('../models/Enums');
+const messageController = require('../controllers/message');
+const helpers = require('./helpers');
+const moment = require('moment');
+const app = require('../app');
+const nodemailer = require('nodemailer');
 
 
 function dateString (date) {
