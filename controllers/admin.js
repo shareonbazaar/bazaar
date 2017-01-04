@@ -40,11 +40,11 @@ exports.postSendEmail = function(req, res) {
     var subject = req.body.subject;
     var html_body = req.body.email_editor;
     var text_body = req.body.text_body || '';
-
-    User.find({}, {_id: 0, email: 1}, function (err, results) {
+    var query = req.body.scope == 'all' ? {} : {isAdmin: true};
+    User.find(query, {_id: 0, email: 1}, function (err, results) {
         emails = results.map(function (elem) {return elem.email});
         var mailOptions = {
-            bcc: req.body.scope == 'all' ? emails : ['rorymacqueen@gmail.com', 'thorbenstieler@gmail.com'],
+            bcc: emails,
             from: name + ' <team@shareonbazaar.eu>',
             subject: subject,
             html: html_body,
