@@ -271,7 +271,16 @@ exports.postUpdatePassword = (req, res, next) => {
  * Delete user account.
  */
 exports.postDeleteAccount = (req, res, next) => {
-  User.remove({ _id: req.user.id }, (err) => {
+  User.findOneAndUpdate({ _id: req.user.id },
+    {
+      isDeleted: true,
+      // make sure email is still unique but free up the real email in case user wants to sign up again
+      email: req.user.id,
+      'profile.name': 'Deleted User',
+      'profile.picture': '/images/person_placeholder.gif',
+      facebook: '',
+      google: '',
+    }, (err) => {
     if (err) { return next(err); }
     req.logout();
     req.flash('info', { msg: 'Your account has been deleted.' });
@@ -482,6 +491,7 @@ exports.getCommunity = (req, res) => {
       '$match': {
         '_id': {'$ne': helpers.toObjectId(req.user._id)},
         'profile.status': {'$ne': my_status},
+        'isDeleted': {'$ne': true},
       },
     },
     {
