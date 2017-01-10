@@ -60,15 +60,6 @@ a:hover {
 }
 
 
-.transaction-page {
-  width: 100%;
-  margin: 0 auto;
-  @media (max-width: $screen-sm) {
-    width: 100%;
-  }
-}
-
-
 .container-fluid {
   padding: 0px;
 }
@@ -625,6 +616,11 @@ textarea {
 // Transaction page
 
 .transaction-page {
+  width: 100%;
+  margin: 0 auto;
+  @media (max-width: $screen-sm) {
+    width: 100%;
+  }
   .options {
     text-align: center;
 
@@ -1034,7 +1030,7 @@ textarea {
 
 .radio.col-sm-4[value="refugee"],
 .radio.col-sm-4[value="native"] {
-  width:50%;
+  width: 50%;
 }
 
 .form-control:active, .form-control:focus {
@@ -1255,11 +1251,11 @@ footer .container {
 
 // Else
 
- #review-activity {
-    width: 100%;
-    background: none;
-    border: none;
-  }
+#review-activity {
+  width: 100%;
+  background: none;
+  border: none;
+}
 
 .col-md-12 {
   width: 90%;
@@ -1272,21 +1268,20 @@ footer .container {
 }
 
 #item1 .question-content {
-  margin-top:50px;
-   @media (max-width: $screen-sm) {
+  margin-top: 50px;
+  @media (max-width: $screen-sm) {
     margin-top: 150px;
   }
 }
 
 @media (min-width: 1200px) {
-.container {
-    width: 50%;
-}
-
-.content-page {
+  .container {
     width: 50%;
   }
 
+  .content-page {
+    width: 50%;
+  }
 }
 
 @media (min-width: 770px) {
@@ -1300,28 +1295,28 @@ footer .container {
     width: 58.5%;
   }
 
-   .form-group .col-sm-6 {
-      width: 58.5%;
+  .form-group .col-sm-6 {
+    width: 58.5%;
   }
 
   .user-profile .row:nth-child(1) {
-      display: block;
+    display: block;
   }
 
   .user-profile {
-        width: 50%;
+    width: 50%;
   }
 
   .account-page {
-      width: 50%;
+    width: 50%;
   }
 
   .account-page .col-sm-4  {
-      width: 100%;
+    width: 100%;
   }
 
   .account-page .col-sm-offset-3  {
-      margin-left: 0;
+    margin-left: 0;
   }
 }
 
