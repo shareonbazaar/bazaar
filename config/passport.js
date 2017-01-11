@@ -38,6 +38,7 @@ exports.apiLogin = (req, res, next) => {
     var token = jwt.sign({ email: user.email }, process.env.SESSION_SECRET);
     res.json({
         token: token,
+        id: user.id,
         error: null,
         status: 200,
     });
