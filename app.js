@@ -208,6 +208,7 @@ app.get('/auth/google/callback', passport.authenticate('google', { failureRedire
  * Bazaar API
  */
 app.get('/api/users', passport.authenticate('jwt', { session: false }), userController.apiSearchUsers);
+app.get('/api/users/:id', passport.authenticate('jwt', { session: false }), userController.apiGetUser);
 app.post('/api/login', passportConfig.apiLogin);
 app.post('/api/signup', userController.postSignupApi, passportConfig.apiLogin);
 

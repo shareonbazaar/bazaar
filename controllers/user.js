@@ -927,3 +927,15 @@ exports.apiSearchUsers = function (req, res) {
       });
   }
 };
+
+exports.apiGetUser = function (req, res) {
+    User.findById(req.params.id)
+    .populate('_skills _interests')
+    .exec((err, user) => {
+        if (!user) {
+            res.status(404).json(err);
+        } else {
+            res.json(getPublicUserData(user));
+        }
+    });
+}
