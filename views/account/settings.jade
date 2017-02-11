@@ -25,14 +25,28 @@ block content
     .page-header
       h3 Delete Account
 
-    form.form-horizontal(action='/account/delete', method='POST')
-      .form-group
-        p.col-sm-offset-3.col-sm-4 You can delete your account, but keep in mind this action is irreversible.
-        input(type='hidden', name='_csrf', value=_csrf)
-        .col-sm-offset-3.col-sm-4
-          button.btn.btn-danger(type='submit')
-            i.fa.fa-trash
-            | Delete my account
+    #confirmationModal.modal.fade(tabindex="-1", role="dialog", aria-labelledby="confirmationModalLabel")
+      .modal-dialog(role="document")
+        .modal-content
+          .modal-header
+            h4#confirmationModalLabel.modal-title Really delete?
+          .modal-body
+            form.form-horizontal(action='/account/delete', method='POST')
+              .form-group
+                p.col-sm-offset-3.col-sm-4 Are you sure you want to delete your account?
+                input(type='hidden', name='_csrf', value=_csrf)
+                .col-sm-offset-3.col-sm-4
+                  button.btn.btn-secondary#delete-cancel(type="button" data-dismiss="modal", aria-label="Close") Cancel
+                  button.btn.btn-danger(type='submit')
+                    i.fa.fa-trash
+                    | Delete my account
+
+
+    p.col-sm-offset-3.col-sm-4 You can delete your account, but keep in mind this action is irreversible.
+    .col-sm-offset-3.col-sm-4
+      button.btn.btn-danger(data-toggle="modal", data-target="#confirmationModal")
+        i.fa.fa-trash
+        | Delete my account
 
     .page-header
       h3 Linked Accounts
