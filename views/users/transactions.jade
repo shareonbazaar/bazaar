@@ -22,7 +22,17 @@ mixin showTransactions(t_list)
                   img(src="#{t.other_person.profile.picture}")
                 div= t.other_person.profile.name.split(' ')[0]
               .exchange
-                .request-type= subject + " would like to " + t.request_type
+                - var subject_verb = subject + " would like to " + t.request_type
+                if t.status == StatusType.COMPLETE || t.status == StatusType.RECIPIENT_ACK || t.status == StatusType.SENDER_ACK
+                  - var verb = ''
+                  if t.request_type == RequestType.LEARN
+                    - verb = 'received'
+                  if t.request_type == RequestType.SHARE
+                    - verb = 'gave'
+                  if t.request_type == RequestType.EXCHANGE
+                    - verb = 'exchanged'
+                  - subject_verb = subject + " " + verb
+                .request-type= subject_verb
                 .service= t.service.label[locale]
             time.timestamp #{moment(t.createdAt).fromNow()}
         .collapse.action-section(id="request-collapse-#{t.status}-#{i}")

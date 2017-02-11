@@ -186,6 +186,7 @@ exports.showTransactions = function(req, res) {
             transactions: data,
             moment: moment,
             StatusType: Enums.StatusType,
+            RequestType: Enums.RequestType,
             locale: 'en',
         });
     });
