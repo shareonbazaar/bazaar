@@ -1,0 +1,17 @@
+.start-next {
+    background-color: #87c00f;
+    color: white;
+    padding: 10px 10px;
+    border-radius: 4px;
+    text-decoration: none;
+    border: none;
+    display: block;
+    width: 200px;
+    margin: 0 auto 20px auto;
+}
+
+.start-next span {
+    padding: 10px 0 10px 35px;
+    letter-spacing: 0;
+    background: transparent url('/images/start-next-logo.png') 0 no-repeat;
+}
