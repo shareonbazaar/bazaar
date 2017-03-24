@@ -1,6 +1,11 @@
 document.addEventListener("DOMContentLoaded", function(event) { 
 
     $('#submit-skill-request').click(function () {
+        var service = $('.skill-select div.selected').attr('name');
+        if (!service) {
+            $('.error-message').show();
+            return false;
+        }
         var data = {
             recipient: $('#request-recipient').attr('recipient'),
             _csrf: $('#csrf_token').val(),
@@ -41,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var modal = $(this);
         modal.find('.modal-body #request-recipient').attr('recipient', id);
         modal.find('.modal-title').text('Request from ' + button.data('name'));
+        $('.error-message').hide();
         $('#text-input').val('');
         $('#requestModal .service-type').off('click').click(function () {
             $('#requestModal .service-type').removeClass('selected');
