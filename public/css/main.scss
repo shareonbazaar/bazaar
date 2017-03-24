@@ -406,6 +406,12 @@ textarea {
     width: 90%;
   }
 
+  .error-message {
+    color: red;
+    display: none;
+    margin-top: 10px;
+  }
+
   #submit-skill-request {
     width: 90%;
   }
