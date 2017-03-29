@@ -214,14 +214,18 @@ textarea {
 .about-page {
   
   background-color: white;
-  
+  .mission{
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+  }
   h3 {
     text-transform: uppercase;
     text-align: center;
   }
   h4 {
     text-align: center;
-    
+
   }
   .icon {
     display: inline;
