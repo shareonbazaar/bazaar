@@ -213,7 +213,7 @@ textarea {
 
 .about-page {
   
-  background-color: white!important;
+  background-color: white;
   
   h3 {
     text-transform: uppercase;
@@ -222,8 +222,9 @@ textarea {
   h4 {
     text-align: center;
   }
-  img {
-    
+  .icon {
+    position: relative;
+    display: inline;
   }
 }
 
