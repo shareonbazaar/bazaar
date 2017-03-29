@@ -220,29 +220,27 @@ textarea {
     margin-right: auto;
   }
   .title{
-    display: inline-block;
-    margin-left: auto;
-    margin-right: auto;
-    
+    text-align: center;
+    padding-bottom: 5px;
+     padding-top: 8px;
   }
   .faces{
     display: block;
     margin-left: auto;
     margin-right: auto;
+    width: 800px;
   }
-  h3 {
+  h2 {
     text-transform: uppercase;
     text-align: center;
-  }
-  h4 {
-    text-align: center;
+    padding-bottom: 10px;
 
   }
-  .icon {
+  h4 {
     display: inline;
-    margin-left: auto;
-    margin-right: auto;
+    
   }
+
 }
 
 // Community page
