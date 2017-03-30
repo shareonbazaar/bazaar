@@ -214,21 +214,33 @@ textarea {
 .about-page {
   
   background-color: white;
+  
+  //top main image
   .mission{
     display: block;
     margin-left: auto;
     margin-right: auto;
   }
+  
+  //Subheading with icons
   .title{
     text-align: center;
     padding-bottom: 5px;
      padding-top: 8px;
   }
+  
+  //Adding space between sections
+  .spacing{
+    margin-top: 60px;
+  }
+  
+  //Image of the team
   .faces{
     display: block;
     margin-left: auto;
     margin-right: auto;
-    width: 800px;
+    width: 560px;
+    border: 5px solid red;
   }
   h2 {
     text-transform: uppercase;
@@ -239,6 +251,10 @@ textarea {
   h4 {
     display: inline;
     
+  }
+  .footer {
+    display: inline;
+    text-align: left;
   }
 
 }
