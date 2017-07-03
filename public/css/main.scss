@@ -629,6 +629,7 @@ textarea {
   }
   .options {
     text-align: center;
+    margin-left: 0px;
 
     .exchange-type {
       padding: 10px 0px;
@@ -656,14 +657,15 @@ textarea {
     }
     .request-info {
       border: 1px solid lightgray;
+      border-radius: 0px;
       text-align: left;
-      background-color: white;
       width: 95%;
       margin: 0 auto;
       @media(max-width: 600px) {
         width: 100%;
       }
       .content {
+        background-color: #fff!important;
         display: flex;
         float: left;
         span {
@@ -699,6 +701,9 @@ textarea {
         padding: 7px 5px;
         width: 100%;
         display: inline-block;
+        background: white;
+        border-bottom: 2px solid #ccc;
+        margin-bottom: -3px;
       }
       .intro {
         width: 50%;
@@ -722,6 +727,7 @@ textarea {
       }
 
       .responses {
+        padding: 0 10px;
         margin-top: 8px;
         margin-bottom: 8px;
         text-align: center;
@@ -1039,6 +1045,13 @@ textarea {
   width: 50%;
 }
 
+.col-xs-4 {
+  width: 31.4%;
+  @media (max-width: $screen-sm) {
+    width: 33%;
+  }
+}
+
 .form-control:active, .form-control:focus {
   border: 1px solid #efefef;
 }
@@ -1091,7 +1104,7 @@ textarea {
   margin: 0 auto;
 }
 
-.btn.btn-secondary.suggest {
+.btn.btn-secondary.suggest, .progress-link {
   background-color: #98D9B5;
   color: #fff;
   border: none;
@@ -1099,7 +1112,8 @@ textarea {
 
 .btn-primary:hover, .btn-primary:active, .btn-primary:focus,
 .col-sm-offset-3 .btn:hover, .col-sm-offset-3 .btn:active, .col-sm-offset-3 .btn:focus,
-.btn.btn-secondary.suggest:hover, .btn.btn-secondary.suggest:focus, .btn.btn-secondary.suggest:active {
+.btn.btn-secondary.suggest:hover, .btn.btn-secondary.suggest:focus, .btn.btn-secondary.suggest:active,
+.progress-link:hover, .progress-link:focus, .progress-link:active {
   background-color: #73cb9a;
   border: none;
 }
@@ -1110,7 +1124,13 @@ textarea {
   border: none;
 }
 
+.chat {
+  background: #999;
+}
 
+.chat:hover, .chat:active, .chat:focus {
+  background: #666;
+}
 
 .col-sm-3 .fa-user, .col-sm-offset-3 .fa-user-plus, .btn-primary .fa, .btn-danger .fa {
   display: none;
@@ -1249,13 +1269,6 @@ footer .container {
   padding: 10px!important;
 }
 
-// Transactions
-
-.transaction-page .transaction-table .content {
-  background-color: #fff!important;
-}
-
-// Else
 
 #review-activity {
   width: 100%;
@@ -1267,6 +1280,23 @@ footer .container {
   width: 90%;
   display: block;
   margin: 0 auto;
+}
+
+.col-md-7 {
+  width: 100%;
+}
+
+.col-sm-offset-3 .btn, .col-sm-7 .btn.btn-link {
+  float: left;
+}
+
+.col-md-5 {
+  margin-left: 164px;
+  margin-top: 20px;
+  @media (max-width: $screen-sm) {
+    margin-left: 0px;
+    width: 41.66667%;
+  }
 }
 
 .account-page {
@@ -1283,6 +1313,30 @@ footer .container {
   }
 }
 
+.question-content {
+   @media (max-width: $screen-sm) {
+    margin-top: 230px;
+    overflow-y: visible;
+  }
+}
+
+.activity {
+  display: inline-block;
+  padding: 3px 8px;
+  margin: 5px;
+  border: 1px solid black;
+  background-color: none;
+  border-radius: 2px;
+}
+
+.activity:hover, .activity.selected {
+  color: white;
+  background-color: #4a4a4a;
+  cursor: pointer;
+}
+
+
+
 @media (min-width: 1200px) {
   .container {
     width: 50%;
@@ -1291,6 +1345,10 @@ footer .container {
   .content-page {
     width: 50%;
   }
+}
+
+.responses .col-sm-4 {
+  width: 33%;
 }
 
 @media (min-width: 770px) {
